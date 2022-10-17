@@ -12,7 +12,7 @@ namespace PathController
     public class PathController : IUserMod
     {
 
-        public static string StaticName { get; } = "Path Manager Extended";
+        public static string StaticName { get; } = "Path Controller";
 #if DEBUG
         public static string StaticFullName => $"{StaticName} Beta {Version}";
 #else
@@ -21,7 +21,7 @@ namespace PathController
 
         public static Version Version => Assembly.GetExecutingAssembly().GetName().Version;
         public string Name => StaticFullName;
-        public string Description => "Adjust lane paths to your liking.";
+        public string Description => "Adjust lane paths.";
 
         public void OnEnabled()
         {
