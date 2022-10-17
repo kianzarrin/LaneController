@@ -1,3 +1,5 @@
+extern alias UnifedUILib;
+
 using ColossalFramework.UI;
 using UnityEngine;
 using System;
@@ -9,6 +11,8 @@ using System.Collections.Generic;
 using System.Linq;
 using KianCommons;
 using PathController.Data;
+using UnifedUILib::UnifiedUI.Helpers;
+using UnityEngine.UI;
 
 namespace PathController.Tool
 {
@@ -34,7 +38,8 @@ namespace PathController.Tool
         public SegmentData SegmentInstance { get; private set; } = new SegmentData();
         public LaneData LaneInstance { get; private set; } = new LaneData();
 
-        PathManagerExtendedButton Button => PathManagerExtendedButton.Instance;
+        UIComponent Button;
+
         PathManagerExtendedPanel Panel => PathManagerExtendedPanel.Instance;
 
         public static PathManagerExtendedTool Instance { get; set; }
@@ -53,8 +58,15 @@ namespace PathController.Tool
                 // More here...
             };
 
-            PathManagerExtendedButton.CreateButton();
             PathManagerExtendedPanel.CreatePanel();
+            string iconPath = UUIHelpers.GetFullPath<PathControllerMod>("uui_movelanes.png");
+            Button = UUIHelpers.RegisterToolButton(
+                name: "PathController",
+                groupName: null, // default group
+                tooltip: "Path Controller",
+                tool: this,
+                icon: UUIHelpers.LoadTexture(iconPath),
+                hotkeys: new UUIHotKeys { ActivationKey = ActivationShortcut });
 
             DisableTool();
         }
@@ -84,17 +96,14 @@ namespace PathController.Tool
             Log.Debug("PathManagerExtendedTool.OnDestroy()");
             base.OnDestroy();
 
-            PathManagerExtendedButton.RemoveButton();
             PathManagerExtendedPanel.RemovePanel();
-
+            Button?.Destroy();
             DisableTool();
         }
 
         protected override void OnEnable()
         {
             base.OnEnable();
-
-            Button?.Activate();
             Reset();
 
             Singleton<InfoManager>.instance.SetCurrentMode(InfoManager.InfoMode.None, InfoManager.SubInfoMode.Default);
@@ -103,8 +112,6 @@ namespace PathController.Tool
         protected override void OnDisable()
         {
             base.OnDisable();
-
-            Button?.Deactivate();
             Reset();
             //LaneManagerPanel.Instance?.Close();
             ToolsModifierControl.SetTool<DefaultTool>();

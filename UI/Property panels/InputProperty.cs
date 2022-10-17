@@ -1,14 +1,20 @@
 using ColossalFramework.UI;
+using KianCommons;
 using PathController.Tool;
 using PathController.Util;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
 
 namespace PathController.UI
 {
-    public abstract class FieldPropertyPanel<ValueType> : EditorPropertyPanel
-    {
+    public abstract class FieldPropertyPanel : EditorPropertyPanel {
+        public event Action OnResetValue;
+        public virtual void ResetValue() => OnResetValue?.Invoke();
+    }
+
+    public abstract class FieldPropertyPanel<ValueType> : FieldPropertyPanel {
         protected UITextField Field { get; set; }
 
         public event Action<ValueType> OnValueChanged;
@@ -66,8 +72,16 @@ namespace PathController.UI
             Field.cursorWidth = 1;
             Field.cursorBlinkTime = 0.45f;
             Field.selectOnFocus = true;
-            Field.tooltip = Util.Settings.ShowToolTip && CanUseWheel ? "What should go here?" : string.Empty;
-            //Field.tooltip = "Tooltip here...";
+
+            List<string> hint = new();
+            if (Util.Settings.ShowToolTip) {
+                hint.Add("Press delete to reset value");
+                if (CanUseWheel) {
+                    hint.Add("Scroll the wheel to change\n" + "shift X10, Ctrl X0.1");
+                }
+            }
+            Field.tooltip = hint.JoinLines();
+
             Field.eventMouseWheel += FieldMouseWheel;
             Field.eventTextSubmitted += FieldTextSubmitted;
             Field.eventMouseHover += FieldHover;
@@ -84,11 +98,16 @@ namespace PathController.UI
         protected virtual void FieldTextSubmitted(UIComponent component, string value) => Value = Value;
         private void FieldHover(UIComponent component, UIMouseEventParameter eventParam) => OnHover?.Invoke();
         private void FieldLeave(UIComponent component, UIMouseEventParameter eventParam) => OnLeave?.Invoke();
+
         protected virtual void FieldMouseWheel(UIComponent component, UIMouseEventParameter eventParam)
         {
             if (CanUseWheel && UseWheel)
             {
-                var mode = PathManagerExtendedTool.ShiftIsPressed ? WheelMode.High : PathManagerExtendedTool.CtrlIsPressed ? WheelMode.Low : WheelMode.Normal;
+                var mode = PathManagerExtendedTool.ShiftIsPressed
+                    ? WheelMode.High
+                    : PathManagerExtendedTool.CtrlIsPressed
+                    ? WheelMode.Low
+                    : WheelMode.Normal;
                 if (eventParam.wheelDelta < 0)
                     Value = Decrement(Value, WheelStep, mode);
                 else
@@ -145,6 +164,7 @@ namespace PathController.UI
         protected override string GetString(float value) => value.ToString("0.###");
 
         public void Init(string label) {
+            Text = label;
             UseWheel = true;
             WheelStep = 0.1f;
             base.Init();

@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using KianCommons;
 using PathController.UI;
 using UnityEngine;
 
@@ -25,7 +26,16 @@ namespace PathController.Tool
         public virtual void OnMouseDown(Event e) { }
         public virtual void OnMouseDrag(Event e) { }
 
-        public virtual void OnKeyUp(Event e) { }
+        public virtual void OnKeyUp(Event e) {
+            Log.Called(e);
+            var del = Input.GetKeyDown(KeyCode.Delete);
+            if (del) {
+                var control = Panel.GetComponentsInChildren<FieldPropertyPanel>().FirstOrDefault(control => control.containsMouse);
+                if (control != null) {
+                    control.ResetValue();
+                }
+            }
+        }
         public virtual void OnMouseUp(Event e) => OnPrimaryMouseClicked(e);
         public virtual void OnPrimaryMouseClicked(Event e) { }
         public virtual void OnSecondaryMouseClicked() { }

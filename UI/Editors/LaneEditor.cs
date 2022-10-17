@@ -64,7 +64,22 @@ namespace PathController.UI.Editors
             FloatFields = new[] { PositionField, HeightField};
 
             OnObjectUpdate();
+
+            PositionField.OnResetValue += PositionField_OnResetValue; ;
+            HeightField.OnResetValue += HeightField_OnResetValue;
         }
+        private void PositionField_OnResetValue() {
+            Log.Called();
+            EditObject.Shift = 0;
+            OnObjectUpdate();
+        }
+
+        private void HeightField_OnResetValue() {
+            Log.Called();
+            EditObject.VShift = 0;
+            OnObjectUpdate();
+        }
+
         protected override void OnObjectUpdate()
         {
             Log.Debug("LaneEditor.OnObjectUpdate()");
@@ -89,6 +104,15 @@ namespace PathController.UI.Editors
         private void PullValues() {
             PositionField.Value = EditObject.Position;
             HeightField.Value = EditObject.Height;
+        }
+
+        public override void OnDestroy() {
+            base.OnDestroy();
+            PositionField.OnResetValue -= PositionField_OnResetValue; ;
+            HeightField.OnResetValue -= HeightField_OnResetValue;
+            foreach (var field in FloatFields)
+                field.OnValueChanged -= OnValueChanged;
+
         }
     }
 

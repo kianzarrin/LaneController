@@ -61,6 +61,9 @@
     <None Remove="KianCommons\**" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Remove="Resources\uui_movelanes.png" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove=".gitattributes" />
     <None Remove=".gitignore" />
     <None Remove=".gitmodules" />
@@ -78,11 +81,17 @@
     <Compile Include="KianCommons\KianCommons\Util\StringExtensions.cs" />
     <Compile Include="KianCommons\KianCommons\Util\TypeUtil.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="Resources\uui_movelanes.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Target Name="DeployToModDirectory" AfterTargets="Build">
     <PropertyGroup>
       <DeployDir>$(LOCALAPPDATA)\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName)\</DeployDir>
     </PropertyGroup>
     <Copy SourceFiles="$(TargetDir)CitiesHarmony.API.dll;$(TargetDir)UnifiedUILib.dll" DestinationFolder="$(DeployDir)" />
+    <Copy SourceFiles="$(TargetDir)Resources\uui_movelanes.png" DestinationFolder="$(DeployDir)" />
     <Delete Files="$(DeployDir)$(TargetFileName)" />
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(DeployDir)" />
   </Target>
