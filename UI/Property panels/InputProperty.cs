@@ -1,4 +1,4 @@
-﻿using ColossalFramework.UI;
+using ColossalFramework.UI;
 using PathController.Tool;
 using PathController.Util;
 using System;
@@ -16,8 +16,8 @@ namespace PathController.UI
         public event Action OnLeave;
 
         protected abstract bool CanUseWheel { get; }
-        public bool UseWheel { get; set; }
-        public ValueType WheelStep { get; set; }
+        public virtual bool UseWheel { get; set; }
+        public virtual ValueType WheelStep { get; set; }
         public float FieldWidth
         {
             get => Field.width;
@@ -132,7 +132,6 @@ namespace PathController.UI
     public class FloatPropertyPanel : ComparableFieldPropertyPanel<float>
     {
         protected override bool CanUseWheel => true;
-
         protected override float Decrement(float value, float step, WheelMode mode)
         {
             step = mode == WheelMode.Low ? step / 10 : mode == WheelMode.High ? step * 10 : step;
@@ -144,6 +143,12 @@ namespace PathController.UI
             return (value + step).RoundToNearest(step);
         }
         protected override string GetString(float value) => value.ToString("0.###");
+
+        public void Init(string label) {
+            UseWheel = true;
+            WheelStep = 0.1f;
+            base.Init();
+        }
     }
     public class StringPropertyPanel : FieldPropertyPanel<string>
     {

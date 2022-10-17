@@ -17,7 +17,8 @@ namespace PathController.UI.Editors
         public override string Name => "Lane Editor";
         public override string SelectionMessage => "Select a lane to edit it.";
 
-        private FloatPropertyPanel PositionField { get; set; }
+        private FloatPropertyPanel PositionField , HeightField, StartField , EndField;
+        private FloatPropertyPanel[] FloatFields = new FloatPropertyPanel[0];
 
         protected override void FillItems()
         {
@@ -57,24 +58,37 @@ namespace PathController.UI.Editors
                 DeleteUIComponent(item);
 
             PositionField = SettingsPanel.AddUIComponent<FloatPropertyPanel>();
-            PositionField.Text = "Position";
-            PositionField.UseWheel = true;
-            PositionField.WheelStep = 0.1f;
-            PositionField.Init();
-            PositionField.Value = EditObject.Position;
-            PositionField.OnValueChanged += PositionChanged;
+            PositionField.Init("Position");
+            HeightField = SettingsPanel.AddUIComponent<FloatPropertyPanel>();
+            HeightField.Init( "Height");
+            FloatFields = new[] { PositionField, HeightField};
+
+            OnObjectUpdate();
         }
         protected override void OnObjectUpdate()
         {
             Log.Debug("LaneEditor.OnObjectUpdate()");
-            PositionField.OnValueChanged -= PositionChanged;
-            PositionField.Value = EditObject.Position;
-            PositionField.OnValueChanged += PositionChanged;
+            foreach (var field in FloatFields)
+                field.OnValueChanged -= OnValueChanged;
+
+            PullValues();
+
+            foreach (var field in FloatFields)
+                field.OnValueChanged += OnValueChanged;
         }
-        private void PositionChanged(float value)
-        {
-            EditObject.Position = value;
-            LaneUtil.UpdateLanePosition(EditObject);
+        private void OnValueChanged(float value) {
+            PushValues();
+            LaneUtil.UpdateLaneBezier(EditObject);
+        }
+
+        private void PushValues() {
+            EditObject.Position = PositionField.Value;
+            EditObject.Height = HeightField.Value;
+        }
+
+        private void PullValues() {
+            PositionField.Value = EditObject.Position;
+            HeightField.Value = EditObject.Height;
         }
     }
 

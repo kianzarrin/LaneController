@@ -1,18 +1,28 @@
 namespace PathController.Data {
     using KianCommons;
+    using UnityEngine;
 
     public class LaneData {
         public LaneData() { }
         public LaneData(LaneIdAndIndex laneIdAndIndex) {
             LaneIdAndIndex = laneIdAndIndex;
-            DeltaPos = 0;
+            Shift = 0;
         }
         public LaneIdAndIndex LaneIdAndIndex;
-        public float DeltaPos;
+        public float Shift, VShift;
+        public float DeltaStart, DeltaEnd;
+        public Vector3 A, B, C, D;
+
         public float Position {
-            get => LaneInfo.m_position + DeltaPos;
-            set => LaneInfo.m_position = value - DeltaPos;
+            get => LaneInfo.m_position + Shift;
+            set => LaneInfo.m_position = value - Shift;
         }
+
+        public float Height {
+            get => LaneInfo.m_verticalOffset + VShift;
+            set => LaneInfo.m_verticalOffset = value - VShift;
+        }
+
         public bool IsEmpty => LaneID == 0 || SegmentID == 0;
         public ushort SegmentID => LaneIdAndIndex.SegmentID;
         public int Index => LaneIdAndIndex.LaneIndex;

@@ -1,5 +1,6 @@
-﻿using ColossalFramework.PlatformServices;
+using ColossalFramework.PlatformServices;
 using ColossalFramework.UI;
+using KianCommons;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
@@ -29,7 +30,9 @@ namespace PathController.Util
             }
         }
 
-        static readonly string path = $"{nameof(PathControllerMod)}.Resources.";
+        static string assemblyName_ = typeof(PathControllerMod).Assembly.GetName().Name;
+
+        static readonly string path = $"{assemblyName_}.Resources.";
         public static UITextureAtlas CreateTextureAtlas(string textureFile, string atlasName, int spriteWidth, int spriteHeight, string[] spriteNames, RectOffset border = null, int space = 0)
         {
             Texture2D texture2D = LoadTextureFromAssembly(textureFile, spriteWidth * spriteNames.Length + space * (spriteNames.Length + 1), spriteHeight + 2 * space);
@@ -125,12 +128,12 @@ namespace PathController.Util
             Assembly executingAssembly = Assembly.GetExecutingAssembly();
             string path = TextureUtil.path + textureFile;
             Stream manifestResourceStream = executingAssembly.GetManifestResourceStream(path);
-            //Assert(manifestResourceStream != null, "could not find " + path);
+            Assertion.NotNull(manifestResourceStream, "could not find " + path);
             byte[] array = new byte[manifestResourceStream.Length];
             manifestResourceStream.Read(array, 0, array.Length);
 
             Texture2D texture2D = new Texture2D(width, height, TextureFormat.ARGB32, false);
-            //Assert(texture2D != null, "texture2D");
+            Assertion.Assert(texture2D, "texture2D");
             texture2D.filterMode = FilterMode.Bilinear;
             texture2D.LoadImage(array);
             texture2D.Apply(true, true);
