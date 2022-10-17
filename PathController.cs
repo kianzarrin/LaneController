@@ -9,7 +9,7 @@ using KianCommons;
 
 namespace PathController
 {
-    public class PathController : IUserMod
+    public class PathControllerMod : IUserMod
     {
 
         public static string StaticName { get; } = "Path Controller";
@@ -25,7 +25,10 @@ namespace PathController
 
         public void OnEnabled()
         {
-            HarmonyHelper.DoOnHarmonyReady(() => Patcher.PatchAll());
+            HarmonyHelper.DoOnHarmonyReady(Patcher.PatchAll);
+            if (LoadingManager.instance.m_loadingComplete) {
+                LoadTool.Load();
+            }
         }
 
         public void OnDisabled()

@@ -7,6 +7,7 @@ using PathController.Util;
 using ColossalFramework.Math;
 using UnityEngine;
 using KianCommons;
+using PathController.Data;
 
 namespace PathController.UI.Editors
 {
@@ -73,7 +74,7 @@ namespace PathController.UI.Editors
         private void PositionChanged(float value)
         {
             EditObject.Position = value;
-            NetUtil2.UpdateLanePosition(EditObject.LaneIdAndIndex);
+            LaneUtil.UpdateLanePosition(EditObject);
         }
     }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using KianCommons;
+using PathController.Data;
 using PathController.Util;
 
 namespace PathController.UI.Editors

@@ -8,12 +8,13 @@ using PathController.UI;
 using System.Collections.Generic;
 using System.Linq;
 using KianCommons;
+using PathController.Data;
 
 namespace PathController.Tool
 {
     public class PathManagerExtendedTool : ToolBase
     {
-        public static readonly SavedInputKey ActivationShortcut = new SavedInputKey("ActivationShortcut", nameof(PathController), SavedInputKey.Encode(KeyCode.P, true, false, false), true);
+        public static readonly SavedInputKey ActivationShortcut = new SavedInputKey("ActivationShortcut", nameof(PathControllerMod), SavedInputKey.Encode(KeyCode.P, true, false, false), true);
 
         public static bool CtrlIsPressed => Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
         public static bool ShiftIsPressed => Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
@@ -166,7 +167,7 @@ namespace PathController.Tool
 
         public void SetSegment(ushort segmentID)
         {
-            SegmentInstance = NetUtil2.GetSegmentData(segmentID);
+            SegmentInstance = new SegmentData(segmentID);
         }
 
         public void SetLane(int laneIndex)

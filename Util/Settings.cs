@@ -10,7 +10,7 @@ namespace PathController.Util
 {
     public static class Settings
     {
-        public static string SettingsFile => $"{nameof(PathController)}";
+        public static string SettingsFile => $"{nameof(PathControllerMod)}";
 
         private static CustomUITabstrip TabStrip { get; set; }
         private static List<UIPanel> TabPanels { get; set; }
@@ -29,7 +29,7 @@ namespace PathController.Util
             CreateTabStrip(mainPanel);
 
             var generalTab = CreateTab(mainPanel, "General");
-            generalTab.AddGroup(PathController.StaticFullName);
+            generalTab.AddGroup(PathControllerMod.StaticFullName);
             //AddLanguage(generalTab);
             AddGeneral(generalTab);
             //AddGrouping(generalTab);

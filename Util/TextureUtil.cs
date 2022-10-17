@@ -29,7 +29,7 @@ namespace PathController.Util
             }
         }
 
-        static readonly string path = $"{nameof(PathController)}.Resources.";
+        static readonly string path = $"{nameof(PathControllerMod)}.Resources.";
         public static UITextureAtlas CreateTextureAtlas(string textureFile, string atlasName, int spriteWidth, int spriteHeight, string[] spriteNames, RectOffset border = null, int space = 0)
         {
             Texture2D texture2D = LoadTextureFromAssembly(textureFile, spriteWidth * spriteNames.Length + space * (spriteNames.Length + 1), spriteHeight + 2 * space);

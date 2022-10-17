@@ -118,7 +118,7 @@ namespace PathController.UI
         }
         protected override void OnTooltipEnter(UIMouseEventParameter p)
         {
-            tooltip = $"{PathController.StaticFullName} ({PathManagerExtendedTool.ActivationShortcut})";
+            tooltip = $"{PathControllerMod.StaticFullName} ({PathManagerExtendedTool.ActivationShortcut})";
             base.OnTooltipEnter(p);
         }
     }
