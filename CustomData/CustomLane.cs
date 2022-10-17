@@ -5,7 +5,11 @@ namespace PathController.CustomData {
 
     using UnityEngine;
 
-    public class CustomLane {
+    public interface ICustomPath {
+        bool IsDefault();
+    }
+
+    public class CustomLane: ICustomPath {
         public CustomLane(LaneIdAndIndex laneIdAndIndex) {
             LaneIdAndIndex = laneIdAndIndex;
         }
@@ -29,7 +33,24 @@ namespace PathController.CustomData {
 
         #region shortcuts
         public NetInfo.Lane LaneInfo => LaneIdAndIndex.LaneInfo;
+        public int Index => LaneIdAndIndex.LaneIndex;
+        public uint LaneID => LaneIdAndIndex.LaneID;
         #endregion
+
+        public bool IsDefault() {
+            return
+                Shift == default &&
+                VShift == default &&
+                DeltaStart == default &&
+                DeltaEnd == default &&
+                DeltaPoints.IsDefault();
+            Vector3 v = default;
+
+            
+
+            DeltaPoints = default;
+            return DeltaPoints.Equals(DeltaPoints);
+        }
 
         public void UpdateLaneBezier() {
             Log.Called(LaneIdAndIndex);
@@ -82,6 +103,6 @@ namespace PathController.CustomData {
                 segment.m_averageLength = 0f;
             }
         }
-
+        public override string ToString() => $"Lane {Index}";
     }
 }

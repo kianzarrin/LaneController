@@ -404,7 +404,7 @@ namespace PathController.UI.Editors
             if (!ToolInstance.SegmentInstance.IsEmpty)
                 FillItems();
 
-            if (!ToolInstance.LaneInstance.IsEmpty)
+            if (ToolInstance.LaneInstance != null)
             {
                 Select(ToolInstance.LaneInstance.Index);
                 SwitchEmptySelected();

@@ -13,6 +13,7 @@ using KianCommons;
 using PathController.UI.Data;
 using UnifedUILib::UnifiedUI.Helpers;
 using UnityEngine.UI;
+using PathController.CustomData;
 
 namespace PathController.Tool
 {
@@ -36,7 +37,7 @@ namespace PathController.Tool
 
         public static SegmentDTO[] segmentBuffer = new SegmentDTO[NetManager.MAX_SEGMENT_COUNT];
         public SegmentDTO SegmentInstance { get; private set; } = new SegmentDTO();
-        public LaneDTO LaneInstance { get; private set; } = new LaneDTO();
+        public CustomLane LaneInstance { get; private set; } = null;
 
         UIComponent Button;
 

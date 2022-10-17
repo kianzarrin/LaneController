@@ -8,10 +8,11 @@ using ColossalFramework.Math;
 using UnityEngine;
 using KianCommons;
 using PathController.UI.Data;
+using PathController.CustomData;
 
 namespace PathController.UI.Editors
 {
-    public class LaneEditor : BaseEditor<LaneItem, LaneDTO, LaneIcons>
+    public class LaneEditor : BaseEditor<LaneItem, CustomLane, LaneIcons>
     {
 
         public override string Name => "Lane Editor";
@@ -124,7 +125,7 @@ namespace PathController.UI.Editors
         }
     }
 
-    public class LaneItem : DynamicButton<LaneDTO, LaneIcons>
+    public class LaneItem : DynamicButton<CustomLane, LaneIcons>
     {
         public override string DeleteCaptionDescription => "Delete";
         public override string DeleteMessageDescription => "Delete2";
