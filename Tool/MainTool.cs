@@ -34,9 +34,9 @@ namespace PathController.Tool
 
         public bool ToolEnabled => enabled;
 
-        public static SegmentData[] segmentBuffer = new SegmentData[NetManager.MAX_SEGMENT_COUNT];
-        public SegmentData SegmentInstance { get; private set; } = new SegmentData();
-        public LaneData LaneInstance { get; private set; } = new LaneData();
+        public static SegmentDTO[] segmentBuffer = new SegmentDTO[NetManager.MAX_SEGMENT_COUNT];
+        public SegmentDTO SegmentInstance { get; private set; } = new SegmentDTO();
+        public LaneDTO LaneInstance { get; private set; } = new LaneDTO();
 
         UIComponent Button;
 
@@ -174,7 +174,7 @@ namespace PathController.Tool
 
         public void SetSegment(ushort segmentID)
         {
-            SegmentInstance = new SegmentData(segmentID);
+            SegmentInstance = new SegmentDTO(segmentID);
         }
 
         public void SetLane(int laneIndex)

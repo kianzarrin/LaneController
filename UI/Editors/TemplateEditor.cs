@@ -8,7 +8,7 @@ using PathController.Util;
 
 namespace PathController.UI.Editors
 {
-    public class TemplateEditor : BaseEditor<LaneItem, LaneData, LaneIcons>
+    public class TemplateEditor : BaseEditor<LaneItem, LaneDTO, LaneIcons>
     {
         public override string Name => "Template Editor";
         public override string SelectionMessage => "No Templates";

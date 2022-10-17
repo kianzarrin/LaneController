@@ -11,7 +11,7 @@ using PathController.UI.Data;
 
 namespace PathController.UI.Editors
 {
-    public class LaneEditor : BaseEditor<LaneItem, LaneData, LaneIcons>
+    public class LaneEditor : BaseEditor<LaneItem, LaneDTO, LaneIcons>
     {
 
         public override string Name => "Lane Editor";
@@ -98,7 +98,7 @@ namespace PathController.UI.Editors
         private void PositionField_OnValueChanged(float value) {
             Log.Called();
             EditObject.Position = value;
-            LaneUtil.UpdateLaneBezier(laneData: EditObject);
+            EditObject.UpdateLaneBezier();
         }
         private void PositionField_OnResetValue() {
             Log.Called();
@@ -115,7 +115,7 @@ namespace PathController.UI.Editors
             Log.Called();
             EditObject.VShift = 0;
             HeightField.Value = EditObject.Height;
-            LaneUtil.UpdateLaneBezier(laneData: EditObject);
+            EditObject.UpdateLaneBezier();
         }
 
         public override void OnDestroy() {
@@ -124,7 +124,7 @@ namespace PathController.UI.Editors
         }
     }
 
-    public class LaneItem : DynamicButton<LaneData, LaneIcons>
+    public class LaneItem : DynamicButton<LaneDTO, LaneIcons>
     {
         public override string DeleteCaptionDescription => "Delete";
         public override string DeleteMessageDescription => "Delete2";
