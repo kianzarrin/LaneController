@@ -1,4 +1,4 @@
-﻿using ColossalFramework.UI;
+using ColossalFramework.UI;
 using PathController.UI;
 using PathController.Util;
 using PathController.UI.Editors;
@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using KianCommons;
 
 namespace PathController.UI
 {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -45,7 +45,7 @@ namespace PathController.Tool
 
             if (Tool.SegmentInstance.Segment.GetClosestLanePosition(PathManagerExtendedTool.MouseWorldPosition, NetInfo.LaneType.All, VehicleInfo.VehicleType.All, VehicleInfo.VehicleCategory.All, out _, out uint laneID, out _, out _))
             {
-                for (int i = 0; i < Tool.SegmentInstance.Lanes.Count; i++)
+                for (int i = 0; i < Tool.SegmentInstance.Lanes.Length; i++)
                 {
                     if (Tool.SegmentInstance.Lanes[i].LaneID == laneID)
                     {
@@ -60,7 +60,7 @@ namespace PathController.Tool
         {
             if (HoverValid)
             {
-                RenderUtil.RenderLaneOverlay(cameraInfo, Tool.SegmentInstance.Lanes[HoveredLaneIndex], Color.yellow, true);
+                RenderUtil.RenderLaneOverlay(cameraInfo, Tool.SegmentInstance.Lanes[HoveredLaneIndex].LaneIdAndIndex, Color.yellow, true);
             }
         }
 

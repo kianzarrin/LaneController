@@ -1,4 +1,4 @@
-﻿using ColossalFramework.UI;
+using ColossalFramework.UI;
 using UnityEngine;
 using System;
 using ColossalFramework;
@@ -7,6 +7,7 @@ using PathController.Util;
 using PathController.UI;
 using System.Collections.Generic;
 using System.Linq;
+using KianCommons;
 
 namespace PathController.Tool
 {
@@ -30,7 +31,7 @@ namespace PathController.Tool
 
         public static SegmentData[] segmentBuffer = new SegmentData[NetManager.MAX_SEGMENT_COUNT];
         public SegmentData SegmentInstance { get; private set; } = new SegmentData();
-        public LaneData LaneInstance { get; private set; } = new LaneData(0);
+        public LaneData LaneInstance { get; private set; } = new LaneData();
 
         PathManagerExtendedButton Button => PathManagerExtendedButton.Instance;
         PathManagerExtendedPanel Panel => PathManagerExtendedPanel.Instance;
@@ -165,7 +166,7 @@ namespace PathController.Tool
 
         public void SetSegment(ushort segmentID)
         {
-            SegmentInstance = NetUtil.GetSegmentData(segmentID);
+            SegmentInstance = NetUtil2.GetSegmentData(segmentID);
         }
 
         public void SetLane(int laneIndex)

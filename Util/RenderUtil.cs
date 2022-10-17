@@ -1,5 +1,6 @@
-﻿using ColossalFramework;
+using ColossalFramework;
 using ColossalFramework.Math;
+using KianCommons;
 using PathController.UI;
 using PathController.UI.Editors;
 using System;
@@ -86,9 +87,10 @@ namespace PathController.Util
         //    RenderLaneOverlay(cameraInfo, laneData, color, alphaBlend, false);
         //}
 
-        public static void RenderLaneOverlay(RenderManager.CameraInfo cameraInfo, LaneData laneData, Color color, bool alphaBlend = false)
+        public static void RenderLaneOverlay(RenderManager.CameraInfo cameraInfo, LaneIdAndIndex laneData, Color color, bool alphaBlend = false)
         {
-            laneData.Bezier.Render(cameraInfo, color, laneData.LaneInfo().m_width * 0.5f, 0f, 0f, alphaBlend);
+            float hw = laneData.LaneInfo.m_width * 0.5f;
+            laneData.Lane.m_bezier.Render(cameraInfo, color, hw, 0f, 0f, alphaBlend);
         }
 
         public static void DrawNodeCircle(RenderManager.CameraInfo cameraInfo, Color color, ushort nodeId, bool alphaBlend = false)
@@ -116,7 +118,7 @@ namespace PathController.Util
         }
     }
 
-    public struct Colors
+    public static class Colors
     {
         public static Color Add(Color a, float b)
         {

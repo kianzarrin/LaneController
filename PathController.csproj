@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net35</TargetFramework>
     <LangVersion>latest</LangVersion>
@@ -54,6 +54,24 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\*.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="KianCommons\**" />
+    <EmbeddedResource Remove="KianCommons\**" />
+    <None Remove="KianCommons\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="KianCommons\KianCommons\Math\MathUtil.cs" />
+    <Compile Include="KianCommons\KianCommons\Util\Assertion.cs" />
+    <Compile Include="KianCommons\KianCommons\Util\DelegateUtil.cs" />
+    <Compile Include="KianCommons\KianCommons\Util\EnumExtensions.cs" />
+    <Compile Include="KianCommons\KianCommons\Util\HelpersExtensions.cs" />
+    <Compile Include="KianCommons\KianCommons\Util\ListExtensions.cs" />
+    <Compile Include="KianCommons\KianCommons\Util\Log.cs" />
+    <Compile Include="KianCommons\KianCommons\Util\NetUtil.cs" />
+    <Compile Include="KianCommons\KianCommons\Util\ReflectionHelpers.cs" />
+    <Compile Include="KianCommons\KianCommons\Util\StringExtensions.cs" />
+    <Compile Include="KianCommons\KianCommons\Util\TypeUtil.cs" />
   </ItemGroup>
   <Target Name="DeployToModDirectory" AfterTargets="Build">
     <PropertyGroup>

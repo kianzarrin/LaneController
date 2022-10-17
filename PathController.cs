@@ -1,10 +1,11 @@
-﻿using CitiesHarmony.API;
+using CitiesHarmony.API;
 using HarmonyLib;
 using ICities;
 using System.Reflection;
 using PathController.Util;
 using UnityEngine;
 using System;
+using KianCommons;
 
 namespace PathController
 {

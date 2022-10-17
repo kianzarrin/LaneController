@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +6,7 @@ using PathController.Tool;
 using PathController.Util;
 using ColossalFramework.Math;
 using UnityEngine;
+using KianCommons;
 
 namespace PathController.UI.Editors
 {
@@ -30,18 +31,18 @@ namespace PathController.UI.Editors
                 if (IsSelectItem) {
                     RenderUtil.RenderLaneOverlay(
                         cameraInfo,
-                        HoverItem.Object,
+                        HoverItem.Object.LaneIdAndIndex,
                         (SelectItem?.Object.LaneID != HoverItem.Object.LaneID) ? Color.yellow : Colors.Add(Color.red, 0.15f),
                         true);
                 } else {
-                    RenderUtil.RenderLaneOverlay(cameraInfo, HoverItem.Object, Color.yellow, true);
+                    RenderUtil.RenderLaneOverlay(cameraInfo, HoverItem.Object.LaneIdAndIndex, Color.yellow, true);
                 }
             }
 
             if (IsSelectItem)
             {
                 if (HoverItem?.Object.LaneID != SelectItem.Object.LaneID)
-                    RenderUtil.RenderLaneOverlay(cameraInfo, SelectItem.Object, Color.magenta, true);
+                    RenderUtil.RenderLaneOverlay(cameraInfo, SelectItem.Object.LaneIdAndIndex, Color.magenta, true);
             }
         }
 
@@ -72,7 +73,7 @@ namespace PathController.UI.Editors
         private void PositionChanged(float value)
         {
             EditObject.Position = value;
-            NetUtil.UpdateLanePosition(ToolInstance.SegmentInstance.SegmentID, EditObject, ref ToolInstance.SegmentInstance.Segment);
+            NetUtil2.UpdateLanePosition(EditObject.LaneIdAndIndex);
         }
     }
 
@@ -94,7 +95,7 @@ namespace PathController.UI.Editors
             if (!ShowIcon)
                 return;
 
-            switch (Object.LaneInfo().m_laneType)
+            switch (Object.LaneInfo.m_laneType)
             {
                 case NetInfo.LaneType.Pedestrian:
                     Icon.LaneType = BaseEditor.LaneType.Pedestrian;
@@ -106,7 +107,7 @@ namespace PathController.UI.Editors
                     Icon.LaneType = BaseEditor.LaneType.None;
                     break;
                 case NetInfo.LaneType.Vehicle:
-                    switch (Object.LaneInfo().m_vehicleType)
+                    switch (Object.LaneInfo.m_vehicleType)
                     {
                         case VehicleInfo.VehicleType.Bicycle:
                             Icon.LaneType = BaseEditor.LaneType.Bicycle;
@@ -133,7 +134,7 @@ namespace PathController.UI.Editors
                             Icon.LaneType = BaseEditor.LaneType.Train;
                             break;
                         default:
-                            if (MathUtil.OnesCount32(Convert.ToUInt32(Object.LaneInfo().m_vehicleType)) > 1)
+                            if (MathUtil.OnesCount32(Convert.ToUInt32(Object.LaneInfo.m_vehicleType)) > 1)
                             {
                                 Icon.LaneType = BaseEditor.LaneType.Multiple;
                             }
@@ -149,9 +150,9 @@ namespace PathController.UI.Editors
                     break;
             }
 
-            Icon.DirectionType = Object.LaneInfo().m_finalDirection;
-            Icon.SetDirectionToolTip(Util.Settings.ShowToolTip ? Object.LaneInfo().m_finalDirection.ToString() : string.Empty);
-            Icon.SetLaneToolTip(Util.Settings.ShowToolTip ? Object.LaneInfo().m_vehicleType.ToString() : string.Empty);
+            Icon.DirectionType = Object.LaneInfo.m_finalDirection;
+            Icon.SetDirectionToolTip(Util.Settings.ShowToolTip ? Object.LaneInfo.m_finalDirection.ToString() : string.Empty);
+            Icon.SetLaneToolTip(Util.Settings.ShowToolTip ? Object.LaneInfo.m_vehicleType.ToString() : string.Empty);
         }
     }
 }
