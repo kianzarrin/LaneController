@@ -7,7 +7,7 @@ using PathController.Util;
 using ColossalFramework.Math;
 using UnityEngine;
 using KianCommons;
-using PathController.Data;
+using PathController.UI.Data;
 
 namespace PathController.UI.Editors
 {
@@ -63,42 +63,31 @@ namespace PathController.UI.Editors
             HeightField.Init( "Height");
             FloatFields = new[] { PositionField, HeightField};
 
-            OnObjectUpdate();
-
-            PositionField.OnResetValue += PositionField_OnResetValue; ;
-            HeightField.OnResetValue += HeightField_OnResetValue;
-        }
-        private void PositionField_OnResetValue() {
-            Log.Called();
-            EditObject.Shift = 0;
-            OnObjectUpdate();
+            PullValues();
+            AddEvents();
         }
 
-        private void HeightField_OnResetValue() {
-            Log.Called();
-            EditObject.VShift = 0;
-            OnObjectUpdate();
-        }
 
         protected override void OnObjectUpdate()
         {
             Log.Debug("LaneEditor.OnObjectUpdate()");
-            foreach (var field in FloatFields)
-                field.OnValueChanged -= OnValueChanged;
-
+            RemoveEvents();
             PullValues();
-
-            foreach (var field in FloatFields)
-                field.OnValueChanged += OnValueChanged;
-        }
-        private void OnValueChanged(float value) {
-            PushValues();
-            LaneUtil.UpdateLaneBezier(EditObject);
+            AddEvents();
         }
 
-        private void PushValues() {
-            EditObject.Position = PositionField.Value;
-            EditObject.Height = HeightField.Value;
+        public void AddEvents() {
+            RemoveEvents();
+            PositionField.OnValueChanged += PositionField_OnValueChanged;
+            HeightField.OnValueChanged += HeightField_OnValueChanged;
+            PositionField.OnResetValue += PositionField_OnResetValue;
+            HeightField.OnResetValue += HeightField_OnResetValue;
+        }
+        public void RemoveEvents() {
+            PositionField.OnValueChanged -= PositionField_OnValueChanged;
+            HeightField.OnValueChanged -= HeightField_OnValueChanged;
+            PositionField.OnResetValue -= PositionField_OnResetValue;
+            HeightField.OnResetValue -= HeightField_OnResetValue;
         }
 
         private void PullValues() {
@@ -106,13 +95,32 @@ namespace PathController.UI.Editors
             HeightField.Value = EditObject.Height;
         }
 
+        private void PositionField_OnValueChanged(float value) {
+            Log.Called();
+            EditObject.Position = value;
+            LaneUtil.UpdateLaneBezier(laneData: EditObject);
+        }
+        private void PositionField_OnResetValue() {
+            Log.Called();
+            EditObject.Shift = 0;
+            PositionField.Value = EditObject.Position;
+        }
+
+        private void HeightField_OnValueChanged(float value) {
+            Log.Called();
+            EditObject.Height = value;
+        }
+
+        private void HeightField_OnResetValue() {
+            Log.Called();
+            EditObject.VShift = 0;
+            HeightField.Value = EditObject.Height;
+            LaneUtil.UpdateLaneBezier(laneData: EditObject);
+        }
+
         public override void OnDestroy() {
             base.OnDestroy();
-            PositionField.OnResetValue -= PositionField_OnResetValue; ;
-            HeightField.OnResetValue -= HeightField_OnResetValue;
-            foreach (var field in FloatFields)
-                field.OnValueChanged -= OnValueChanged;
-
+            RemoveEvents();
         }
     }
 

@@ -1,13 +1,14 @@
 namespace PathController.Util {
     using ColossalFramework.Math;
     using KianCommons;
-    using PathController.Data;
+    using PathController.UI.Data;
     using UnityEngine;
 
     public static class LaneUtil
     {
         public static void UpdateLaneBezier(LaneData laneData)
         {
+            Log.Called(laneData.LaneIdAndIndex);
             ref NetLane lane = ref laneData.LaneIdAndIndex.Lane;
             ushort segmentID = lane.m_segment;
             ref NetSegment segment = ref segmentID.ToSegment();

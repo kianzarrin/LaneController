@@ -12,9 +12,9 @@ using KianCommons;
 
 namespace PathController.UI
 {
-    public class PathManagerExtendedPanel : UIPanel
+    public class PathControllerExtendedPanel : UIPanel
     {
-        public static PathManagerExtendedPanel Instance { get; private set; }
+        public static PathControllerExtendedPanel Instance { get; private set; }
         private UIDragHandle Handle { get; set; }
         private UILabel Caption { get; set; }
         private CustomUITabstrip TabStrip { get; set; }
@@ -37,10 +37,10 @@ namespace PathController.UI
             return atlas;
         }
 
-        public static PathManagerExtendedPanel CreatePanel()
+        public static PathControllerExtendedPanel CreatePanel()
         {
             var uiView = UIView.GetAView();
-            Instance = uiView.AddUIComponent(typeof(PathManagerExtendedPanel)) as PathManagerExtendedPanel;
+            Instance = uiView.AddUIComponent(typeof(PathControllerExtendedPanel)) as PathControllerExtendedPanel;
             Instance.Init();
             return Instance;
         }
@@ -84,7 +84,7 @@ namespace PathController.UI
             });
 
             Caption = Handle.AddUIComponent<UILabel>();
-            Caption.text = nameof(PathManagerExtendedPanel);
+            Caption.text = nameof(PathControllerExtendedPanel);
             Caption.textAlignment = UIHorizontalAlignment.Center;
             Caption.anchor = UIAnchorStyle.Top;
 

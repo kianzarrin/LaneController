@@ -10,13 +10,13 @@ using PathController.UI;
 using System.Collections.Generic;
 using System.Linq;
 using KianCommons;
-using PathController.Data;
+using PathController.UI.Data;
 using UnifedUILib::UnifiedUI.Helpers;
 using UnityEngine.UI;
 
 namespace PathController.Tool
 {
-    public class PathManagerExtendedTool : ToolBase
+    public class PathControllerExtendedTool : ToolBase
     {
         public static readonly SavedInputKey ActivationShortcut = new SavedInputKey("ActivationShortcut", nameof(PathControllerMod), SavedInputKey.Encode(KeyCode.P, true, false, false), true);
 
@@ -40,9 +40,9 @@ namespace PathController.Tool
 
         UIComponent Button;
 
-        PathManagerExtendedPanel Panel => PathManagerExtendedPanel.Instance;
+        PathControllerExtendedPanel Panel => PathControllerExtendedPanel.Instance;
 
-        public static PathManagerExtendedTool Instance { get; set; }
+        public static PathControllerExtendedTool Instance { get; set; }
 
         #region Base Functions
         protected override void Awake()
@@ -58,7 +58,7 @@ namespace PathController.Tool
                 // More here...
             };
 
-            PathManagerExtendedPanel.CreatePanel();
+            PathControllerExtendedPanel.CreatePanel();
             string iconPath = UUIHelpers.GetFullPath<PathControllerMod>("uui_movelanes.png");
             Button = UUIHelpers.RegisterToolButton(
                 name: "PathController",
@@ -71,18 +71,18 @@ namespace PathController.Tool
             DisableTool();
         }
 
-        public static PathManagerExtendedTool Create()
+        public static PathControllerExtendedTool Create()
         {
-            Log.Debug("PathManagerExtendedTool.Create()");
+            Log.Debug("PathControllerExtendedTool.Create()");
             GameObject toolModControl = ToolsModifierControl.toolController.gameObject;
-            Instance = toolModControl.AddComponent<PathManagerExtendedTool>();
+            Instance = toolModControl.AddComponent<PathControllerExtendedTool>();
             Log.Info($"Tool created");
             return Instance;
         }
 
         public static void Remove()
         {
-            Log.Debug("PathManagerExtendedTool.Remove()");
+            Log.Debug("PathControllerExtendedTool.Remove()");
             if (Instance != null)
             {
                 Destroy(Instance);
@@ -93,10 +93,10 @@ namespace PathController.Tool
 
         protected override void OnDestroy()
         {
-            Log.Debug("PathManagerExtendedTool.OnDestroy()");
+            Log.Debug("PathControllerExtendedTool.OnDestroy()");
             base.OnDestroy();
 
-            PathManagerExtendedPanel.RemovePanel();
+            PathControllerExtendedPanel.RemovePanel();
             Button?.Destroy();
             DisableTool();
         }
@@ -139,19 +139,19 @@ namespace PathController.Tool
 
         public void EnableTool()
         {
-            Log.Debug("PathManagerExtendedTool.EnableTool()");
+            Log.Debug("PathControllerExtendedTool.EnableTool()");
             enabled = true;
         }
 
         public void DisableTool()
         {
-            Log.Debug("PathManagerExtendedTool.DisableTool()");
+            Log.Debug("PathControllerExtendedTool.DisableTool()");
             enabled = false;
         }
 
         public void ToggleTool()
         {
-            Log.Debug("PathManagerExtendedTool.ToggleTool()");
+            Log.Debug("PathControllerExtendedTool.ToggleTool()");
             enabled = !enabled;
         }
         #endregion
@@ -187,8 +187,8 @@ namespace PathController.Tool
         #region Render Overlay
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
-            CurrentTool.RenderOverlay(cameraInfo);
-            Panel.Render(cameraInfo);
+            CurrentTool?.RenderOverlay(cameraInfo);
+            Panel?.Render(cameraInfo);
             base.RenderOverlay(cameraInfo);
         }
 

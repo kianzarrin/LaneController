@@ -54,7 +54,7 @@ namespace PathController.UI.Editors
             Multiple,
         }
 
-        protected PathManagerExtendedTool ToolInstance => PathManagerExtendedTool.Instance;
+        protected PathControllerExtendedTool ToolInstance => PathControllerExtendedTool.Instance;
 
         public static Dictionary<LaneType, string> LaneSpriteNames { get; set; }
         public static Dictionary<NetInfo.Direction, string> DirectionSpriteNames { get; set; }
@@ -115,7 +115,7 @@ namespace PathController.UI.Editors
         }
         #endregion
 
-        public PathManagerExtendedPanel LaneManagerPanel { get; private set; }
+        public PathControllerExtendedPanel LaneManagerPanel { get; private set; }
 
         protected UIScrollablePanel ItemsPanel { get; set; }
         protected UIScrollablePanel SettingsPanel { get; set; }
@@ -239,7 +239,7 @@ namespace PathController.UI.Editors
         }
         #endregion
 
-        public virtual void Init(PathManagerExtendedPanel panel)
+        public virtual void Init(PathControllerExtendedPanel panel)
         {
             Log.Debug("BaseEditor.Init() called.");
             LaneManagerPanel = panel;
@@ -399,7 +399,7 @@ namespace PathController.UI.Editors
                 return;
             }
 
-            //if (ItemsPanel.components.Count > 0 && PathManagerExtendedTool.Instance.CurrentTool.Type < ToolType.SelectLane)
+            //if (ItemsPanel.components.Count > 0 && PathControllerExtendedTool.Instance.CurrentTool.Type < ToolType.SelectLane)
                 ClearItems();
             if (!ToolInstance.SegmentInstance.IsEmpty)
                 FillItems();

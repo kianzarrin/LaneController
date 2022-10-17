@@ -1,4 +1,4 @@
-namespace PathController.Data {
+namespace PathController.UI.Data {
     using KianCommons;
     using System.Linq;
 

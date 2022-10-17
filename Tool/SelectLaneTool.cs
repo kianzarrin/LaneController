@@ -16,7 +16,7 @@ namespace PathController.Tool
 
         protected bool IsHover => (HoveredSegmentId != 0);
 
-        protected bool HoverValid => PathManagerExtendedTool.MouseRayValid && IsHover;
+        protected bool HoverValid => PathControllerExtendedTool.MouseRayValid && IsHover;
         public int HoveredLaneIndex { get; private set; } = 0;
 
         protected override void Reset()
@@ -27,7 +27,7 @@ namespace PathController.Tool
         {
             base.OnUpdate();
 
-            RaycastInput segmentInput = new RaycastInput(PathManagerExtendedTool.MouseRay, PathManagerExtendedTool.MouseRayLength)
+            RaycastInput segmentInput = new RaycastInput(PathControllerExtendedTool.MouseRay, PathControllerExtendedTool.MouseRayLength)
             {
                 m_ignoreTerrain = true,
                 m_ignoreSegmentFlags = NetSegment.Flags.None,
@@ -36,14 +36,14 @@ namespace PathController.Tool
             segmentInput.m_netService.m_itemLayers = (ItemClass.Layer.Default | ItemClass.Layer.MetroTunnels);
             segmentInput.m_netService.m_service = ItemClass.Service.Road;
 
-            if (PathManagerExtendedTool.RayCast(segmentInput, out RaycastOutput segmentOutput))
+            if (PathControllerExtendedTool.RayCast(segmentInput, out RaycastOutput segmentOutput))
             {
                 HoveredSegmentId = segmentOutput.m_netSegment;
             } else {
                 HoveredSegmentId = 0;
             }
 
-            if (Tool.SegmentInstance.Segment.GetClosestLanePosition(PathManagerExtendedTool.MouseWorldPosition, NetInfo.LaneType.All, VehicleInfo.VehicleType.All, VehicleInfo.VehicleCategory.All, out _, out uint laneID, out _, out _))
+            if (Tool.SegmentInstance.Segment.GetClosestLanePosition(PathControllerExtendedTool.MouseWorldPosition, NetInfo.LaneType.All, VehicleInfo.VehicleType.All, VehicleInfo.VehicleCategory.All, out _, out uint laneID, out _, out _))
             {
                 for (int i = 0; i < Tool.SegmentInstance.Lanes.Length; i++)
                 {

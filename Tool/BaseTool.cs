@@ -12,8 +12,8 @@ namespace PathController.Tool
     {
         public abstract ToolType Type { get; }
         public virtual bool ShowPanel => true;
-        protected PathManagerExtendedTool Tool => PathManagerExtendedTool.Instance;
-        protected PathManagerExtendedPanel Panel => PathManagerExtendedPanel.Instance;
+        protected PathControllerExtendedTool Tool => PathControllerExtendedTool.Instance;
+        protected PathControllerExtendedPanel Panel => PathControllerExtendedPanel.Instance;
 
         public virtual void Init() => Reset();
         public virtual void DeInit() { }
@@ -28,9 +28,11 @@ namespace PathController.Tool
 
         public virtual void OnKeyUp(Event e) {
             Log.Called(e);
-            var del = Input.GetKeyDown(KeyCode.Delete);
+            var del = e.keyCode == KeyCode.Delete || e.keyCode == KeyCode.Backspace;
             if (del) {
-                var control = Panel.GetComponentsInChildren<FieldPropertyPanel>().FirstOrDefault(control => control.containsMouse);
+                var control = Panel?.
+                    GetComponentsInChildren<FieldPropertyPanel>()?.
+                    FirstOrDefault(control => control.containsMouse);
                 if (control != null) {
                     control.ResetValue();
                 }

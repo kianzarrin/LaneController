@@ -45,7 +45,7 @@ namespace PathController
 
     public static class Patcher
     {
-        private const string HarmonyId = "pathmanager.Harmony2";
+        private const string HarmonyId = "pathcontroller.Harmony2";
 
         private static bool patched = false;
 
@@ -53,13 +53,13 @@ namespace PathController
         {
             if (patched) return;
 
-            Log.Debug("[PathManager] Harmony 2: Patching...");
+            Log.Debug("Harmony 2: Patching...");
 
             patched = true;
 
             // Apply your patches here!
             // Harmony.DEBUG = true;
-            var harmony = new Harmony("pathmanager.Harmony2");
+            var harmony = new Harmony(HarmonyId);
             harmony.PatchAll(Assembly.GetExecutingAssembly());
         }
 
@@ -72,7 +72,7 @@ namespace PathController
 
             patched = false;
 
-            Log.Debug("[PathManager] Harmony 2: Unpatching...");
+            Log.Debug("Harmony 2: Unpatching...");
         }
     }
 
@@ -94,12 +94,12 @@ namespace PathController
     {
         public static void Load()
         {
-            Tool.PathManagerExtendedTool.Create();
+            Tool.PathControllerExtendedTool.Create();
             ToolsModifierControl.SetTool<DefaultTool>(); // disable tool.
         }
         public static void Release()
         {
-            Tool.PathManagerExtendedTool.Remove();
+            Tool.PathControllerExtendedTool.Remove();
         }
     }
 }

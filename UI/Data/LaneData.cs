@@ -1,4 +1,4 @@
-namespace PathController.Data {
+namespace PathController.UI.Data {
     using KianCommons;
     using UnityEngine;
 
@@ -6,7 +6,6 @@ namespace PathController.Data {
         public LaneData() { }
         public LaneData(LaneIdAndIndex laneIdAndIndex) {
             LaneIdAndIndex = laneIdAndIndex;
-            Shift = 0;
         }
         public LaneIdAndIndex LaneIdAndIndex;
         public float Shift, VShift;
@@ -15,12 +14,12 @@ namespace PathController.Data {
 
         public float Position {
             get => LaneInfo.m_position + Shift;
-            set => LaneInfo.m_position = value - Shift;
+            set => Shift = value - LaneInfo.m_position;
         }
 
         public float Height {
             get => LaneInfo.m_verticalOffset + VShift;
-            set => LaneInfo.m_verticalOffset = value - VShift;
+            set => VShift= value - LaneInfo.m_verticalOffset;
         }
 
         public bool IsEmpty => LaneID == 0 || SegmentID == 0;

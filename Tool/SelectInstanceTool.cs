@@ -20,7 +20,7 @@ namespace PathController.Tool
         public List<ushort> SelectedNodeIDs = new List<ushort> { };
         protected bool IsHover => (HoveredSegmentId != 0 || HoveredNodeId != 0);
 
-        protected bool HoverValid => PathManagerExtendedTool.MouseRayValid && IsHover;
+        protected bool HoverValid => PathControllerExtendedTool.MouseRayValid && IsHover;
 
 
         protected override void Reset()
@@ -31,7 +31,7 @@ namespace PathController.Tool
 
         public override void OnUpdate()
         {
-            RaycastInput nodeInput = new RaycastInput(PathManagerExtendedTool.MouseRay, PathManagerExtendedTool.MouseRayLength)
+            RaycastInput nodeInput = new RaycastInput(PathControllerExtendedTool.MouseRay, PathControllerExtendedTool.MouseRayLength)
             {
                 m_ignoreTerrain = true,
                 m_ignoreNodeFlags = NetNode.Flags.None,
@@ -40,7 +40,7 @@ namespace PathController.Tool
             nodeInput.m_netService.m_itemLayers = (ItemClass.Layer.Default | ItemClass.Layer.MetroTunnels);
             nodeInput.m_netService.m_service = ItemClass.Service.Road;
 
-            if (PathManagerExtendedTool.RayCast(nodeInput, out RaycastOutput nodeOutput))
+            if (PathControllerExtendedTool.RayCast(nodeInput, out RaycastOutput nodeOutput))
             {
                 HoveredNodeId = nodeOutput.m_netNode;
                 HoveredSegmentId = 0;
@@ -49,7 +49,7 @@ namespace PathController.Tool
 
             HoveredNodeId = 0;
 
-            RaycastInput segmentInput = new RaycastInput(PathManagerExtendedTool.MouseRay, PathManagerExtendedTool.MouseRayLength)
+            RaycastInput segmentInput = new RaycastInput(PathControllerExtendedTool.MouseRay, PathControllerExtendedTool.MouseRayLength)
             {
                 m_ignoreTerrain = true,
                 m_ignoreSegmentFlags = NetSegment.Flags.None,
@@ -58,7 +58,7 @@ namespace PathController.Tool
             segmentInput.m_netService.m_itemLayers = (ItemClass.Layer.Default | ItemClass.Layer.MetroTunnels);
             segmentInput.m_netService.m_service = ItemClass.Service.Road;
 
-            if (PathManagerExtendedTool.RayCast(segmentInput, out RaycastOutput segmentOutput))
+            if (PathControllerExtendedTool.RayCast(segmentInput, out RaycastOutput segmentOutput))
             {
                 HoveredSegmentId = segmentOutput.m_netSegment;
                 return;
@@ -86,7 +86,7 @@ namespace PathController.Tool
             {
                 if (HoveredNodeId != 0)
                 {
-                    if (PathManagerExtendedTool.ShiftIsPressed)
+                    if (PathControllerExtendedTool.ShiftIsPressed)
                     {
                         if (SelectedNodeIDs.Contains(HoveredNodeId))
                             SelectedNodeIDs.Remove(HoveredNodeId);
@@ -102,7 +102,7 @@ namespace PathController.Tool
                 }
                 if (HoveredSegmentId != 0)
                 {
-                    if (PathManagerExtendedTool.ShiftIsPressed)
+                    if (PathControllerExtendedTool.ShiftIsPressed)
                     {
                         if (SelectedSegmentIDs.Contains(HoveredSegmentId))
                             SelectedSegmentIDs.Remove(HoveredSegmentId);
@@ -153,7 +153,7 @@ namespace PathController.Tool
                         cameraInfo,
                         HoveredSegmentId,
                         (HoveredSegmentId.ToSegment().Info.m_halfWidth - 2f),
-                        SelectedSegmentIDs.Contains(HoveredSegmentId) ? (PathManagerExtendedTool.ShiftIsPressed ? Colors.OrangeWeb : Colors.Add(Colors.GameGreen, 0.15f)) : Colors.GameBlue,
+                        SelectedSegmentIDs.Contains(HoveredSegmentId) ? (PathControllerExtendedTool.ShiftIsPressed ? Colors.OrangeWeb : Colors.Add(Colors.GameGreen, 0.15f)) : Colors.GameBlue,
                         0f,
                         0f,
                         true
@@ -164,7 +164,7 @@ namespace PathController.Tool
                 {
                     RenderUtil.DrawNodeCircle(
                         cameraInfo,
-                        SelectedNodeIDs.Contains(HoveredNodeId) ? (PathManagerExtendedTool.ShiftIsPressed ? Colors.OrangeWeb : Colors.Add(Colors.GameGreen, 0.15f)) : Colors.GameBlue,
+                        SelectedNodeIDs.Contains(HoveredNodeId) ? (PathControllerExtendedTool.ShiftIsPressed ? Colors.OrangeWeb : Colors.Add(Colors.GameGreen, 0.15f)) : Colors.GameBlue,
                         HoveredNodeId,
                         true
                     );
