@@ -1,12 +1,12 @@
 using ColossalFramework.PlatformServices;
 using ColossalFramework.UI;
 using KianCommons;
+using PathController.Manager;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
 
-namespace PathController.Util
-{
+namespace PathController.Util {
     public static class TextureUtil
     {
         public static UITextureAtlas _inGameAtlas;

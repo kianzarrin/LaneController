@@ -17,7 +17,7 @@ namespace PathController.UI.Data {
                 Lanes = new CustomData.CustomLane[0];
             } else {
                 Lanes = new LaneIterator(segmentID)
-                    .Select(CustomManager.instance.GetOrCreateLane)
+                    .Select(CustomManager.Instance.GetOrCreateLane)
                     .ToArray()/*.LogRet("lanes")*/;
             }
         }

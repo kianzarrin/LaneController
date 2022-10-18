@@ -2,15 +2,11 @@ using CitiesHarmony.API;
 using HarmonyLib;
 using ICities;
 using System.Reflection;
-using PathController.Util;
-using UnityEngine;
 using System;
 using KianCommons;
 
-namespace PathController
-{
-    public class PathControllerMod : IUserMod
-    {
+namespace PathController.Manager {
+    public class PathControllerMod : IUserMod {
 
         public static string StaticName { get; } = "Path Controller";
 #if DEBUG
@@ -23,34 +19,29 @@ namespace PathController
         public string Name => StaticFullName;
         public string Description => "Adjust lane paths.";
 
-        public void OnEnabled()
-        {
+        public void OnEnabled() {
             HarmonyHelper.DoOnHarmonyReady(Patcher.PatchAll);
             if (LoadingManager.instance.m_loadingComplete) {
                 LoadTool.Load();
             }
         }
 
-        public void OnDisabled()
-        {
+        public void OnDisabled() {
             LoadTool.Release();
             if (HarmonyHelper.IsHarmonyInstalled) Patcher.UnpatchAll();
         }
 
-        public void OnSettingsUI(UIHelperBase helper)
-        {
+        public void OnSettingsUI(UIHelperBase helper) {
             Util.Settings.OnSettingsUI(helper);
         }
     }
 
-    public static class Patcher
-    {
+    public static class Patcher {
         private const string HarmonyId = "pathcontroller.Harmony2";
 
         private static bool patched = false;
 
-        public static void PatchAll()
-        {
+        public static void PatchAll() {
             if (patched) return;
 
             Log.Debug("Harmony 2: Patching...");
@@ -63,8 +54,7 @@ namespace PathController
             harmony.PatchAll(Assembly.GetExecutingAssembly());
         }
 
-        public static void UnpatchAll()
-        {
+        public static void UnpatchAll() {
             if (!patched) return;
 
             var harmony = new Harmony(HarmonyId);
@@ -76,29 +66,23 @@ namespace PathController
         }
     }
 
-    public class LoadingExtension : LoadingExtensionBase
-    {
+    public class LoadingExtension : LoadingExtensionBase {
 
-        public override void OnLevelLoaded(LoadMode mode)
-        {
+        public override void OnLevelLoaded(LoadMode mode) {
             LoadTool.Load();
         }
 
-        public override void OnLevelUnloading()
-        {
+        public override void OnLevelUnloading() {
             LoadTool.Release();
         }
     }
 
-    public static class LoadTool
-    {
-        public static void Load()
-        {
+    public static class LoadTool {
+        public static void Load() {
             Tool.PathControllerExtendedTool.Create();
             ToolsModifierControl.SetTool<DefaultTool>(); // disable tool.
         }
-        public static void Release()
-        {
+        public static void Release() {
             Tool.PathControllerExtendedTool.Remove();
         }
     }

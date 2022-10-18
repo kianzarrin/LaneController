@@ -100,7 +100,7 @@ namespace PathController.UI.Editors
 
         private void HeightField_OnValueChanged(float value) {
             Log.Called();
-            EditObject.Height = value;
+            EditObject.VShift = value;
             EditObject.QueueUpdate();
         }
 

@@ -1,13 +1,13 @@
 ﻿using ColossalFramework;
 using ColossalFramework.UI;
 using ICities;
+using PathController.Manager;
 using PathController.UI;
 using System.Collections.Generic;
 using UnityEngine;
 using UIUtils = PathController.UI.UIUtils;
 
-namespace PathController.Util
-{
+namespace PathController.Util {
     public static class Settings
     {
         public static string SettingsFile => $"{nameof(PathControllerMod)}";

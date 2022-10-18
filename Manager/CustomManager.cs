@@ -3,11 +3,58 @@ namespace PathController.Manager;
 using ColossalFramework;
 using KianCommons;
 using PathController.CustomData;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using KianCommons.Serialization;
+using System.Xml.Serialization;
 
-internal class CustomManager : Singleton<CustomManager> {
+internal class CustomManager {
+    #region lifecycle
+    public static CustomManager Instance { get; private set; }
+    public static bool Exists() => Instance != null;
+    public static CustomManager Create() => Instance = new CustomManager();
+    public static CustomManager Ensure() => Instance ??= Create();
+    public static CustomManager Release() => Instance = null;
+    #endregion
 
-    public Dictionary<uint, CustomLane> Lanes = new(1000);
+    #region serialization
+    internal static Version LoadingVersion;
+    [XmlAttribute("Version")]
+    public string SavedVersion {
+        get => this.VersionOf().ToString();
+        set => LoadingVersion = new Version(value);
+    }
+
+    public List<CustomLane> SavedLanes {
+        get {
+            return Lanes.Values.
+                Where(customLane => !customLane.IsDefault()).
+                ToList();
+        }
+        set {
+            Lanes.Clear();
+            foreach(var customLane in value)
+                Lanes[customLane.LaneID] = customLane;
+        }
+    }
+
+    public byte[] Serialize() {
+        var xmlData = XMLSerializerUtil.Serialize(this);
+        return Convert.FromBase64String(xmlData);
+    }
+
+    public static CustomManager Deserialize(byte[] data) {
+        if (data == null)
+            return Create();
+
+        string xmlData = Convert.ToBase64String(data);
+        return Instance = XMLSerializerUtil.Deserialize<CustomManager>(xmlData);
+    }
+
+    #endregion
+
+    internal Dictionary<uint, CustomLane> Lanes = new(1000);
 
     public CustomLane GetLane(uint laneID) => Lanes.GetorDefault(laneID);
 

@@ -14,9 +14,9 @@ using PathController.UI.Data;
 using UnifedUILib::UnifiedUI.Helpers;
 using UnityEngine.UI;
 using PathController.CustomData;
+using PathController.Manager;
 
-namespace PathController.Tool
-{
+namespace PathController.Tool {
     public class PathControllerExtendedTool : ToolBase
     {
         public static readonly SavedInputKey ActivationShortcut = new SavedInputKey("ActivationShortcut", nameof(PathControllerMod), SavedInputKey.Encode(KeyCode.P, true, false, false), true);
@@ -193,7 +193,7 @@ namespace PathController.Tool
             base.RenderOverlay(cameraInfo);
         }
 
-        public static bool RayCast(RaycastInput input, out RaycastOutput output) => ToolBase.RayCast(input, out output);
+        public new static bool RayCast(RaycastInput input, out RaycastOutput output) => ToolBase.RayCast(input, out output);
 
         #endregion
 
