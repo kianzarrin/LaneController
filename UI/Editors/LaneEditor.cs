@@ -99,24 +99,25 @@ namespace PathController.UI.Editors
         private void PositionField_OnValueChanged(float value) {
             Log.Called();
             EditObject.Position = value;
-            EditObject.UpdateLaneBezier();
+            EditObject.QueueUpdate();
         }
+
+        private void HeightField_OnValueChanged(float value) {
+            Log.Called();
+            EditObject.Height = value;
+            EditObject.QueueUpdate();
+        }
+
         private void PositionField_OnResetValue() {
             Log.Called();
             EditObject.Shift = 0;
             PositionField.Value = EditObject.Position;
         }
 
-        private void HeightField_OnValueChanged(float value) {
-            Log.Called();
-            EditObject.Height = value;
-        }
-
         private void HeightField_OnResetValue() {
             Log.Called();
             EditObject.VShift = 0;
             HeightField.Value = EditObject.Height;
-            EditObject.UpdateLaneBezier();
         }
 
         public override void OnDestroy() {

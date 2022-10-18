@@ -1,4 +1,4 @@
-﻿using ColossalFramework.Math;
+using ColossalFramework.Math;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +39,21 @@ namespace PathController.Util
             return shiftPos;
         }
         public static Vector3 CalcShift(Vector3 pos, Vector3 dir, float shift) => pos + dir.Turn90(true).normalized * shift;
+
+        public static Bezier3 Shift(this Bezier3 bezier, float shift, float vshift, bool smootha, bool smoothb) {
+            Vector3 dira = bezier.b - bezier.a;
+            bezier.a = CalcShift(bezier.a, dira, shift);
+            bezier.a.y += vshift;
+
+            Vector3 dird = bezier.c - bezier.d;
+            bezier.d = CalcShift(bezier.d, -dird, shift);
+            bezier.d.y += vshift;
+
+            NetSegment.CalculateMiddlePoints(
+                startPos: bezier.a, startDir: dira, smoothStart: smootha, middlePos1: out bezier.b,
+                endPos: bezier.d, endDir: dird,smoothEnd: smoothb, middlePos2: out bezier.c);
+            return bezier;
+        }
 
         public static Bezier3 CalcPerfict(Vector3 start, Vector3 end, Vector3 point1, Vector3 point2, float t1, float t2)
         {

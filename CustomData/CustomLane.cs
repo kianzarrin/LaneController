@@ -7,6 +7,7 @@ namespace PathController.CustomData {
 
     public interface ICustomPath {
         bool IsDefault();
+        void Reset();
     }
 
     public class CustomLane: ICustomPath {
@@ -44,15 +45,21 @@ namespace PathController.CustomData {
                 DeltaStart == default &&
                 DeltaEnd == default &&
                 DeltaPoints.IsDefault();
-            Vector3 v = default;
-
-            
-
-            DeltaPoints = default;
-            return DeltaPoints.Equals(DeltaPoints);
         }
 
-        public void UpdateLaneBezier() {
+        public void Reset() {
+            Shift = default;
+            VShift = default;
+            DeltaStart = default;
+            DeltaEnd = default;
+            DeltaPoints = default;
+        }
+
+        public void QueueUpdate() {
+            NetManager.instance.UpdateSegment(LaneIdAndIndex.SegmentID);
+        }
+
+        public void RecalculateLaneBezier() {
             Log.Called(LaneIdAndIndex);
             ref NetLane lane = ref LaneIdAndIndex.Lane;
             ushort segmentID = lane.m_segment;
@@ -63,14 +70,6 @@ namespace PathController.CustomData {
             segment.CalculateCorner(segmentID, true, false, true, out Vector3 cornerEndLeft, out Vector3 dirEndLeft, out bool smoothEnd);
             segment.CalculateCorner(segmentID, true, true, false, out Vector3 cornerStartRight, out Vector3 dirStartRight, out smoothStart);
             segment.CalculateCorner(segmentID, true, false, false, out Vector3 cornerEndRight, out Vector3 dirEndRight, out smoothEnd);
-
-            if (segment.IsInvert()) {
-                segment.m_cornerAngleStart = (byte)(Mathf.RoundToInt(Mathf.Atan2(cornerStartRight.z - cornerStartLeft.z, cornerStartRight.x - cornerStartLeft.x) * 40.7436638f) & 255);
-                segment.m_cornerAngleEnd = (byte)(Mathf.RoundToInt(Mathf.Atan2(cornerEndLeft.z - cornerEndRight.z, cornerEndLeft.x - cornerEndRight.x) * 40.7436638f) & 255);
-            } else {
-                segment.m_cornerAngleStart = (byte)(Mathf.RoundToInt(Mathf.Atan2(cornerStartLeft.z - cornerStartRight.z, cornerStartLeft.x - cornerStartRight.x) * 40.7436638f) & 255);
-                segment.m_cornerAngleEnd = (byte)(Mathf.RoundToInt(Mathf.Atan2(cornerEndRight.z - cornerEndLeft.z, cornerEndRight.x - cornerEndLeft.x) * 40.7436638f) & 255);
-            }
 
             float normalizedPos = Position / (segment.Info.m_halfWidth * 2f) + 0.5f;
             if ((segment.m_flags & NetSegment.Flags.Invert) != NetSegment.Flags.None) {
@@ -88,8 +87,6 @@ namespace PathController.CustomData {
             lane.m_bezier = new Bezier3(a, b, c, d);
             lane.m_bezier = BezierUtil.MathLine(segment.m_startDirection, segment.m_endDirection, lane.m_bezier, normalizedPos);
             lane.m_segment = segmentID;
-            lane.m_firstTarget = 0;
-            lane.m_lastTarget = byte.MaxValue;
 
             lane.UpdateLength();
             float lanesTotalLength = 0;
@@ -103,6 +100,23 @@ namespace PathController.CustomData {
                 segment.m_averageLength = 0f;
             }
         }
+
+        public void PostfixLaneBezier() {
+            Log.Called(LaneIdAndIndex);
+            ref NetLane lane = ref LaneIdAndIndex.Lane;
+            ushort segmentID = lane.m_segment;
+            ref NetSegment segment = ref segmentID.ToSegment();
+
+            bool smootha = segment.m_startNode.ToNode().m_flags.IsFlagSet(NetNode.Flags.Middle);
+            bool smoothd = segment.m_endNode.ToNode().m_flags.IsFlagSet(NetNode.Flags.Middle);
+            Bezier3 bezier = lane.m_bezier;
+
+            bezier = bezier.Shift(Shift, VShift, smootha, smoothd);
+
+            lane.m_bezier = bezier;
+            lane.UpdateLength();
+        }
+
         public override string ToString() => $"Lane {Index}";
     }
 }
