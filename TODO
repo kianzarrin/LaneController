@@ -1,0 +1,7 @@
+- serialization.
+- shift lanes based on their direction + handle toggle segment.
+- move bezier points.
+- expand bezier.
+- Multi-select
+- why last selected lane is rendered when I reenter tool (or exit planel).
+- drop redundant customLanes.

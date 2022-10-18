@@ -67,6 +67,7 @@
     <None Remove=".gitattributes" />
     <None Remove=".gitignore" />
     <None Remove=".gitmodules" />
+    <None Remove="TODO" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="KianCommons\KianCommons\Math\MathUtil.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="KianCommons\KianCommons\Util\ReflectionHelpers.cs" />
     <Compile Include="KianCommons\KianCommons\Util\StringExtensions.cs" />
     <Compile Include="KianCommons\KianCommons\Util\TypeUtil.cs" />
+    <Compile Include="TODO" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Resources\uui_movelanes.png">

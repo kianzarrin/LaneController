@@ -103,7 +103,7 @@ namespace PathController.UI
         {
             Log.Debug("LaneManagerPanel.CreateEditors() called");
             CreateEditor<LaneEditor>();
-            CreateEditor<TemplateEditor>();
+            //CreateEditor<TemplateEditor>();
         }
 
         private void CreateEditor<EditorType>() where EditorType : BaseEditor
