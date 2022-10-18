@@ -14,15 +14,12 @@ namespace PathController.UI.Editors
 {
     public class LaneEditor : BaseEditor<LaneItem, CustomLane, LaneIcons>
     {
-
         public override string Name => "Lane Editor";
         public override string SelectionMessage => "Select a lane to edit it.";
 
-        private FloatPropertyPanel PositionField , HeightField, StartField , EndField;
-        private FloatPropertyPanel[] FloatFields = new FloatPropertyPanel[0];
+        private FloatPropertyPanel ShiftField , HeightField/*, StartField , EndField*/;
 
-        protected override void FillItems()
-        {
+        protected override void FillItems() {
             Log.Debug("LaneEditor.FillItems() called");
             foreach (var lane in ToolInstance.SegmentInstance.Lanes)
                 AddItem(lane);
@@ -58,11 +55,10 @@ namespace PathController.UI.Editors
             foreach (var item in componets)
                 DeleteUIComponent(item);
 
-            PositionField = SettingsPanel.AddUIComponent<FloatPropertyPanel>();
-            PositionField.Init("Position");
+            ShiftField = SettingsPanel.AddUIComponent<FloatPropertyPanel>();
+            ShiftField.Init("Horizontal Shift");
             HeightField = SettingsPanel.AddUIComponent<FloatPropertyPanel>();
-            HeightField.Init( "Height");
-            FloatFields = new[] { PositionField, HeightField};
+            HeightField.Init( "Vertical Shift");
 
             PullValues();
             AddEvents();
@@ -79,26 +75,26 @@ namespace PathController.UI.Editors
 
         public void AddEvents() {
             RemoveEvents();
-            PositionField.OnValueChanged += PositionField_OnValueChanged;
+            ShiftField.OnValueChanged += PositionField_OnValueChanged;
             HeightField.OnValueChanged += HeightField_OnValueChanged;
-            PositionField.OnResetValue += PositionField_OnResetValue;
+            ShiftField.OnResetValue += PositionField_OnResetValue;
             HeightField.OnResetValue += HeightField_OnResetValue;
         }
         public void RemoveEvents() {
-            PositionField.OnValueChanged -= PositionField_OnValueChanged;
+            ShiftField.OnValueChanged -= PositionField_OnValueChanged;
             HeightField.OnValueChanged -= HeightField_OnValueChanged;
-            PositionField.OnResetValue -= PositionField_OnResetValue;
+            ShiftField.OnResetValue -= PositionField_OnResetValue;
             HeightField.OnResetValue -= HeightField_OnResetValue;
         }
 
         private void PullValues() {
-            PositionField.Value = EditObject.Position;
-            HeightField.Value = EditObject.Height;
+            ShiftField.Value = EditObject.Shift;
+            HeightField.Value = EditObject.VShift;
         }
 
         private void PositionField_OnValueChanged(float value) {
             Log.Called();
-            EditObject.Position = value;
+            EditObject.Shift = value;
             EditObject.QueueUpdate();
         }
 
@@ -110,14 +106,12 @@ namespace PathController.UI.Editors
 
         private void PositionField_OnResetValue() {
             Log.Called();
-            EditObject.Shift = 0;
-            PositionField.Value = EditObject.Position;
+            ShiftField.Value = EditObject.Shift = 0;
         }
 
         private void HeightField_OnResetValue() {
             Log.Called();
-            EditObject.VShift = 0;
-            HeightField.Value = EditObject.Height;
+            HeightField.Value = EditObject.VShift = 0;
         }
 
         public override void OnDestroy() {
