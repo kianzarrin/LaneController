@@ -5,7 +5,7 @@ using PathController.Manager;
 [HarmonyPatch(typeof(NetSegment), nameof(NetSegment.UpdateLanes))]
 public static class NetSegmentUpdateLanesPatch {
     public static void Postfix(ushort segmentID) {
-        CustomManager.Instance?.UpateLanes(segmentID);
+        PathControllerManager.Instance?.UpateLanes(segmentID);
     }
 }
 

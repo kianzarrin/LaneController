@@ -9,13 +9,13 @@ using System.Linq;
 using KianCommons.Serialization;
 using System.Xml.Serialization;
 
-internal class CustomManager {
+public class PathControllerManager {
     #region lifecycle
-    public static CustomManager Instance { get; private set; }
+    public static PathControllerManager Instance { get; private set; }
     public static bool Exists() => Instance != null;
-    public static CustomManager Create() => Instance = new CustomManager();
-    public static CustomManager Ensure() => Instance ??= Create();
-    public static CustomManager Release() => Instance = null;
+    public static PathControllerManager Create() => Instance = new PathControllerManager();
+    public static PathControllerManager Ensure() => Instance ??= Create();
+    public static PathControllerManager Release() => Instance = null;
     #endregion
 
     #region serialization
@@ -31,6 +31,7 @@ internal class CustomManager {
             return Lanes.Values.
                 Where(customLane => !customLane.IsDefault()).
                 ToList();
+                
         }
         set {
             Lanes.Clear();
@@ -40,16 +41,21 @@ internal class CustomManager {
     }
 
     public byte[] Serialize() {
-        var xmlData = XMLSerializerUtil.Serialize(this);
-        return Convert.FromBase64String(xmlData);
+        if(Lanes.Values.Any(customLane => !customLane.IsDefault())) {
+            var xmlData = XMLSerializerUtil.Serialize(this);
+            return Convert.FromBase64String(xmlData);
+        } else {
+            return null;
+        }
+
     }
 
-    public static CustomManager Deserialize(byte[] data) {
+    public static PathControllerManager Deserialize(byte[] data) {
         if (data == null)
             return Create();
 
         string xmlData = Convert.ToBase64String(data);
-        return Instance = XMLSerializerUtil.Deserialize<CustomManager>(xmlData);
+        return Instance = XMLSerializerUtil.Deserialize<PathControllerManager>(xmlData);
     }
 
     #endregion
