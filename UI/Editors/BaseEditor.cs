@@ -54,7 +54,7 @@ namespace PathController.UI.Editors
             Multiple,
         }
 
-        protected PathControllerExtendedTool ToolInstance => PathControllerExtendedTool.Instance;
+        protected PathControllerTool ToolInstance => PathControllerTool.Instance;
 
         public static Dictionary<LaneType, string> LaneSpriteNames { get; set; }
         public static Dictionary<NetInfo.Direction, string> DirectionSpriteNames { get; set; }

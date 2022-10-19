@@ -1,7 +1,6 @@
-- serialization.
 - shift lanes based on their direction + handle toggle segment.
 - move bezier points.
-- expand bezier.
+- TMPE: cars to wait at conflict points
 - Multi-select
-- why last selected lane is rendered when I reenter tool (or exit planel).
+- why last selected lane is rendered when I reenter tool (or exit panel).
 - drop redundant customLanes.

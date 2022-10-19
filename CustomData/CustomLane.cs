@@ -24,6 +24,9 @@ public class CustomLane : ICustomPath  {
     [XmlElement("Displacement",typeof(Bezier3XML))]
     public Bezier3 DeltaPoints;
 
+    [XmlIgnore]
+    private Bezier3 Beizer0;
+
     public float Position {
         get => LaneInfo.m_position + Shift;
         set => Shift = value - LaneInfo.m_position;
@@ -33,6 +36,9 @@ public class CustomLane : ICustomPath  {
         get => LaneInfo.m_verticalOffset + VShift;
         set => VShift = value - LaneInfo.m_verticalOffset;
     }
+
+    public Vector3 GetControlPoint(int i) => Beizer0.ControlPoint(i) + DeltaPoints.ControlPoint(i);
+    public void SetControlPoint(int i, Vector3 newPos) => DeltaPoints.ControlPoint(i) = newPos - Beizer0.ControlPoint(i);
     #endregion
 
     #region shortcuts
@@ -87,8 +93,8 @@ public class CustomLane : ICustomPath  {
         d.y += Height;
         NetSegment.CalculateMiddlePoints(a, dira, d, dird, smoothStart, smoothEnd, out Vector3 b, out Vector3 c);
 
-        lane.m_bezier = new Bezier3(a, b, c, d);
-        lane.m_bezier = BezierUtil.MathLine(segment.m_startDirection, segment.m_endDirection, lane.m_bezier, normalizedPos);
+        Beizer0 = lane.m_bezier = new Bezier3(a, b, c, d);
+        //lane.m_bezier = BezierUtil.MathLine(segment.m_startDirection, segment.m_endDirection, lane.m_bezier, normalizedPos);
         lane.m_segment = segmentID;
 
         lane.UpdateLength();

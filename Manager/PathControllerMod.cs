@@ -79,11 +79,11 @@ namespace PathController.Manager {
 
     public static class LoadTool {
         public static void Load() {
-            Tool.PathControllerExtendedTool.Create();
+            Tool.PathControllerTool.Create();
             ToolsModifierControl.SetTool<DefaultTool>(); // disable tool.
         }
         public static void Release() {
-            Tool.PathControllerExtendedTool.Remove();
+            Tool.PathControllerTool.Remove();
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ColossalFramework.Math;
 using PathController.Util;
 using UnityEngine;
 using static ToolBase;
@@ -16,7 +17,7 @@ namespace PathController.Tool
 
         protected bool IsHover => (HoveredSegmentId != 0);
 
-        protected bool HoverValid => PathControllerExtendedTool.MouseRayValid && IsHover;
+        protected bool HoverValid => PathControllerTool.MouseRayValid && IsHover;
         public int HoveredLaneIndex { get; private set; } = 0;
 
         protected override void Reset()
@@ -27,7 +28,7 @@ namespace PathController.Tool
         {
             base.OnUpdate();
 
-            RaycastInput segmentInput = new RaycastInput(PathControllerExtendedTool.MouseRay, PathControllerExtendedTool.MouseRayLength)
+            RaycastInput segmentInput = new RaycastInput(PathControllerTool.MouseRay, PathControllerTool.MouseRayLength)
             {
                 m_ignoreTerrain = true,
                 m_ignoreSegmentFlags = NetSegment.Flags.None,
@@ -36,14 +37,14 @@ namespace PathController.Tool
             segmentInput.m_netService.m_itemLayers = (ItemClass.Layer.Default | ItemClass.Layer.MetroTunnels);
             segmentInput.m_netService.m_service = ItemClass.Service.Road;
 
-            if (PathControllerExtendedTool.RayCast(segmentInput, out RaycastOutput segmentOutput))
+            if (PathControllerTool.RayCast(segmentInput, out RaycastOutput segmentOutput))
             {
                 HoveredSegmentId = segmentOutput.m_netSegment;
             } else {
                 HoveredSegmentId = 0;
             }
 
-            if (Tool.SegmentInstance.Segment.GetClosestLanePosition(PathControllerExtendedTool.MouseWorldPosition, NetInfo.LaneType.All, VehicleInfo.VehicleType.All, VehicleInfo.VehicleCategory.All, out _, out uint laneID, out _, out _))
+            if (Tool.SegmentInstance.Segment.GetClosestLanePosition(PathControllerTool.MouseWorldPosition, NetInfo.LaneType.All, VehicleInfo.VehicleType.All, VehicleInfo.VehicleCategory.All, out _, out uint laneID, out _, out _))
             {
                 for (int i = 0; i < Tool.SegmentInstance.Lanes.Length; i++)
                 {
@@ -72,5 +73,13 @@ namespace PathController.Tool
             //Tool.SetMode(ToolType.ModifyLane);
             //return;
         }
+
+
+        #region control points
+        private Bezier3 ControlPoints;
+
+
+
+        #endregion
     }
 }

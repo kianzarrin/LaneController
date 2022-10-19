@@ -5,6 +5,7 @@ using System.Text;
 using KianCommons;
 using PathController.UI;
 using UnityEngine;
+using static ToolBase;
 
 namespace PathController.Tool
 {
@@ -12,7 +13,7 @@ namespace PathController.Tool
     {
         public abstract ToolType Type { get; }
         public virtual bool ShowPanel => true;
-        protected PathControllerExtendedTool Tool => PathControllerExtendedTool.Instance;
+        protected PathControllerTool Tool => PathControllerTool.Instance;
         protected PathControllerExtendedPanel Panel => PathControllerExtendedPanel.Instance;
 
         public virtual void Init() => Reset();

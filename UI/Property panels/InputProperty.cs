@@ -103,9 +103,9 @@ namespace PathController.UI
         {
             if (CanUseWheel && UseWheel)
             {
-                var mode = PathControllerExtendedTool.ShiftIsPressed
+                var mode = PathControllerTool.ShiftIsPressed
                     ? WheelMode.High
-                    : PathControllerExtendedTool.CtrlIsPressed
+                    : PathControllerTool.CtrlIsPressed
                     ? WheelMode.Low
                     : WheelMode.Normal;
                 if (eventParam.wheelDelta < 0)

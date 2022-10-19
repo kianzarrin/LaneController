@@ -17,7 +17,7 @@ using PathController.CustomData;
 using PathController.Manager;
 
 namespace PathController.Tool {
-    public class PathControllerExtendedTool : ToolBase
+    public class PathControllerTool : ToolBase
     {
         public static readonly SavedInputKey ActivationShortcut = new SavedInputKey("ActivationShortcut", nameof(PathControllerMod), SavedInputKey.Encode(KeyCode.P, true, false, false), true);
 
@@ -29,6 +29,8 @@ namespace PathController.Tool {
         public static bool MouseRayValid { get; private set; }
         public static Vector3 MousePosition { get; private set; }
         public static Vector3 MouseWorldPosition { get; private set; }
+
+        public static Camera Camera;
 
         public BaseTool CurrentTool { get; private set; }
         private Dictionary<ToolType, BaseTool> Tools { get; set; } = new Dictionary<ToolType, BaseTool>();
@@ -43,13 +45,14 @@ namespace PathController.Tool {
 
         PathControllerExtendedPanel Panel => PathControllerExtendedPanel.Instance;
 
-        public static PathControllerExtendedTool Instance { get; set; }
+        public static PathControllerTool Instance { get; set; }
 
         #region Base Functions
         protected override void Awake()
         {
             Log.Info("LaneManagerTool.Awake()");
             base.Awake();
+            Camera = UIView.GetAView().uiCamera;
 
             Tools = new Dictionary<ToolType, BaseTool>()
             {
@@ -72,11 +75,11 @@ namespace PathController.Tool {
             DisableTool();
         }
 
-        public static PathControllerExtendedTool Create()
+        public static PathControllerTool Create()
         {
             Log.Debug("PathControllerExtendedTool.Create()");
             GameObject toolModControl = ToolsModifierControl.toolController.gameObject;
-            Instance = toolModControl.AddComponent<PathControllerExtendedTool>();
+            Instance = toolModControl.AddComponent<PathControllerTool>();
             Log.Info($"Tool created");
             return Instance;
         }
@@ -172,6 +175,22 @@ namespace PathController.Tool {
 
             base.OnToolUpdate();
         }
+
+        public override void SimulationStep() {
+            base.SimulationStep();
+            Vector3 hitPos = RaycastMouseLocation();
+
+        }
+
+        internal Vector3 RaycastMouseLocation() {
+            RaycastInput input = new RaycastInput(MouseRay, MouseRayLength) {
+                m_ignoreTerrain = false
+            };
+            RayCast(input, out RaycastOutput output);
+            return output.m_hitPos;
+            
+        }
+
 
         public void SetSegment(ushort segmentID)
         {
