@@ -62,6 +62,7 @@ namespace PathController.UI.Editors
 
             PullValues();
             AddEvents();
+            ToolInstance.SetLane(EditObject.Index);
         }
 
 

@@ -5,7 +5,7 @@ using ICities;
 using PathController.Tool;
 using UnityEngine;
 
-internal class ControlPointMarker {
+public class ControlPointMarker {
     internal bool UnderGround;
     internal Vector3 TerrainPosition; // projected on terrain
     internal Vector3 Position; // original height.

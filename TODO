@@ -2,5 +2,4 @@
 - move bezier points.
 - TMPE: cars to wait at conflict points
 - Multi-select
-- why last selected lane is rendered when I reenter tool (or exit panel).
 - drop redundant customLanes.

@@ -44,23 +44,18 @@ namespace PathController.Tool
                 HoveredSegmentId = 0;
             }
 
-            if (Tool.SegmentInstance.Segment.GetClosestLanePosition(PathControllerTool.MouseWorldPosition, NetInfo.LaneType.All, VehicleInfo.VehicleType.All, VehicleInfo.VehicleCategory.All, out _, out uint laneID, out _, out _))
+            if (Tool.SegmentInstance.Segment.
+                GetClosestLanePosition(
+                PathControllerTool.MouseWorldPosition, NetInfo.LaneType.All, VehicleInfo.VehicleType.All, VehicleInfo.VehicleCategory.All,
+                out var hitPos, out uint laneID, out var laneIndex, out _))
             {
-                for (int i = 0; i < Tool.SegmentInstance.Lanes.Length; i++)
-                {
-                    if (Tool.SegmentInstance.Lanes[i].LaneID == laneID)
-                    {
-                        HoveredLaneIndex = i;
-                        break;
-                    }
-                }
+                HoveredLaneIndex = laneIndex;
             }
         }
 
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
-            if (HoverValid)
-            {
+            if (HoverValid && HoveredLaneIndex >=0) {
                 RenderUtil.RenderLaneOverlay(cameraInfo, Tool.SegmentInstance.Lanes[HoveredLaneIndex].LaneIdAndIndex, Color.yellow, true);
             }
         }

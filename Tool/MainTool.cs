@@ -15,6 +15,7 @@ using UnifedUILib::UnifiedUI.Helpers;
 using UnityEngine.UI;
 using PathController.CustomData;
 using PathController.Manager;
+using PathController.UI.Marker;
 
 namespace PathController.Tool {
     public class PathControllerTool : ToolBase
@@ -39,9 +40,22 @@ namespace PathController.Tool {
 
         public static SegmentDTO[] segmentBuffer = new SegmentDTO[NetManager.MAX_SEGMENT_COUNT];
         public SegmentDTO SegmentInstance { get; private set; } = new SegmentDTO();
-        public CustomLane LaneInstance { get; private set; } = null;
 
-        UIComponent Button;
+        private CustomLane laneInstance_;
+        public BezierMarker BezierMarker { get; private set; }
+        public CustomLane LaneInstance {
+            get => laneInstance_;
+            private set {
+                laneInstance_ = value;
+                if(value != null)
+                    BezierMarker = new BezierMarker(value.LaneIdAndIndex);
+                else
+                    BezierMarker = null;
+            }
+        }
+
+
+        private UIComponent UUIButton;
 
         PathControllerExtendedPanel Panel => PathControllerExtendedPanel.Instance;
 
@@ -64,7 +78,7 @@ namespace PathController.Tool {
 
             PathControllerExtendedPanel.CreatePanel();
             string iconPath = UUIHelpers.GetFullPath<PathControllerMod>("uui_movelanes.png");
-            Button = UUIHelpers.RegisterToolButton(
+            UUIButton = UUIHelpers.RegisterToolButton(
                 name: "PathController",
                 groupName: null, // default group
                 tooltip: "Path Controller",
@@ -101,7 +115,7 @@ namespace PathController.Tool {
             base.OnDestroy();
 
             PathControllerExtendedPanel.RemovePanel();
-            Button?.Destroy();
+            UUIButton?.Destroy();
             DisableTool();
         }
 
@@ -125,6 +139,7 @@ namespace PathController.Tool {
         {
             Panel.Hide();
             SetMode(ToolType.SelectInstance);
+            LaneInstance = null;
             SegmentInstance.Empty();
         }
         public void SetDefaultMode() => SetMode(ToolType.SelectInstance);
@@ -178,28 +193,23 @@ namespace PathController.Tool {
 
         public override void SimulationStep() {
             base.SimulationStep();
-            Vector3 hitPos = RaycastMouseLocation();
+            if (BezierMarker != null) {
+                RaycastInput input = new(MouseRay, MouseRayLength) { m_ignoreTerrain = false };
+                RayCast(input, out RaycastOutput output);
+                BezierMarker.Drag(output.m_hitPos);
+            }
 
-        }
-
-        internal Vector3 RaycastMouseLocation() {
-            RaycastInput input = new RaycastInput(MouseRay, MouseRayLength) {
-                m_ignoreTerrain = false
-            };
-            RayCast(input, out RaycastOutput output);
-            return output.m_hitPos;
             
-        }
 
+        }
 
         public void SetSegment(ushort segmentID)
         {
             SegmentInstance = new SegmentDTO(segmentID);
         }
 
-        public void SetLane(int laneIndex)
-        {
-            LaneInstance = SegmentInstance.Lanes[laneIndex];
+        public void SetLane(int laneIndex) {
+            LaneInstance = SegmentInstance.Lanes.ElementAtOrDefault(laneIndex);
         }
 
         #endregion
@@ -209,6 +219,7 @@ namespace PathController.Tool {
         {
             CurrentTool?.RenderOverlay(cameraInfo);
             Panel?.Render(cameraInfo);
+            BezierMarker?.RenderOverlay(cameraInfo, Color.green);
             base.RenderOverlay(cameraInfo);
         }
 

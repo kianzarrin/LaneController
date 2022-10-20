@@ -3,6 +3,7 @@ using ColossalFramework.Math;
 using KianCommons;
 using KianCommons.Serialization;
 using PathController.Util;
+using System.Security.AccessControl;
 using System.Xml.Serialization;
 using UnityEngine;
 
@@ -39,6 +40,12 @@ public class CustomLane : ICustomPath  {
 
     public Vector3 GetControlPoint(int i) => Beizer0.ControlPoint(i) + DeltaPoints.ControlPoint(i);
     public void SetControlPoint(int i, Vector3 newPos) => DeltaPoints.ControlPoint(i) = newPos - Beizer0.ControlPoint(i);
+    public void UpdateControlPoint(int i, Vector3 newPos) {
+        SetControlPoint(i, newPos);
+        LaneIdAndIndex.Lane.m_bezier.ControlPoint(i) = newPos;
+        QueueUpdate();
+    }
+
     #endregion
 
     #region shortcuts

@@ -479,6 +479,7 @@ namespace PathController.UI.Editors
                 SelectItem.Unfocus();
                 ShowEmptySelected();
                 SelectItem = null;
+                ToolInstance.SetLane(-1);
             }
         }
         public override void Select(int index)
