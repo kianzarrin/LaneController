@@ -1,14 +1,12 @@
 using ColossalFramework.UI;
 using KianCommons;
 using PathController.Tool;
-using PathController.Util;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
 
-namespace PathController.UI
-{
+namespace PathController.UI {
     public abstract class FieldPropertyPanel : EditorPropertyPanel {
         public event Action OnResetValue;
         public virtual void ResetValue() => OnResetValue?.Invoke();
@@ -74,7 +72,7 @@ namespace PathController.UI
             Field.selectOnFocus = true;
 
             List<string> hint = new();
-            if (Util.Settings.ShowToolTip) {
+            if (LifeCycle.Settings.ShowToolTip) {
                 hint.Add("Press delete to reset value");
                 if (CanUseWheel) {
                     hint.Add("Scroll the wheel to change\n" + "shift X10, Ctrl X0.1");

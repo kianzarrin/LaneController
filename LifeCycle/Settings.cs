@@ -1,35 +1,31 @@
-﻿using ColossalFramework;
+using ColossalFramework;
 using ColossalFramework.UI;
 using ICities;
-using PathController.Manager;
 using PathController.UI;
 using System.Collections.Generic;
 using UnityEngine;
 using UIUtils = PathController.UI.UIUtils;
 
-namespace PathController.Util {
-    public static class Settings
-    {
+namespace PathController.LifeCycle {
+    public static class Settings {
         public static string SettingsFile => $"{nameof(PathControllerMod)}";
 
         private static CustomUITabstrip TabStrip { get; set; }
         private static List<UIPanel> TabPanels { get; set; }
 
         public static SavedBool ShowToolTip { get; } = new SavedBool(nameof(ShowToolTip), SettingsFile, true, true);
-        static Settings()
-        {
+        static Settings() {
             if (GameSettings.FindSettingsFileByName(SettingsFile) == null)
                 GameSettings.AddSettingsFile(new SettingsFile[] { new SettingsFile() { fileName = SettingsFile } });
         }
 
-        public static void OnSettingsUI(UIHelperBase helper)
-        {
+        public static void OnSettingsUI(UIHelperBase helper) {
             var mainPanel = (helper as UIHelper).self as UIScrollablePanel;
             mainPanel.autoLayoutPadding = new RectOffset(0, 0, 0, 25);
             CreateTabStrip(mainPanel);
 
             var generalTab = CreateTab(mainPanel, "General");
-            generalTab.AddGroup(PathControllerMod.StaticFullName);
+            generalTab.AddGroup(PathControllerMod.Instance.ModName);
             //AddLanguage(generalTab);
             AddGeneral(generalTab);
             //AddGrouping(generalTab);
@@ -48,8 +44,7 @@ namespace PathController.Util {
             //AddAccess(supportTab);
         }
 
-        private static void CreateTabStrip(UIScrollablePanel mainPanel)
-        {
+        private static void CreateTabStrip(UIScrollablePanel mainPanel) {
             TabPanels = new List<UIPanel>();
 
             TabStrip = mainPanel.AddUIComponent<CustomUITabstrip>();
@@ -57,10 +52,8 @@ namespace PathController.Util {
             TabStrip.selectedIndex = -1;
         }
 
-        private static void TabStripSelectedIndexChanged(UIComponent component, int index)
-        {
-            if (index >= 0 && TabPanels.Count > index)
-            {
+        private static void TabStripSelectedIndexChanged(UIComponent component, int index) {
+            if (index >= 0 && TabPanels.Count > index) {
                 foreach (var tab in TabPanels)
                     tab.isVisible = false;
 
@@ -68,8 +61,7 @@ namespace PathController.Util {
             }
         }
 
-        private static UIHelper CreateTab(UIScrollablePanel mainPanel, string name)
-        {
+        private static UIHelper CreateTab(UIScrollablePanel mainPanel, string name) {
             TabStrip.AddTab(name, 1.25f);
 
             var tabPanel = mainPanel.AddUIComponent<UIPanel>();
@@ -90,14 +82,12 @@ namespace PathController.Util {
 
             return new UIHelper(panel);
 
-            void ScrollbarVisibilityChanged(UIComponent component, bool value)
-            {
+            void ScrollbarVisibilityChanged(UIComponent component, bool value) {
                 panel.width = tabPanel.width - (panel.verticalScrollbar.isVisible ? panel.verticalScrollbar.width : 0);
             }
         }
 
-        private static void AddGeneral(UIHelperBase helper)
-        {
+        private static void AddGeneral(UIHelperBase helper) {
             UIHelper group = helper.AddGroup("Display and Usage") as UIHelper;
 
             //AddDistanceSetting(group);
@@ -106,8 +96,7 @@ namespace PathController.Util {
             //AddQuickRuleSetup(group);
         }
 
-        private static void AddShowToolTipsSetting(UIHelper group)
-        {
+        private static void AddShowToolTipsSetting(UIHelper group) {
             var showCheckBox = group.AddCheckbox("Show Tooltips", ShowToolTip, OnShowToolTipsChanged) as UICheckBox;
 
             void OnShowToolTipsChanged(bool show) => ShowToolTip.value = show;

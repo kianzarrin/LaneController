@@ -14,8 +14,8 @@ using PathController.UI.Data;
 using UnifedUILib::UnifiedUI.Helpers;
 using UnityEngine.UI;
 using PathController.CustomData;
-using PathController.Manager;
 using PathController.UI.Marker;
+using PathController.LifeCycle;
 
 namespace PathController.Tool {
     public class PathControllerTool : ToolBase
@@ -46,11 +46,15 @@ namespace PathController.Tool {
         public CustomLane LaneInstance {
             get => laneInstance_;
             private set {
+                Log.Called(value);
                 laneInstance_ = value;
-                if(value != null)
+                if (value != null) {
                     BezierMarker = new BezierMarker(value.LaneIdAndIndex);
-                else
+                    Log.Debug("BezierMarker created for " + value.LaneIdAndIndex);
+                } else {
                     BezierMarker = null;
+                    Log.Debug("BezierMarker  = null");
+                }
             }
         }
 
@@ -95,6 +99,7 @@ namespace PathController.Tool {
             GameObject toolModControl = ToolsModifierControl.toolController.gameObject;
             Instance = toolModControl.AddComponent<PathControllerTool>();
             Log.Info($"Tool created");
+            ToolsModifierControl.SetTool<DefaultTool>();
             return Instance;
         }
 
@@ -198,9 +203,6 @@ namespace PathController.Tool {
                 RayCast(input, out RaycastOutput output);
                 BezierMarker.Drag(output.m_hitPos);
             }
-
-            
-
         }
 
         public void SetSegment(ushort segmentID)

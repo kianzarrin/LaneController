@@ -1,5 +1,6 @@
 namespace PathController.UI.Editors;
 using PathController.CustomData;
+using PathController.LifeCycle;
 using PathController.Util;
 using System;
 
@@ -69,8 +70,8 @@ public class LaneItem : DynamicButton<CustomLane, LaneIcons> {
         }
 
         Icon.DirectionType = Object.LaneInfo.m_finalDirection;
-        Icon.SetDirectionToolTip(Util.Settings.ShowToolTip ? Object.LaneInfo.m_finalDirection.ToString() : string.Empty);
-        Icon.SetLaneToolTip(Util.Settings.ShowToolTip ? Object.LaneInfo.m_vehicleType.ToString() : string.Empty);
+        Icon.SetDirectionToolTip(Settings.ShowToolTip ? Object.LaneInfo.m_finalDirection.ToString() : string.Empty);
+        Icon.SetLaneToolTip(Settings.ShowToolTip ? Object.LaneInfo.m_vehicleType.ToString() : string.Empty);
     }
 }
 
