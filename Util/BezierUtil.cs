@@ -55,6 +55,14 @@ namespace PathController.Util
             return bezier;
         }
 
+        public static Bezier3 Add(this Bezier3 lhs, Bezier3 rhs) {
+            return new Bezier3(
+                lhs.a + rhs.a,
+                lhs.b + rhs.b,
+                lhs.c + rhs.c,
+                lhs.d + rhs.d);
+        }
+
         public static Bezier3 CalcPerfict(Vector3 start, Vector3 end, Vector3 point1, Vector3 point2, float t1, float t2)
         {
             CalcCoef(t1, out float a1, out float b1, out float c1, out float d1);

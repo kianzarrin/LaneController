@@ -3,6 +3,7 @@ using ColossalFramework.Math;
 using KianCommons;
 using KianCommons.Serialization;
 using PathController.Util;
+using System;
 using System.Security.AccessControl;
 using System.Xml.Serialization;
 using UnityEngine;
@@ -15,6 +16,7 @@ public interface ICustomPath {
 public class CustomLane : ICustomPath  {
     public CustomLane(LaneIdAndIndex laneIdAndIndex) {
         LaneIdAndIndex = laneIdAndIndex;
+        Beizer0 = LaneIdAndIndex.Lane.m_bezier;
     }
 
     #region Data
@@ -24,8 +26,7 @@ public class CustomLane : ICustomPath  {
     //public float DeltaStart, DeltaEnd;
     [XmlElement("Displacement",typeof(Bezier3XML))]
     public Bezier3 DeltaPoints;
-
-    [XmlIgnore]
+    [XmlElement("Bezier0", typeof(Bezier3XML))]
     private Bezier3 Beizer0;
 
     public float Position {
@@ -100,8 +101,8 @@ public class CustomLane : ICustomPath  {
         d.y += Height;
         NetSegment.CalculateMiddlePoints(a, dira, d, dird, smoothStart, smoothEnd, out Vector3 b, out Vector3 c);
 
-        Beizer0 = lane.m_bezier = new Bezier3(a, b, c, d);
-        //lane.m_bezier = BezierUtil.MathLine(segment.m_startDirection, segment.m_endDirection, lane.m_bezier, normalizedPos);
+        Beizer0 = new Bezier3(a, b, c, d);
+        lane.m_bezier = Beizer0.Add(DeltaPoints);
         lane.m_segment = segmentID;
 
         lane.UpdateLength();
@@ -118,19 +119,21 @@ public class CustomLane : ICustomPath  {
     }
 
     public void PostfixLaneBezier() {
-        Log.Called(LaneIdAndIndex);
-        ref NetLane lane = ref LaneIdAndIndex.Lane;
-        ushort segmentID = lane.m_segment;
-        ref NetSegment segment = ref segmentID.ToSegment();
+        try {
+            ref NetLane lane = ref LaneIdAndIndex.Lane;
+            ushort segmentID = lane.m_segment;
+            ref NetSegment segment = ref segmentID.ToSegment();
 
-        bool smootha = segment.m_startNode.ToNode().m_flags.IsFlagSet(NetNode.Flags.Middle);
-        bool smoothd = segment.m_endNode.ToNode().m_flags.IsFlagSet(NetNode.Flags.Middle);
-        Bezier3 bezier = lane.m_bezier;
+            bool smootha = segment.m_startNode.ToNode().m_flags.IsFlagSet(NetNode.Flags.Middle);
+            bool smoothd = segment.m_endNode.ToNode().m_flags.IsFlagSet(NetNode.Flags.Middle);
+            Bezier3 bezier = lane.m_bezier;
 
-        bezier = bezier.Shift(Shift, VShift, smootha, smoothd);
+            Beizer0 = bezier = bezier.Shift(Shift, VShift, smootha, smoothd);
 
-        lane.m_bezier = bezier;
-        lane.UpdateLength();
+
+            lane.m_bezier = bezier;
+            lane.UpdateLength();
+        } catch(Exception ex) { ex.Log(); }
     }
 
     public override string ToString() => $"Lane {Index}";

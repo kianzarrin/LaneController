@@ -197,12 +197,14 @@ namespace PathController.Tool {
         }
 
         public override void SimulationStep() {
-            base.SimulationStep();
-            if (BezierMarker != null) {
-                RaycastInput input = new(MouseRay, MouseRayLength) { m_ignoreTerrain = false };
-                RayCast(input, out RaycastOutput output);
-                BezierMarker.Drag(output.m_hitPos);
-            }
+            try {
+                base.SimulationStep();
+                if (BezierMarker != null) {
+                    RaycastInput input = new(MouseRay, MouseRayLength) { m_ignoreTerrain = false };
+                    RayCast(input, out RaycastOutput output);
+                    BezierMarker.Drag(output.m_hitPos);
+                }
+            } catch (Exception ex) { ex.Log(); }
         }
 
         public void SetSegment(ushort segmentID)
@@ -211,6 +213,7 @@ namespace PathController.Tool {
         }
 
         public void SetLane(int laneIndex) {
+            Log.Called(laneIndex);
             LaneInstance = SegmentInstance.Lanes.ElementAtOrDefault(laneIndex);
         }
 
@@ -219,10 +222,13 @@ namespace PathController.Tool {
         #region Render Overlay
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
-            CurrentTool?.RenderOverlay(cameraInfo);
-            Panel?.Render(cameraInfo);
-            BezierMarker?.RenderOverlay(cameraInfo, Color.green);
-            base.RenderOverlay(cameraInfo);
+            try {
+                base.RenderOverlay(cameraInfo);
+                CurrentTool?.RenderOverlay(cameraInfo);
+                Panel?.Render(cameraInfo);
+                BezierMarker?.RenderOverlay(cameraInfo, Color.green);
+                base.RenderOverlay(cameraInfo);
+            } catch (Exception ex) { ex.Log(); }
         }
 
         public new static bool RayCast(RaycastInput input, out RaycastOutput output) => ToolBase.RayCast(input, out output);

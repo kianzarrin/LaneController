@@ -48,21 +48,23 @@ namespace PathController.UI.Editors
 
         protected override void OnObjectSelect()
         {
-            Log.Debug("LaneEditor.OnObjectSelect()");
-            //ToolInstance.OnLaneUISelect(SelectItem.Object.Index);
-            HideEmptySelected();
-            var componets = SettingsPanel.components.ToArray();
-            foreach (var item in componets)
-                DeleteUIComponent(item);
+            try {
+                Log.Debug("LaneEditor.OnObjectSelect()");
+                //ToolInstance.OnLaneUISelect(SelectItem.Object.Index);
+                HideEmptySelected();
+                var componets = SettingsPanel.components.ToArray();
+                foreach (var item in componets)
+                    DeleteUIComponent(item);
 
-            ShiftField = SettingsPanel.AddUIComponent<FloatPropertyPanel>();
-            ShiftField.Init("Horizontal Shift");
-            HeightField = SettingsPanel.AddUIComponent<FloatPropertyPanel>();
-            HeightField.Init( "Vertical Shift");
+                ShiftField = SettingsPanel.AddUIComponent<FloatPropertyPanel>();
+                ShiftField.Init("Horizontal Shift");
+                HeightField = SettingsPanel.AddUIComponent<FloatPropertyPanel>();
+                HeightField.Init("Vertical Shift");
 
-            PullValues();
-            AddEvents();
-            ToolInstance.SetLane(EditObject.Index);
+                PullValues();
+                AddEvents();
+                ToolInstance.SetLane(EditObject.Index);
+            } catch (Exception ex) { ex.Log(); }
         }
 
 
