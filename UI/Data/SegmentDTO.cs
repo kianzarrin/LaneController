@@ -3,11 +3,10 @@ namespace PathController.UI.Data {
     using PathController.CustomData;
     using PathController.Manager;
     using System.Linq;
-    public struct SegmentDTO {
+    public class SegmentDTO {
         public ushort SegmentID;
         public CustomLane[] Lanes;
         
-        public bool IsEmpty => SegmentID == 0;
         public ref NetSegment Segment => ref SegmentID.ToSegment();
 
         public SegmentDTO(ushort segmentID) {
@@ -19,11 +18,6 @@ namespace PathController.UI.Data {
                     .Select(PathControllerManager.Instance.GetOrCreateLane)
                     .ToArray()/*.LogRet("lanes")*/;
             }
-        }
-
-        public void Empty() {
-            SegmentID = 0;
-            Lanes = new CustomLane[0];
         }
     }
 }

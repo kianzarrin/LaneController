@@ -1,7 +1,5 @@
 namespace PathController.UI.Marker;
 using ColossalFramework;
-
-using ICities;
 using PathController.Tool;
 using UnityEngine;
 
@@ -13,8 +11,12 @@ public class ControlPointMarker {
     internal const float MAX_ERROR = 2.5f;
     internal bool Hovered;
     internal bool Selected;
+    internal int i;
 
-    public ControlPointMarker(Vector3 pos) => UpdatePosition(pos);
+    public ControlPointMarker(Vector3 pos, int i) {
+        this.i = i;
+        UpdatePosition(pos);
+    }
 
     public void UpdatePosition(Vector3 pos) {
         Position = pos;

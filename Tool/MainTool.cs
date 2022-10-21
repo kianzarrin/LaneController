@@ -38,8 +38,7 @@ namespace PathController.Tool {
 
         public bool ToolEnabled => enabled;
 
-        public static SegmentDTO[] segmentBuffer = new SegmentDTO[NetManager.MAX_SEGMENT_COUNT];
-        public SegmentDTO SegmentInstance { get; private set; } = new SegmentDTO();
+        public SegmentDTO SegmentInstance { get; private set; }
 
         private CustomLane laneInstance_;
         public BezierMarker BezierMarker { get; private set; }
@@ -145,7 +144,7 @@ namespace PathController.Tool {
             Panel.Hide();
             SetMode(ToolType.SelectInstance);
             LaneInstance = null;
-            SegmentInstance.Empty();
+            SegmentInstance = null;
         }
         public void SetDefaultMode() => SetMode(ToolType.SelectInstance);
         public void SetMode(ToolType mode) => SetMode(Tools[mode]);

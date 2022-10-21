@@ -401,7 +401,7 @@ namespace PathController.UI.Editors
 
             //if (ItemsPanel.components.Count > 0 && PathControllerExtendedTool.Instance.CurrentTool.Type < ToolType.SelectLane)
                 ClearItems();
-            if (!ToolInstance.SegmentInstance.IsEmpty)
+            if (ToolInstance.SegmentInstance != null)
                 FillItems();
 
             if (ToolInstance.LaneInstance != null)

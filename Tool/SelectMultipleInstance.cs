@@ -1,4 +1,4 @@
-﻿using PathController.Util;
+using PathController.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,6 @@ namespace PathController.Tool
     class SelectMultipleInstancesTool : SelectInstanceTool
     {
         public List<ushort> SelectedSegmentIDs = new List<ushort> { };
-        private int arrLen = 0;
 
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {

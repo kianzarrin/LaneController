@@ -68,13 +68,5 @@ namespace PathController.Tool
             //Tool.SetMode(ToolType.ModifyLane);
             //return;
         }
-
-
-        #region control points
-        private Bezier3 ControlPoints;
-
-
-
-        #endregion
     }
 }

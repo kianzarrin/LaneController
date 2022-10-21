@@ -26,7 +26,7 @@ public class BezierMarker {
         LaneIdAndIndex = laneIdAndIndex;
         var bezier = laneIdAndIndex.Lane.m_bezier;
         for (int i = 0; i < 4; ++i)
-            controlMarkers[i] = new ControlPointMarker(bezier.ControlPoint(i));
+            controlMarkers[i] = new ControlPointMarker(bezier.ControlPoint(i), i);
     }
 
 
