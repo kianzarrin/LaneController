@@ -42,7 +42,16 @@ namespace PathController.Tool
         public virtual void OnMouseUp(Event e) => OnPrimaryMouseClicked(e);
         public virtual void OnPrimaryMouseClicked(Event e) { }
 
-        public virtual void OnSecondaryMouseClicked() => Tool.SetDefaultMode();
+        public virtual void OnSecondaryMouseClicked() {
+            if (Type >= (ToolType)1) {
+                Tool.SetMode(Type - 1);
+            } else {
+                Tool.SetDefaultMode();
+            }
+        }
+
+
+        public virtual void SimulationStep() { }
     }
 
     public enum ToolType {

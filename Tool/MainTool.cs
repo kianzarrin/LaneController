@@ -140,11 +140,10 @@ namespace PathController.Tool {
             base.Awake();
             Camera = UIView.GetAView().uiCamera;
 
-            Tools = new Dictionary<ToolType, BaseTool>()
-            {
+            Tools = new() {
                 { ToolType.SelectSegment, new SelectSegmentTool() },
                 { ToolType.SelectLane, new SelectLaneTool() },
-                // More here...
+                { ToolType.ModifyLane, new ModifyLaneTool() },
             };
 
             PathControllerExtendedPanel.CreatePanel();
@@ -267,11 +266,7 @@ namespace PathController.Tool {
         public override void SimulationStep() {
             try {
                 base.SimulationStep();
-                if (BezierMarker != null) {
-                    RaycastInput input = new(MouseRay, MouseRayLength) { m_ignoreTerrain = false };
-                    RayCast(input, out RaycastOutput output);
-                    BezierMarker.Drag(output.m_hitPos);
-                }
+                CurrentTool.SimulationStep();
             } catch (Exception ex) { ex.Log(); }
         }
         #endregion
@@ -283,7 +278,6 @@ namespace PathController.Tool {
                 base.RenderOverlay(cameraInfo);
                 CurrentTool?.RenderOverlay(cameraInfo);
                 Panel?.Render(cameraInfo);
-                BezierMarker?.RenderOverlay(cameraInfo, Color.green);
                 base.RenderOverlay(cameraInfo);
             } catch (Exception ex) { ex.Log(); }
         }

@@ -1,11 +1,11 @@
 namespace PathController.Tool;
+using System;
 using KianCommons;
 using PathController.Util;
 using UnityEngine;
 
 public class SelectLaneTool : SelectSegmentTool {
     public override ToolType Type => ToolType.SelectLane;
-    public override bool ShowPanel => true;
     public LaneIdAndIndex HoveredLaneIdAndIndex { get; private set; }
 
     public override void OnUpdate() {
