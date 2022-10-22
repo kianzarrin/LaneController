@@ -7,15 +7,16 @@ using PathController.Util;
 using UnityEngine;
 
 public class BezierMarker {
+    public LaneIdAndIndex LaneIdAndIndex;
+    public ControlPointMarker[] controlMarkers = new ControlPointMarker[4];
+
     internal bool Focused =>
         A.Hovered || A.Selected ||
         B.Hovered || B.Selected ||
         C.Hovered || C.Selected ||
         D.Hovered || D.Selected;
 
-    public LaneIdAndIndex LaneIdAndIndex;
     public CustomLane CustomLane => PathControllerManager.Instance.GetOrCreateLane(LaneIdAndIndex);
-    public ControlPointMarker[] controlMarkers = new ControlPointMarker[4];
     public ControlPointMarker A => controlMarkers[0];
     public ControlPointMarker B => controlMarkers[1];
     public ControlPointMarker C => controlMarkers[2];

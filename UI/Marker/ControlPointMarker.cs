@@ -7,7 +7,7 @@ public class ControlPointMarker {
     internal bool UnderGround;
     internal Vector3 TerrainPosition; // projected on terrain
     internal Vector3 Position; // original height.
-    internal static float Radius = 2.5f;
+    internal static float Radius = 1.5f;
     internal const float MAX_ERROR = 2.5f;
     internal bool Hovered;
     internal bool Selected;

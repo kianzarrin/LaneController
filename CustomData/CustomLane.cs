@@ -16,7 +16,7 @@ public interface ICustomPath {
 public class CustomLane : ICustomPath  {
     public CustomLane(LaneIdAndIndex laneIdAndIndex) {
         LaneIdAndIndex = laneIdAndIndex;
-        Beizer0 = LaneIdAndIndex.Lane.m_bezier;
+        Beizer0 = FinalBezier;
     }
 
     #region Data
@@ -41,7 +41,7 @@ public class CustomLane : ICustomPath  {
 
     public void UpdateControlPoint(int i, Vector3 newPos) {
         DeltaControlPoints.ControlPoint(i) = newPos - Beizer0.ControlPoint(i);
-        LaneIdAndIndex.Lane.m_bezier.ControlPoint(i) = newPos;
+        FinalBezier.ControlPoint(i) = newPos;
         QueueUpdate();
     }
     #endregion
@@ -50,7 +50,8 @@ public class CustomLane : ICustomPath  {
     public NetInfo.Lane LaneInfo => LaneIdAndIndex.LaneInfo;
     public int Index => LaneIdAndIndex.LaneIndex;
     public uint LaneID => LaneIdAndIndex.LaneID;
-    public Vector3 GetControlPoint(int i) => LaneIdAndIndex.Lane.m_bezier.ControlPoint(i);
+    public Vector3 GetControlPoint(int i) => FinalBezier.ControlPoint(i);
+    public ref Bezier3 FinalBezier => ref LaneIdAndIndex.Lane.m_bezier; 
 
     #endregion
 

@@ -230,9 +230,17 @@ namespace PathController.Tool {
             } catch (Exception ex) { ex.Log(); }
         }
 
+        #endregion
+
         public new static bool RayCast(RaycastInput input, out RaycastOutput output) => ToolBase.RayCast(input, out output);
 
-        #endregion
+        /// <summary>Check whether the position is below the ground level.</summary>
+        /// <param name="position">Point in the world.</param>
+        /// <returns>True if the position is below the ground level</returns>
+        public static bool CheckIsUnderground(Vector3 position) {
+            float sampledHeight = TerrainManager.instance.SampleDetailHeightSmooth(position);
+            return sampledHeight > position.y;
+        }
 
         #region Tool GUI
         private bool IsMouseDown { get; set; }

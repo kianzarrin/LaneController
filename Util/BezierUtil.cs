@@ -58,12 +58,27 @@ namespace PathController.Util
             return bezier;
         }
 
+        /// <summary>
+        /// Creates copy of bezier at designated height
+        /// </summary>
+        internal static Bezier3 ForceHeight(this Bezier3 bezier, float height) {
+            bezier.a.y = height;
+            bezier.b.y = height;
+            bezier.c.y = height;
+            bezier.d.y = height;
+            return bezier;
+        }
+
         public static Bezier3 Add(this Bezier3 lhs, Bezier3 rhs) {
             return new Bezier3(
                 lhs.a + rhs.a,
                 lhs.b + rhs.b,
                 lhs.c + rhs.c,
                 lhs.d + rhs.d);
+        }
+
+        public static bool EqualsTo(this Bezier3 lhs, Bezier3 rhs) {
+            return lhs.a == rhs.a && lhs.b == rhs.b && lhs.c == rhs.c && lhs.d == rhs.d;
         }
 
         public static Bezier3 CalcPerfict(Vector3 start, Vector3 end, Vector3 point1, Vector3 point2, float t1, float t2)
