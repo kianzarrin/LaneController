@@ -120,11 +120,11 @@ namespace PathController.UI
             Editors.Add(editor);
         }
 
-        public void SetSegment(ushort segmentID)
+        public void SetSegment(ushort segmentId)
         {
-            Log.Debug("LaneManagerPanel.SetSegment(" + segmentID.ToString() + ") called");
+            Log.Debug("LaneManagerPanel.SetSegment(" + segmentId.ToString() + ") called");
             Show();
-            Caption.text = "Segment " + segmentID.ToString();
+            Caption.text = "Segment " + segmentId.ToString();
             TabStrip.selectedIndex = -1;
             SelectEditor<LaneEditor>();
         }

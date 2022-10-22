@@ -32,7 +32,7 @@ namespace PathController.UI.Editors
                     RenderUtil.RenderLaneOverlay(
                         cameraInfo,
                         HoverItem.Object.LaneIdAndIndex,
-                        (SelectItem?.Object.LaneID != HoverItem.Object.LaneID) ? Color.yellow : Colors.Add(Color.red, 0.15f),
+                        (SelectItem?.Object.LaneId != HoverItem.Object.LaneId) ? Color.yellow : Colors.Add(Color.red, 0.15f),
                         true);
                 } else {
                     RenderUtil.RenderLaneOverlay(cameraInfo, HoverItem.Object.LaneIdAndIndex, Color.yellow, true);
@@ -41,7 +41,7 @@ namespace PathController.UI.Editors
 
             if (IsSelectItem)
             {
-                if (HoverItem?.Object.LaneID != SelectItem.Object.LaneID)
+                if (HoverItem?.Object.LaneId != SelectItem.Object.LaneId)
                     RenderUtil.RenderLaneOverlay(cameraInfo, SelectItem.Object.LaneIdAndIndex, Color.magenta, true);
             }
         }

@@ -49,7 +49,7 @@ public class CustomLane : ICustomPath  {
     #region shortcuts
     public NetInfo.Lane LaneInfo => LaneIdAndIndex.LaneInfo;
     public int Index => LaneIdAndIndex.LaneIndex;
-    public uint LaneID => LaneIdAndIndex.LaneID;
+    public uint LaneId => LaneIdAndIndex.LaneId;
     public Vector3 GetControlPoint(int i) => FinalBezier.ControlPoint(i);
     public ref Bezier3 FinalBezier => ref LaneIdAndIndex.Lane.m_bezier; 
 
@@ -72,19 +72,19 @@ public class CustomLane : ICustomPath  {
         DeltaControlPoints = default;
     }
 
-    public void QueueUpdate() => NetManager.instance.UpdateSegment(LaneIdAndIndex.SegmentID);
+    public void QueueUpdate() => NetManager.instance.UpdateSegment(LaneIdAndIndex.SegmentId);
 
     public void RecalculateLaneBezier() {
         Log.Called(LaneIdAndIndex);
         ref NetLane lane = ref LaneIdAndIndex.Lane;
-        ushort segmentID = lane.m_segment;
-        ref NetSegment segment = ref segmentID.ToSegment();
+        ushort segmentId = lane.m_segment;
+        ref NetSegment segment = ref segmentId.ToSegment();
         NetInfo.Lane laneInfo = LaneInfo;
 
-        segment.CalculateCorner(segmentID, true, true, true, out Vector3 cornerStartLeft, out Vector3 dirStartLeft, out bool smoothStart);
-        segment.CalculateCorner(segmentID, true, false, true, out Vector3 cornerEndLeft, out Vector3 dirEndLeft, out bool smoothEnd);
-        segment.CalculateCorner(segmentID, true, true, false, out Vector3 cornerStartRight, out Vector3 dirStartRight, out smoothStart);
-        segment.CalculateCorner(segmentID, true, false, false, out Vector3 cornerEndRight, out Vector3 dirEndRight, out smoothEnd);
+        segment.CalculateCorner(segmentId, true, true, true, out Vector3 cornerStartLeft, out Vector3 dirStartLeft, out bool smoothStart);
+        segment.CalculateCorner(segmentId, true, false, true, out Vector3 cornerEndLeft, out Vector3 dirEndLeft, out bool smoothEnd);
+        segment.CalculateCorner(segmentId, true, true, false, out Vector3 cornerStartRight, out Vector3 dirStartRight, out smoothStart);
+        segment.CalculateCorner(segmentId, true, false, false, out Vector3 cornerEndRight, out Vector3 dirEndRight, out smoothEnd);
 
         float normalizedPos = Position / (segment.Info.m_halfWidth * 2f) + 0.5f;
         if ((segment.m_flags & NetSegment.Flags.Invert) != NetSegment.Flags.None) {
@@ -101,12 +101,12 @@ public class CustomLane : ICustomPath  {
 
         Beizer0 = new Bezier3(a, b, c, d);
         lane.m_bezier = Beizer0.Add(DeltaControlPoints);
-        lane.m_segment = segmentID;
+        lane.m_segment = segmentId;
 
         lane.UpdateLength();
         float lanesTotalLength = 0;
         if (segment.Info.m_lanes.Length != 0)
-            foreach (var lane2 in new LaneIterator(segmentID))
+            foreach (var lane2 in new LaneIterator(segmentId))
                 lanesTotalLength += lane2.Lane.m_length;
 
         if (segment.Info.m_lanes.Length != 0) {
@@ -118,13 +118,13 @@ public class CustomLane : ICustomPath  {
 
     public void CalculateBeizer0() {
         ref NetLane lane = ref LaneIdAndIndex.Lane;
-        ushort segmentID = lane.m_segment;
-        ref NetSegment segment = ref segmentID.ToSegment();
+        ushort segmentId = lane.m_segment;
+        ref NetSegment segment = ref segmentId.ToSegment();
 
-        segment.CalculateCorner(segmentID, true, true, true, out Vector3 cornerStartLeft, out Vector3 dirStartLeft, out bool smoothStart);
-        segment.CalculateCorner(segmentID, true, false, true, out Vector3 cornerEndLeft, out Vector3 dirEndLeft, out bool smoothEnd);
-        segment.CalculateCorner(segmentID, true, true, false, out Vector3 cornerStartRight, out Vector3 dirStartRight, out smoothStart);
-        segment.CalculateCorner(segmentID, true, false, false, out Vector3 cornerEndRight, out Vector3 dirEndRight, out smoothEnd);
+        segment.CalculateCorner(segmentId, true, true, true, out Vector3 cornerStartLeft, out Vector3 dirStartLeft, out bool smoothStart);
+        segment.CalculateCorner(segmentId, true, false, true, out Vector3 cornerEndLeft, out Vector3 dirEndLeft, out bool smoothEnd);
+        segment.CalculateCorner(segmentId, true, true, false, out Vector3 cornerStartRight, out Vector3 dirStartRight, out smoothStart);
+        segment.CalculateCorner(segmentId, true, false, false, out Vector3 cornerEndRight, out Vector3 dirEndRight, out smoothEnd);
 
         float normalizedPos = Position / (segment.Info.m_halfWidth * 2f) + 0.5f;
         if ((segment.m_flags & NetSegment.Flags.Invert) != NetSegment.Flags.None) {

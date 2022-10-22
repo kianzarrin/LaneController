@@ -41,16 +41,14 @@ namespace PathController.Tool
         }
         public virtual void OnMouseUp(Event e) => OnPrimaryMouseClicked(e);
         public virtual void OnPrimaryMouseClicked(Event e) { }
-        public virtual void OnSecondaryMouseClicked() { }
+
+        public virtual void OnSecondaryMouseClicked() => Tool.SetDefaultMode();
     }
 
-    public enum ToolType
-    {
-        None                    = 0x0,
-        SelectInstance          = 0x1,
-        SelectLane              = 0x2,
-        ModifyLane              = 0x4,
-        DragBezierPoint         = 0x8,
-        SelectMultipleInstances = 0x10,
+    public enum ToolType {
+        Initial       = 0x0,
+        SelectSegment = 0x0,
+        SelectLane    = 0x1,
+        ModifyLane    = 0x2,
     }
 }

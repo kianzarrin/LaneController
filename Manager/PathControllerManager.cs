@@ -36,7 +36,7 @@ public class PathControllerManager {
         set {
             Lanes.Clear();
             foreach(var customLane in value)
-                Lanes[customLane.LaneID] = customLane;
+                Lanes[customLane.LaneId] = customLane;
         }
     }
 
@@ -62,42 +62,41 @@ public class PathControllerManager {
 
     internal Dictionary<uint, CustomLane> Lanes = new(1000);
 
-    public CustomLane GetLane(uint laneID) => Lanes.GetorDefault(laneID);
+    public CustomLane GetLane(uint laneId) => Lanes.GetorDefault(laneId);
 
-    //public CustomLane GetOrCreateLane(uint laneID) {
-    //    if (Lanes.TryGetValue(laneID, out var ret)) {
-    //        return ret;
-    //    } else {
-    //        int laneIndex = NetUtil.GetLaneIndex(laneID);
-    //        return Lanes[laneID] = new CustomLane(new(laneID, laneIndex));
-    //    }
-    //}
+    public CustomLane[] GetOrCreateLanes(ushort segmentId) {
+        if(segmentId == 0) return new CustomLane[0];
+        return new LaneIterator(segmentId).
+            Select(laneIdAndIndex => GetOrCreateLane(laneIdAndIndex)).
+            ToArray();
+    }
+
     public CustomLane GetOrCreateLane(LaneIdAndIndex laneIdAndIndex) {
-        uint laneID = laneIdAndIndex.LaneID;
-        if (Lanes.TryGetValue(laneID, out var ret)) {
+        uint laneId = laneIdAndIndex.LaneId;
+        if (Lanes.TryGetValue(laneId, out var ret)) {
             return ret;
         } else {
-            return Lanes[laneID] = new CustomLane(laneIdAndIndex);
+            return Lanes[laneId] = new CustomLane(laneIdAndIndex);
         }
     }
 
-    public void Trim(uint laneID) {
-        if (Lanes.TryGetValue(laneID, out var lane)
+    public void Trim(uint laneId) {
+        if (Lanes.TryGetValue(laneId, out var lane)
             && lane.IsDefault()) {
-            Lanes.Remove(laneID);
+            Lanes.Remove(laneId);
         }
     }
 
-    public void UpateLanes(ushort segmentID) {
+    public void UpateLanes(ushort segmentId) {
         float len = 0;
         int count = 0;
-        foreach(var laneIdAndIndex in new LaneIterator(segmentID)) {
-            GetLane(laneIdAndIndex.LaneID)?.PostfixLaneBezier();
+        foreach(var laneIdAndIndex in new LaneIterator(segmentId)) {
+            GetLane(laneIdAndIndex.LaneId)?.PostfixLaneBezier();
             len += laneIdAndIndex.Lane.m_length;
             count++;
         }
 
         if(count > 0) 
-            segmentID.ToSegment().m_averageLength = len / count;
+            segmentId.ToSegment().m_averageLength = len / count;
     }
 }

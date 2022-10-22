@@ -1,72 +1,39 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ColossalFramework.Math;
+namespace PathController.Tool;
+using KianCommons;
 using PathController.Util;
 using UnityEngine;
-using static ToolBase;
 
-namespace PathController.Tool
-{
-    public class SelectLaneTool : BaseTool
-    {
-        public override ToolType Type => ToolType.SelectLane;
+public class SelectLaneTool : SelectSegmentTool {
+    public override ToolType Type => ToolType.SelectLane;
+    public override bool ShowPanel => true;
+    public LaneIdAndIndex HoveredLaneIdAndIndex { get; private set; }
 
-        public ushort HoveredSegmentId { get; private set; } = 0;
-
-        protected bool IsHover => (HoveredSegmentId != 0);
-
-        protected bool HoverValid => PathControllerTool.MouseRayValid && IsHover;
-        public int HoveredLaneIndex { get; private set; } = 0;
-
-        protected override void Reset()
-        {
-        }
-
-        public override void OnUpdate()
-        {
-            base.OnUpdate();
-
-            RaycastInput segmentInput = new RaycastInput(PathControllerTool.MouseRay, PathControllerTool.MouseRayLength)
-            {
-                m_ignoreTerrain = true,
-                m_ignoreSegmentFlags = NetSegment.Flags.None,
-                m_ignoreNodeFlags = NetNode.Flags.All
-            };
-            segmentInput.m_netService.m_itemLayers = (ItemClass.Layer.Default | ItemClass.Layer.MetroTunnels);
-            segmentInput.m_netService.m_service = ItemClass.Service.Road;
-
-            if (PathControllerTool.RayCast(segmentInput, out RaycastOutput segmentOutput))
-            {
-                HoveredSegmentId = segmentOutput.m_netSegment;
-            } else {
-                HoveredSegmentId = 0;
-            }
-
-            if (Tool.SegmentInstance.Segment.
-                GetClosestLanePosition(
+    public override void OnUpdate() {
+        base.OnUpdate();
+        if (HoveredSegmentId == Tool.SegmentInstance.SegmentId &&
+            HoveredSegmentId.ToSegment().GetClosestLanePosition(
                 PathControllerTool.MouseWorldPosition, NetInfo.LaneType.All, VehicleInfo.VehicleType.All, VehicleInfo.VehicleCategory.All,
-                out var hitPos, out uint laneID, out var laneIndex, out _))
-            {
-                HoveredLaneIndex = laneIndex;
-            }
+                out var hitPos, out uint laneId, out var laneIndex, out _)) {
+            HoveredLaneIdAndIndex = new(laneId, laneIndex);
+        } else {
+            HoveredLaneIdAndIndex = default;
         }
+    }
 
-        public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
-        {
-            if (HoverValid && HoveredLaneIndex >=0) {
-                RenderUtil.RenderLaneOverlay(cameraInfo, Tool.SegmentInstance.Lanes[HoveredLaneIndex].LaneIdAndIndex, Color.yellow, true);
-            }
+    public override void RenderOverlay(RenderManager.CameraInfo cameraInfo) {
+        if (Tool.IsSegmentSelected(HoveredSegmentId)) {
+            RenderUtil.RenderLaneOverlay(cameraInfo, HoveredLaneIdAndIndex, Color.yellow, true);
+        } else {
+            base.RenderOverlay(cameraInfo);
         }
+    }
 
-        public override void OnSecondaryMouseClicked() => Tool.SetDefaultMode();
-
-        public override void OnPrimaryMouseClicked(Event e)
-        {
-            //Tool.SetLane(HoveredLaneIndex);
-            //Tool.SetMode(ToolType.ModifyLane);
-            //return;
+    public override void OnPrimaryMouseClicked(Event e) {
+        if (Tool.IsSegmentSelected(HoveredSegmentId)) {
+            Tool.SetLane(HoveredLaneIdAndIndex.LaneIndex);
+            Tool.SetMode(ToolType.ModifyLane);
+        } else {
+            base.OnPrimaryMouseClicked(e);
         }
     }
 }
