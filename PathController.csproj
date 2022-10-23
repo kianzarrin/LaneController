@@ -57,11 +57,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="KianCommons\**" />
-    <Compile Remove="UI\Header\**" />
     <EmbeddedResource Remove="KianCommons\**" />
-    <EmbeddedResource Remove="UI\Header\**" />
     <None Remove="KianCommons\**" />
-    <None Remove="UI\Header\**" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\uui_movelanes.png" />
@@ -84,6 +81,7 @@
     <Compile Include="KianCommons\KianCommons\Serialization\XMLUtil.cs" />
     <Compile Include="KianCommons\KianCommons\UI\TextureExtensions.cs" />
     <Compile Include="KianCommons\KianCommons\UI\TextureUtil.cs" />
+    <Compile Include="KianCommons\KianCommons\UI\UIExtensions.cs" />
     <Compile Include="KianCommons\KianCommons\Util\Assertion.cs" />
     <Compile Include="KianCommons\KianCommons\Util\DelegateUtil.cs" />
     <Compile Include="KianCommons\KianCommons\Util\EnumExtensions.cs" />

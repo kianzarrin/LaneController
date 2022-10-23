@@ -1,4 +1,4 @@
-﻿using ColossalFramework.UI;
+using ColossalFramework.UI;
 using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
@@ -32,8 +32,6 @@ namespace ModsCommon.UI
             autoLayoutPadding = new RectOffset(0, 0, 0, 0);
 
             Additional = AddUIComponent<AdditionalHeaderButton>();
-            Additional.tooltip = CommonLocalize.Panel_Additional;
-            Additional.SetIcon(CommonTextures.Atlas, CommonTextures.HeaderAdditionalButton);
             Additional.PopupOpenedEvent += OnPopupOpened;
             Additional.PopupCloseEvent += OnPopupClose;
             SetButtonColors(Additional);

@@ -1,120 +1,59 @@
-using ColossalFramework;
+namespace ModsCommon.UI;
 using ColossalFramework.UI;
-using KianCommons;
-using PathController.Util;
 using System;
-using System.Linq;
 using UnityEngine;
 
-namespace ModsCommon.UI;
-public abstract class HeaderButton : UIButton {
-    internal const string BG_NORMAL = "header_bg_normal";
-    internal const string BG_HOVERED = "header_bg_hovered";
-    internal const string BG_PRESSED = "header_bg_pressed";
-    internal const string BG_DISABLED = "header_bg_disabled";
+public abstract class HeaderButton : ButtonBase {
+    public override int ButtonSize => 25;
+}
 
-    internal abstract string SpriteName { get; }
+[Flags]
+public enum HeaderButtonState {
+    Main = 1,
+    Additional = 2,
+    //Auto = Main | Additional,
+}
+public interface IHeaderButtonInfo {
+    public event MouseEventHandler ClickedEvent;
 
-    public string AtlasName => $"{GetType().Name}_rev" + typeof(HeaderButton).VersionOf();
-    public const int SIZE = 25;
+    public HeaderButton Button { get; }
 
-    public virtual string Tooltip => null;
-
-    public void RefreshToolTip() {
-        try {
-            if (Tooltip != null)
-                tooltip = Tooltip;
-            if (Hotkey == null || tooltip.Contains('('))
-                return;
-            tooltip += $" ( {Hotkey} )";
-        } catch (Exception ex) { ex.Log(this.name); }
+    public void AddButton(UIComponent parent);
+    public void RemoveButton();
+    public HeaderButtonState State { get; }
+    public bool Visible { get; set; }
+}
+public class HeaderButtonInfo<TypeButton> : IHeaderButtonInfo
+    where TypeButton : HeaderButton {
+    public event MouseEventHandler ClickedEvent {
+        add => Button.eventClicked += value;
+        remove => Button.eventClicked -= value;
     }
 
-    public SavedInputKey Hotkey;
+    HeaderButton IHeaderButtonInfo.Button => Button;
+    public TypeButton Button { get; }
 
-    public override void Awake() {
-        try {
-            base.Awake();
-            size = new Vector2(SIZE, SIZE);
-            canFocus = false;
-            name = GetType().Name;
-            playAudioEvents = true;
-            
-        } catch (Exception ex) { Log.Exception(ex); }
+    public HeaderButtonState State { get; }
+    private Action OnClick { get; }
+
+    public bool Visible { get; set; } = true;
+    public bool Enable {
+        get => Button.isEnabled;
+        set => Button.isEnabled = value;
+    }
+    private HeaderButtonInfo(HeaderButtonState state) {
+        State = state;
+        Button = new GameObject(typeof(TypeButton).Name).AddComponent<TypeButton>();
     }
 
-    public override void Start() {
-        try {
-            base.Start();
-            tooltip = Tooltip;
-            disabledFgSprite = pressedFgSprite = hoveredFgSprite = normalFgSprite = SpriteName;
-            pressedBgSprite = BG_PRESSED;
-            disabledBgSprite = BG_DISABLED;
-
-            string[] spriteNames = new string[] {
-                BG_NORMAL,
-                BG_HOVERED,
-                BG_PRESSED,
-                SpriteName,
-            };
-
-            var atlas = TextureUtil.GetAtlas(AtlasName);
-            if (atlas == UIView.GetAView().defaultAtlas) {
-                atlas = TextureUtil.CreateTextureAtlas($"{SpriteName}.png", AtlasName, SIZE, SIZE, spriteNames);
-            }
-
-            this.atlas = atlas;
-            RefreshToolTip();
-        } catch (Exception ex) { Log.Exception(ex); }
+    public void AddButton(UIComponent parent) {
+        RemoveButton();
+        parent.AttachUIComponent(Button.gameObject);
+        Button.transform.parent = parent.cachedTransform;
     }
 
-
-    public override void OnDestroy() {
-        base.OnDestroy();
-        this.SetAllDeclaredFieldsToNull();
+    public void RemoveButton() {
+        Button.parent?.RemoveUIComponent(Button);
+        Button.transform.parent = null;
     }
-
-
-
-    public override void Start() {
-        base.Start();
-        Log.Info("GoToButton.Start() is called.");
-
-        playAudioEvents = true;
-        tooltip = "Go to network";
-
-        string[] spriteNames = new string[]
-        {
-            GoToButtonBg,
-            GoToButtonBgHovered,
-            GoToButtonBgPressed,
-            GotoIcon,
-        };
-
-        var atlas = TextureUtil.GetAtlas(AtlasName);
-        if (atlas == UIView.GetAView().defaultAtlas) {
-            atlas = TextureUtil.CreateTextureAtlas("goto.png", AtlasName, SIZE, SIZE, spriteNames);
-        }
-
-        this.atlas = atlas;
-
-        hoveredBgSprite = GoToButtonBgHovered;
-        pressedBgSprite = GoToButtonBgPressed;
-        normalBgSprite = focusedBgSprite = disabledBgSprite = GoToButtonBg;
-        normalFgSprite = focusedFgSprite = disabledFgSprite = hoveredFgSprite = pressedFgSprite = GotoIcon;
-
-        Show();
-        Unfocus();
-        Invalidate();
-        Log.Info("GoToButton created sucessfully.");
-    }
-
-    protected override void OnClick(UIMouseEventParameter p) {
-        Log.Debug("ON CLICK CALLED");
-        base.OnClick(p);
-        GoToPanel.GoToPanel.Instance.Open(0);
-
-    }
-
-
 }
