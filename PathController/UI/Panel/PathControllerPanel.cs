@@ -17,10 +17,11 @@ public class PathControllerPanel : UIPanel
     public List<BaseEditor> Editors { get; } = new List<BaseEditor>();
     public BaseEditor CurrentEditor { get; set; }
 
-    private Vector2 EditorSize => size - new Vector2(0, Header.height + TabStrip.height);
+    private Vector2 EditorSize => size - new Vector2(0, HeaderHeight + TabStrip.height);
     private Vector2 EditorPosition => new Vector2(0, TabStrip.relativePosition.y + TabStrip.height);
 
     private static float TabStripHeight => 20;
+    private static float HeaderHeight => 42;
 
     public static UITextureAtlas ResizeAtlas { get; } = GetResizeIcon();
     private static UITextureAtlas GetResizeIcon()
@@ -57,8 +58,8 @@ public class PathControllerPanel : UIPanel
         CreateEditors();
         CreateSizeChanger();
 
-        size = new Vector2(550, Header.height + TabStrip.height + 400);
-        minimumSize = new Vector2(500, Header.height + TabStrip.height + 200);
+        size = new Vector2(550, HeaderHeight + TabStrip.height + 400);
+        minimumSize = new Vector2(500, HeaderHeight + TabStrip.height + 200);
     }
 
     public void UpdatePanel() => CurrentEditor?.UpdateEditor();
@@ -68,13 +69,13 @@ public class PathControllerPanel : UIPanel
         Header = AddUIComponent<PanelHeader>();
         Header.relativePosition = new Vector2(0, 0);
         Header.Target = parent;
-        Header.Init(500);
+        Header.Init(HeaderHeight);
     }
 
     private void CreateTabStrip()
     {
         TabStrip = AddUIComponent<CustomUITabstrip>();
-        TabStrip.relativePosition = new Vector3(0, Header.height);
+        TabStrip.relativePosition = new Vector3(0, HeaderHeight);
         TabStrip.eventSelectedIndexChanged += TabStripSelectedIndexChanged;
         TabStrip.selectedIndex = -1;
     }
@@ -147,7 +148,7 @@ public class PathControllerPanel : UIPanel
         if (CurrentEditor != null)
             CurrentEditor.size = EditorSize;
         if (Header != null)
-            Header.size = new Vector2(size.x, Header.height);
+            Header.size = new Vector2(size.x, HeaderHeight);
         if (SizeChanger != null)
             SizeChanger.relativePosition = size - SizeChanger.size;
     }

@@ -252,7 +252,6 @@ namespace PathController.Tool {
         public void SetMode(ToolType mode) => SetMode(Tools[mode]);
         public void SetMode(BaseTool subtool) {
             Log.Called(subtool);
-            Log.Debug(Environment.StackTrace);
             CurrentTool?.DeInit();
             CurrentTool = subtool;
             CurrentTool?.Init();

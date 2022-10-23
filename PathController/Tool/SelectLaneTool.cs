@@ -12,7 +12,6 @@ public class SelectLaneTool : SelectSegmentTool {
 
     protected override void Reset() {
         Log.Called();
-        Log.Debug(Environment.StackTrace);
         PreferNodeHover = default;
         HoveredNodeId = default;
         HoveredSegmentId = default;

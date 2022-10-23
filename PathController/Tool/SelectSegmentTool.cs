@@ -25,7 +25,6 @@ public class SelectSegmentTool : BaseTool {
 
     protected override void Reset() {
         Log.Called();
-        Log.Debug(Environment.StackTrace);
         base.Reset();
         PreferNodeHover = default;
         HoveredNodeId = default;
