@@ -1,4 +1,4 @@
-﻿using ColossalFramework.UI;
+using ColossalFramework.UI;
 using PathController.Util;
 using PathController.UI.Editors;
 using UnityEngine;
@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using KianCommons.UI;
 
 namespace PathController.UI
 {
@@ -16,11 +17,8 @@ namespace PathController.UI
         {
             var spriteNames = new string[] { "Item" };
 
-            var atlas = TextureUtil.GetAtlas(nameof(ItemAtlas));
-            if (atlas == UIView.GetAView().defaultAtlas)
-                atlas = TextureUtil.CreateTextureAtlas("ListItem.png", nameof(ItemAtlas), 21, 26, spriteNames, new RectOffset(1, 1, 1, 1));
-
-            return atlas;
+            return TextureUtil.GetAtlasOrNull(nameof(ItemAtlas))??
+                TextureUtil.CreateTextureAtlas("ListItem.png", nameof(ItemAtlas), 21, 26, spriteNames, new RectOffset(1, 1, 1, 1));
         }
 
         public virtual Color32 NormalColor => new Color32(29, 58, 77, 255);

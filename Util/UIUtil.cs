@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using UnityEngine;
-using PathController.Util;
+using KianCommons.UI;
 
 namespace PathController.UI {
     public static class UIUtils {

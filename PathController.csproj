@@ -57,8 +57,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="KianCommons\**" />
+    <Compile Remove="UI\Header\**" />
     <EmbeddedResource Remove="KianCommons\**" />
+    <EmbeddedResource Remove="UI\Header\**" />
     <None Remove="KianCommons\**" />
+    <None Remove="UI\Header\**" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\uui_movelanes.png" />
@@ -69,12 +72,18 @@
     <None Remove=".gitmodules" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Remove="Util\TextureUtil.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="KianCommons\KianCommons\IImplict\IMod.cs" />
     <Compile Include="KianCommons\KianCommons\IImplict\IMonoBehaviour.cs" />
     <Compile Include="KianCommons\KianCommons\LifeCycleBase.cs" />
     <Compile Include="KianCommons\KianCommons\Math\MathUtil.cs" />
     <Compile Include="KianCommons\KianCommons\Patches\HarmonyUtil.cs" />
+    <Compile Include="KianCommons\KianCommons\Plugins\PluginUtil.cs" />
     <Compile Include="KianCommons\KianCommons\Serialization\XMLUtil.cs" />
+    <Compile Include="KianCommons\KianCommons\UI\TextureExtensions.cs" />
+    <Compile Include="KianCommons\KianCommons\UI\TextureUtil.cs" />
     <Compile Include="KianCommons\KianCommons\Util\Assertion.cs" />
     <Compile Include="KianCommons\KianCommons\Util\DelegateUtil.cs" />
     <Compile Include="KianCommons\KianCommons\Util\EnumExtensions.cs" />

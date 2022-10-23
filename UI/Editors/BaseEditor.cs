@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using KianCommons;
+using KianCommons.UI;
 
 namespace PathController.UI.Editors
 {
@@ -81,13 +82,8 @@ namespace PathController.UI.Editors
                 {LaneType.Multiple,   nameof(LaneType.Multiple) },
             };
 
-            var atlas = TextureUtil.GetAtlas(nameof(LaneAtlas));
-            if (atlas == UIView.GetAView().defaultAtlas)
-            {
-                atlas = TextureUtil.CreateTextureAtlas("laneTypes.png", nameof(LaneAtlas), 64, 64, LaneSpriteNames.Values.ToArray());
-            }
-
-            return atlas;
+            return TextureUtil.GetAtlasOrNull(nameof(LaneAtlas)) ??
+                TextureUtil.CreateTextureAtlas("laneTypes.png", nameof(LaneAtlas), 64, 64, LaneSpriteNames.Values.ToArray());
         }
 
         private static UITextureAtlas GetDirectionIcons()
@@ -105,13 +101,8 @@ namespace PathController.UI.Editors
                 {NetInfo.Direction.AvoidBoth,     "DirectionAvoidBoth" },
             };
 
-            var atlas = TextureUtil.GetAtlas(nameof(DirectionAtlas));
-            if (atlas == UIView.GetAView().defaultAtlas)
-            {
-                atlas = TextureUtil.CreateTextureAtlas("directions.png", nameof(DirectionAtlas), 64, 64, DirectionSpriteNames.Values.ToArray());
-            }
-
-            return atlas;
+            return TextureUtil.GetAtlasOrNull(nameof(DirectionAtlas)) ??
+                TextureUtil.CreateTextureAtlas("directions.png", nameof(DirectionAtlas), 64, 64, DirectionSpriteNames.Values.ToArray());
         }
         #endregion
 

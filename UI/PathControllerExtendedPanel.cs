@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using KianCommons;
+using KianCommons.UI;
 
 namespace PathController.UI
 {
@@ -30,11 +31,8 @@ namespace PathController.UI
         public static UITextureAtlas ResizeAtlas { get; } = GetResizeIcon();
         private static UITextureAtlas GetResizeIcon()
         {
-            var atlas = TextureUtil.GetAtlas(nameof(ResizeAtlas));
-            if (atlas == UIView.GetAView().defaultAtlas)
-                atlas = TextureUtil.CreateTextureAtlas("resize.png", nameof(ResizeAtlas), 9, 9, new string[] { "resize" }, space: 2);
-
-            return atlas;
+            return TextureUtil.GetAtlasOrNull(nameof(ResizeAtlas)) ??
+                TextureUtil.CreateTextureAtlas("resize.png", nameof(ResizeAtlas), 9, 9, new string[] { "resize" }, space: 2);
         }
 
         public static PathControllerExtendedPanel CreatePanel()

@@ -13,6 +13,8 @@ indent_style=space
 indent_size=4
 tab_width=8
 
+dotnet_diagnostic.CS7035.severity = none
+
 # Microsoft .NET properties
 csharp_new_line_before_else=false
 csharp_new_line_before_members_in_object_initializers=false

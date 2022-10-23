@@ -1,4 +1,5 @@
 using ColossalFramework.UI;
+using KianCommons.UI;
 using PathController.Util;
 using System;
 using System.Collections.Generic;
@@ -20,11 +21,8 @@ namespace PathController.UI.Editors {
                 "EmptySprite"
             };
 
-            var atlas = TextureUtil.GetAtlas(nameof(EditorItemAtlas));
-            if (atlas == UIView.GetAView().defaultAtlas)
-                atlas = TextureUtil.CreateTextureAtlas("TextFieldPanel.png", nameof(EditorItemAtlas), 32, 32, spriteNames, new RectOffset(4, 4, 4, 4), 2);
-
-            return atlas;
+            return TextureUtil.GetAtlasOrNull(nameof(EditorItemAtlas)) ??
+                TextureUtil.CreateTextureAtlas("TextFieldPanel.png", nameof(EditorItemAtlas), 32, 32, spriteNames, new RectOffset(4, 4, 4, 4), 2);
         }
         public virtual void Init() => Init(defaultHeight);
         public void Init(float height) {
