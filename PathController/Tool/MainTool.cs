@@ -152,10 +152,18 @@ namespace PathController.Tool {
         }
         #endregion
 
+        #region Action Shortcut 
+        public static void Copy() { }
+        public static void Paste() { }
+        public static void DeleteAll() { }
+        public static void ResetControlPoints() { }
+        public static void ApplyBetweenIntersections() { }
+        public static void ApplyWholeStreet() { }
+        #endregion
 
         private UIComponent UUIButton;
 
-        PathControllerExtendedPanel Panel => PathControllerExtendedPanel.Instance;
+        PathControllerPanel Panel => PathControllerPanel.Instance;
 
         public static PathControllerTool Instance { get; set; }
 
@@ -172,7 +180,7 @@ namespace PathController.Tool {
                 { ToolType.ModifyLane, new ModifyLaneTool() },
             };
 
-            PathControllerExtendedPanel.CreatePanel();
+            PathControllerPanel.CreatePanel();
             string iconPath = UUIHelpers.GetFullPath<PathControllerMod>("uui_movelanes.png");
             UUIButton = UUIHelpers.RegisterToolButton(
                 name: "PathController",
@@ -211,7 +219,7 @@ namespace PathController.Tool {
             Log.Called();
             base.OnDestroy();
 
-            PathControllerExtendedPanel.RemovePanel();
+            PathControllerPanel.RemovePanel();
             UUIButton?.Destroy();
             enabled = false;
         }

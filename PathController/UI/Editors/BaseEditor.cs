@@ -106,7 +106,7 @@ namespace PathController.UI.Editors
         }
         #endregion
 
-        public PathControllerExtendedPanel LaneManagerPanel { get; private set; }
+        public PathControllerPanel LaneManagerPanel { get; private set; }
 
         protected UIScrollablePanel ItemsPanel { get; set; }
         protected UIScrollablePanel SettingsPanel { get; set; }
@@ -230,7 +230,7 @@ namespace PathController.UI.Editors
         }
         #endregion
 
-        public virtual void Init(PathControllerExtendedPanel panel)
+        public virtual void Init(PathControllerPanel panel)
         {
             Log.Debug("BaseEditor.Init() called.");
             LaneManagerPanel = panel;
@@ -390,7 +390,7 @@ namespace PathController.UI.Editors
                 return;
             }
 
-            //if (ItemsPanel.components.Count > 0 && PathControllerExtendedTool.Instance.CurrentTool.Type < ToolType.SelectLane)
+            //if (ItemsPanel.components.Count > 0 && PathControllerTool.Instance.CurrentTool.Type < ToolType.SelectLane)
                 ClearItems();
             if (ToolInstance.SegmentInstance != null)
                 FillItems();

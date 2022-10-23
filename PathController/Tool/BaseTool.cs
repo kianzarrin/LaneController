@@ -14,7 +14,7 @@ namespace PathController.Tool
         public abstract ToolType Type { get; }
         public virtual bool ShowPanel => true;
         protected PathControllerTool Tool => PathControllerTool.Instance;
-        protected PathControllerExtendedPanel Panel => PathControllerExtendedPanel.Instance;
+        protected PathControllerPanel Panel => PathControllerPanel.Instance;
 
         public virtual void Init() => Reset();
         public virtual void DeInit() { }

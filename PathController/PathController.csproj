@@ -55,6 +55,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\*.png" />
+    <EmbeddedResource Include="Resources\*\*.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="KianCommons\**" />
