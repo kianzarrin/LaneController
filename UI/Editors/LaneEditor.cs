@@ -15,7 +15,7 @@ namespace PathController.UI.Editors
     public class LaneEditor : BaseEditor<LaneItem, CustomLane, LaneIcons>
     {
         public override string Name => "Lane Editor";
-        public override string SelectionMessage => "Select a lane to edit it.";
+        public override string SelectionMessage => "SelectSegment a lane to edit it.";
 
         private FloatPropertyPanel ShiftField , HeightField/*, StartField , EndField*/;
 
@@ -28,21 +28,11 @@ namespace PathController.UI.Editors
         public override void Render(RenderManager.CameraInfo cameraInfo)
         {
             if (IsHoverItem) {
-                if (IsSelectItem) {
-                    RenderUtil.RenderLaneOverlay(
-                        cameraInfo,
-                        HoverItem.Object.LaneIdAndIndex,
-                        (SelectItem?.Object.LaneId != HoverItem.Object.LaneId) ? Color.yellow : Colors.Add(Color.red, 0.15f),
-                        true);
-                } else {
-                    RenderUtil.RenderLaneOverlay(cameraInfo, HoverItem.Object.LaneIdAndIndex, Color.yellow, true);
-                }
+                ToolInstance.RenderLanesOverlay(cameraInfo, HoverItem.Object.Index, Color.yellow);
             }
 
-            if (IsSelectItem)
-            {
-                if (HoverItem?.Object.LaneId != SelectItem.Object.LaneId)
-                    RenderUtil.RenderLaneOverlay(cameraInfo, SelectItem.Object.LaneIdAndIndex, Color.magenta, true);
+            if (IsSelectItem) {
+                ToolInstance.RenderLanesOverlay(cameraInfo, SelectItem.Object.Index, Color.magenta);
             }
         }
 

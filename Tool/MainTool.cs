@@ -17,6 +17,8 @@ using PathController.CustomData;
 using PathController.UI.Marker;
 using PathController.LifeCycle;
 using PathController.Manager;
+using static RenderManager;
+using PathController.UI.Editors;
 
 namespace PathController.Tool {
     public class PathControllerTool : ToolBase
@@ -42,9 +44,13 @@ namespace PathController.Tool {
         public BezierMarker BezierMarker { get; private set; }
 
         #region selected segments
+        private SegmentDTO segmentInstance_;
         public SegmentDTO SegmentInstance {
-            get;
-            private set;
+            get => segmentInstance_;
+            private set {
+                segmentInstance_ = value;
+                UpdateMode();
+            }
         }
 
         private CustomLane laneInstance_;
@@ -55,11 +61,13 @@ namespace PathController.Tool {
                 laneInstance_ = value;
                 if (value != null) {
                     BezierMarker = new BezierMarker(value.LaneIdAndIndex);
-                    Log.Debug("BezierMarker created for " + value.LaneIdAndIndex);
                 } else {
                     BezierMarker = null;
-                    Log.Debug("BezierMarker  = null");
                 }
+                if (Panel?.CurrentEditor is LaneEditor laneEditor && laneEditor.EditObject != value) {
+                    laneEditor.UpdateEditor(value);
+                }
+                UpdateMode();
             }
         }
 
@@ -69,6 +77,7 @@ namespace PathController.Tool {
         public ushort ActiveSegmentId {
             get => SegmentInstance.SegmentId;
             set {
+                Log.Called(value);
                 selectedSegmentIds_.Clear();
                 if (value != 0) selectedSegmentIds_.Add(value);
                 SetSegment(value); // also allocates custom lanes
@@ -79,6 +88,7 @@ namespace PathController.Tool {
             selectedSegmentIds_.Contains(segmentId);
 
         public void SelectSegment(ushort segmnetId) {
+            if (segmnetId == 0) return;
             if (selectedSegmentIds_.Count == 0) {
                 ActiveSegmentId = segmnetId;
             } else {
@@ -96,6 +106,7 @@ namespace PathController.Tool {
         }
 
         public void DeselectSegment(ushort segmentId) {
+            if (segmentId == 0) return;
             if (segmentId == ActiveSegmentId) {
                 // set Active segment to another selected segment, or 0 otherwise.
                 ushort newActiveSegmentId = selectedSegmentIds_.
@@ -104,13 +115,22 @@ namespace PathController.Tool {
             }
             selectedSegmentIds_.Remove(segmentId);
         }
+
+        /// <summary>
+        /// sets segment to the given segment id.
+        /// selected lane index does not change if any.
+        /// if segment id == 0 then all segments/lanes are deselected.
+        /// </summary>
+        /// <param name="segmentId"></param>
         private void SetSegment(ushort segmentId) {
-            int laneIndex0 = LaneInstance?.Index ?? -1;
-            SegmentInstance = new SegmentDTO(segmentId);
+            Log.Called(segmentId);
             if (segmentId == 0) {
+                SegmentInstance = null;
                 SetLane(-1);
             } else {
-                SetLane(laneIndex0);
+                int laneIndex0 = LaneInstance?.Index ?? -1;
+                SegmentInstance = new SegmentDTO(segmentId);
+                SetLane(laneIndex: laneIndex0);
             }
         }
 
@@ -156,12 +176,12 @@ namespace PathController.Tool {
                 icon: UUIHelpers.LoadTexture(iconPath),
                 hotkeys: new UUIHotKeys { ActivationKey = ActivationShortcut });
 
-            DisableTool();
+            enabled = false;
         }
 
         public static PathControllerTool Create()
         {
-            Log.Debug("PathControllerExtendedTool.Create()");
+            Log.Called();
             GameObject toolModControl = ToolsModifierControl.toolController.gameObject;
             Instance = toolModControl.AddComponent<PathControllerTool>();
             Log.Info($"Tool created");
@@ -171,7 +191,7 @@ namespace PathController.Tool {
 
         public static void Remove()
         {
-            Log.Debug("PathControllerExtendedTool.Remove()");
+            Log.Called();
             if (Instance != null)
             {
                 Destroy(Instance);
@@ -182,12 +202,12 @@ namespace PathController.Tool {
 
         protected override void OnDestroy()
         {
-            Log.Debug("PathControllerExtendedTool.OnDestroy()");
+            Log.Called();
             base.OnDestroy();
 
             PathControllerExtendedPanel.RemovePanel();
             UUIButton?.Destroy();
-            DisableTool();
+            enabled = false;
         }
 
         protected override void OnEnable()
@@ -206,20 +226,20 @@ namespace PathController.Tool {
             ToolsModifierControl.SetTool<DefaultTool>();
         }
 
-        public void Reset()
-        {
+        public void Reset() {
             Panel.Hide();
-            SetMode(ToolType.SelectSegment);
+            SetDefaultMode();
             LaneInstance = null;
             SegmentInstance = null;
             selectedSegmentIds_.Clear();
         }
         public void SetDefaultMode() => SetMode(ToolType.Initial);
         public void SetMode(ToolType mode) => SetMode(Tools[mode]);
-        public void SetMode(BaseTool mode)
-        {
+        public void SetMode(BaseTool subtool) {
+            Log.Called(subtool);
+            Log.Debug(Environment.StackTrace);
             CurrentTool?.DeInit();
-            CurrentTool = mode;
+            CurrentTool = subtool;
             CurrentTool?.Init();
 
             if (CurrentTool?.ShowPanel == true)
@@ -228,22 +248,19 @@ namespace PathController.Tool {
                 Panel.Hide();
         }
 
-        public void EnableTool()
-        {
-            Log.Debug("PathControllerExtendedTool.EnableTool()");
-            enabled = true;
-        }
+        public void UpdateMode() {
+            ToolType type;
+            if (selectedSegmentIds_.Count == 0)
+                type = ToolType.SelectSegment;
+            else if (laneInstance_ == null) {
+                type = ToolType.SelectLane;
+            } else {
+                type = ToolType.ModifyLane;
+            }
 
-        public void DisableTool()
-        {
-            Log.Debug("PathControllerExtendedTool.DisableTool()");
-            enabled = false;
-        }
-
-        public void ToggleTool()
-        {
-            Log.Debug("PathControllerExtendedTool.ToggleTool()");
-            enabled = !enabled;
+            if (CurrentTool?.Type != type) {
+                SetMode(type);
+            }
         }
         #endregion
 
@@ -272,14 +289,25 @@ namespace PathController.Tool {
         #endregion
 
         #region Render Overlay
-        public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
-        {
+        public override void RenderOverlay(RenderManager.CameraInfo cameraInfo) {
             try {
                 base.RenderOverlay(cameraInfo);
                 CurrentTool?.RenderOverlay(cameraInfo);
-                Panel?.Render(cameraInfo);
-                base.RenderOverlay(cameraInfo);
+                if (CurrentTool.ShowPanel) {
+                    Panel?.Render(cameraInfo);
+                }
+
             } catch (Exception ex) { ex.Log(); }
+        }
+
+        public void RenderLanesOverlay(RenderManager.CameraInfo cameraInfo, int laneIndex, Color color) {
+            if (laneIndex < 0)
+                return;
+            foreach (ushort segmentId in SelectedSegmentIds) {
+                uint laneId = NetUtil.GetLaneId(segmentId, laneIndex);
+                LaneIdAndIndex laneIdAndIndex = new(laneId, laneIndex);
+                RenderUtil.RenderLaneOverlay(cameraInfo, laneIdAndIndex, color, alphaBlend: true);
+            }
         }
 
         #endregion

@@ -1,4 +1,6 @@
 namespace PathController.Tool;
+
+using KianCommons;
 using UnityEngine;
 using static PathControllerTool;
 using static ToolBase;

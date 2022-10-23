@@ -1,5 +1,5 @@
+- highlight/modify all selected lanes.
 - shift lanes based on their direction + handle toggle segment.
-- move bezier points.
 - TMPE: cars to wait at conflict points
 - Multi-select
 - drop redundant customLanes.

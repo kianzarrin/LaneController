@@ -433,7 +433,7 @@ namespace PathController.UI.Editors
             {
                 //SelectItem = null;
                 //ClearSettings();
-                //Select(0);
+                //SelectSegment(0);
             }
 
             //SwitchSelected();
@@ -489,7 +489,7 @@ namespace PathController.UI.Editors
         }
         public virtual void Select(DynamicButtonType item)
         {
-            Log.Debug("BaseEditor<>.Select(DynamicButtonType item)");
+            Log.Debug("BaseEditor<>.SelectSegment(DynamicButtonType item)");
             item.SimulateClick();
             item.Focus();
             ScrollTo(item);
