@@ -46,7 +46,7 @@ namespace PathController.Tool
             if (Type >= (ToolType)1) {
                 Tool.SetMode(Type - 1);
             } else {
-                Tool.SetDefaultMode();
+                Tool.enabled = false;
             }
         }
 

@@ -268,7 +268,7 @@ namespace PathController.Tool {
             CurrentTool?.Init();
 
             if (CurrentTool?.ShowPanel == true)
-                Panel.Show();
+                Panel.SetSegment(ActiveSegmentId);
             else
                 Panel.Hide();
         }

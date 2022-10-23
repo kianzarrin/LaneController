@@ -11,7 +11,6 @@ public class PathControllerPanel : UIPanel
 {
     public static PathControllerPanel Instance { get; private set; }
     private PanelHeader Header { get; set; }
-    private UILabel Caption { get; set; }
     private CustomUITabstrip TabStrip { get; set; }
     private UIPanel SizeChanger { get; set; }
     public List<BaseEditor> Editors { get; } = new List<BaseEditor>();
@@ -82,14 +81,14 @@ public class PathControllerPanel : UIPanel
 
     private void CreateEditors()
     {
-        Log.Debug("LaneManagerPanel.CreateEditors() called");
+        Log.Called();
         CreateEditor<LaneEditor>();
         //CreateEditor<TemplateEditor>();
     }
 
     private void CreateEditor<EditorType>() where EditorType : BaseEditor
     {
-        Log.Debug("LaneManagerPanel.CreateEditor<EditorType>() called");
+        Log.Called();
         var editor = AddUIComponent<EditorType>();
         editor.Init(this);
         TabStrip.AddTab(editor.Name);
@@ -103,23 +102,23 @@ public class PathControllerPanel : UIPanel
 
     public void SetSegment(ushort segmentId)
     {
-        Log.Debug("LaneManagerPanel.SetSegment(" + segmentId.ToString() + ") called");
+        Log.Called(segmentId);
         Show();
-        Caption.text = "Segment " + segmentId.ToString();
+        Header.Text = "Segment " + segmentId.ToString();
         TabStrip.selectedIndex = -1;
         SelectEditor<LaneEditor>();
     }
 
     private void TabStripSelectedIndexChanged(UIComponent component, int index)
     {
-        Log.Debug("LaneManagerPanel.TabStripSelectedIndexChanged(UIComponent component, " + index.ToString() + ") called");
+        Log.Called(component, index);
         CurrentEditor = SelectEditor(index);
         UpdatePanel();
     }
 
     private void CreateSizeChanger()
     {
-        Log.Debug("LaneManagerPanel.CreateSizeChanger(): " + size.ToString());
+        Log.Called(size);
         SizeChanger = AddUIComponent<UIPanel>();
         SizeChanger.size = new Vector2(9, 9);
         SizeChanger.atlas = ResizeAtlas;
@@ -135,14 +134,14 @@ public class PathControllerPanel : UIPanel
 
     private void SizeChangerPositionChanged(UIComponent component, Vector2 value)
     {
-        Log.Debug("LaneManagerPanel.SizeChangerPositionChanged(): " + size.ToString());
+        Log.Called(value);
         size = (Vector2)SizeChanger.relativePosition + SizeChanger.size;
         SizeChanger.relativePosition = size - SizeChanger.size;
     }
 
     protected override void OnSizeChanged()
     {
-        Log.Debug("LaneManagerPanel.OnSizeChanged(): " + size.ToString());
+        Log.Called(size);
         base.OnSizeChanged();
 
         if (CurrentEditor != null)
@@ -166,7 +165,7 @@ public class PathControllerPanel : UIPanel
 
     private BaseEditor SelectEditor(int index)
     {
-        Log.Debug("LaneManagerPanel.SelectEditor(" + index.ToString() + ") called");
+        Log.Called(index);
         if (index >= 0 && Editors.Count > index)
         {
             foreach (var editor in Editors)
@@ -182,7 +181,7 @@ public class PathControllerPanel : UIPanel
     }
     private EditorType SelectEditor<EditorType>() where EditorType : BaseEditor
     {
-        Log.Debug("LaneManagerPanel.SelectEditor<EditorType>() called");
+        Log.Called();
         var editorIndex = GetEditor(typeof(EditorType));
         TabStrip.selectedIndex = editorIndex;
         return Editors[editorIndex] as EditorType;
