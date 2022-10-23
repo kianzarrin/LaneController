@@ -10,7 +10,6 @@ using PathController.UI;
 using System.Collections.Generic;
 using System.Linq;
 using KianCommons;
-using PathController.UI.Data;
 using UnifedUILib::UnifiedUI.Helpers;
 using UnityEngine.UI;
 using PathController.CustomData;
@@ -19,6 +18,7 @@ using PathController.LifeCycle;
 using PathController.Manager;
 using static RenderManager;
 using PathController.UI.Editors;
+using static NetInfo;
 
 namespace PathController.Tool {
     public class PathControllerTool : ToolBase
@@ -159,13 +159,38 @@ namespace PathController.Tool {
         }
         #endregion
 
-        #region Action Shortcut 
-        public static void Copy() { }
-        public static void Paste() { }
-        public static void DeleteAll() { }
-        public static void ResetControlPoints() { }
-        public static void ApplyBetweenIntersections() { }
-        public static void ApplyWholeStreet() { }
+        #region Action Shortcut
+        public SegmentDTO Cache;
+
+        public static void Copy() => Instance.Cache = Instance.SegmentInstance.Clone();
+
+        public static void Paste() {
+            foreach (ushort segmentId in Instance.SelectedSegmentIds)
+                Instance.Cache.CopyTo(segmentId);
+        }
+
+        public static void DeleteAll() {
+            foreach(ushort segmentId in Instance.SelectedSegmentIds) {
+                foreach(var lane in new LaneIterator(segmentId) ){
+                    PathControllerManager.Instance.GetLane(lane.LaneId)?.Reset();
+                }
+            }
+        }
+        public static void ResetControlPoints() {
+            foreach (ushort segmentId in Instance.SelectedSegmentIds) {
+                Instance.SegmentInstance.CopyTo(segmentId);
+            }
+        }
+        public static void ApplyBetweenIntersections() {
+            var sourceLanes = Instance.SegmentInstance.Lanes;
+            foreach (ushort segmentId in TraverseUtil.GetSimilarSegmentsBetweenJunctions(Instance.ActiveSegmentId)) {
+                var targetLanes = PathControllerManager.Instance.GetOrCreateLanes(segmentId);
+                for(int laneIndex=0;laneIndex< sourceLanes.Length; ++laneIndex) {
+                    targetLanes[laneIndex].CopyFrom(sourceLanes[laneIndex]);
+                }
+            }
+        }
+        public static void ApplyWholeStreet() => throw new NotImplementedException();
         #endregion
 
         private UIComponent UUIButton;

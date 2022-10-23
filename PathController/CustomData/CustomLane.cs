@@ -13,7 +13,7 @@ public interface ICustomPath {
     void Reset();
 }
 
-public class CustomLane : ICustomPath  {
+public class CustomLane : ICustomPath {
     public CustomLane(LaneIdAndIndex laneIdAndIndex) {
         LaneIdAndIndex = laneIdAndIndex;
         Beizer0 = FinalBezier;
@@ -23,7 +23,6 @@ public class CustomLane : ICustomPath  {
     public LaneIdAndIndex LaneIdAndIndex;
 
     public float Shift, VShift;
-    //public float DeltaStart, DeltaEnd;
     [XmlElement("Displacement",typeof(Bezier3XML))]
     public Bezier3 DeltaControlPoints;
     [XmlElement("Bezier0", typeof(Bezier3XML))]
@@ -52,23 +51,26 @@ public class CustomLane : ICustomPath  {
     public uint LaneId => LaneIdAndIndex.LaneId;
     public Vector3 GetControlPoint(int i) => FinalBezier.ControlPoint(i);
     public ref Bezier3 FinalBezier => ref LaneIdAndIndex.Lane.m_bezier; 
-
     #endregion
+
+    public void CopyFrom(CustomLane lane) {
+        Shift = lane.Shift;
+        VShift = lane.VShift;
+        DeltaControlPoints = lane.DeltaControlPoints;
+    }
+
+    public CustomLane Clone() => MemberwiseClone() as CustomLane;
 
     public bool IsDefault() {
         return
             Shift == default &&
             VShift == default &&
-            //DeltaStart == default &&
-            //DeltaEnd == default &&
             DeltaControlPoints.IsDefault();
     }
 
     public void Reset() {
         Shift = default;
         VShift = default;
-        //DeltaStart = default;
-        //DeltaEnd = default;
         DeltaControlPoints = default;
     }
 

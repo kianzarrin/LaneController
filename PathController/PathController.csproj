@@ -31,6 +31,7 @@
     </PackageReference>
     <PackageReference Include="Mono.Unofficial.pdb2mdb" Version="4.2.3.4" />
     <PackageReference Include="UnifiedUILib" Version="2.2.12" Aliases="UnifedUILib" />
+    <Reference Include="MoveItIntegration" />
   </ItemGroup>
   <ItemDefinitionGroup>
     <Reference>
@@ -79,6 +80,10 @@
     <Compile Include="KianCommons\KianCommons\Util\ReflectionHelpers.cs" />
     <Compile Include="KianCommons\KianCommons\Util\StringExtensions.cs" />
     <Compile Include="KianCommons\KianCommons\Util\TypeUtil.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="UI\Data\" />
   </ItemGroup>
 
   <Target Name="DeployToModDirectory" AfterTargets="Build">
