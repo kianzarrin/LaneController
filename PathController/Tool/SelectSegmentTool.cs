@@ -29,6 +29,7 @@ public class SelectSegmentTool : BaseTool {
         PreferNodeHover = default;
         HoveredNodeId = default;
         HoveredSegmentId = default;
+        Assertion.Assert(Tool, "Tool");
         Tool.ActiveSegmentId = 0;
     }
 

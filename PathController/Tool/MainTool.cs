@@ -141,8 +141,15 @@ namespace PathController.Tool {
         }
 
         public void SetLane(int laneIndex) {
-            Log.Called(laneIndex);
-            LaneInstance = SegmentInstance.Lanes.ElementAtOrDefault(laneIndex);
+            try {
+                Log.Called(laneIndex);
+                if (laneIndex < 0)
+                    LaneInstance = null;
+                else
+                    LaneInstance = SegmentInstance.Lanes.ElementAtOrDefault(laneIndex);
+            }catch(Exception ex) {
+                ex.Log();
+            }
         }
 
         private void SetLane(LaneIdAndIndex laneIdAndIndex) {
@@ -171,6 +178,7 @@ namespace PathController.Tool {
         protected override void Awake()
         {
             Log.Info("LaneManagerTool.Awake()");
+            Instance = this;
             base.Awake();
             Camera = UIView.GetAView().uiCamera;
 
@@ -224,20 +232,23 @@ namespace PathController.Tool {
             enabled = false;
         }
 
-        protected override void OnEnable()
-        {
-            base.OnEnable();
-            Reset();
+        protected override void OnEnable() {
+            try {
 
-            Singleton<InfoManager>.instance.SetCurrentMode(InfoManager.InfoMode.None, InfoManager.SubInfoMode.Default);
+                base.OnEnable();
+                Reset();
+
+                Singleton<InfoManager>.instance.SetCurrentMode(InfoManager.InfoMode.None, InfoManager.SubInfoMode.Default);
+            } catch (Exception ex) { ex.Log(); }
         }
 
-        protected override void OnDisable()
-        {
-            base.OnDisable();
-            Reset();
-            //LaneManagerPanel.Instance?.Close();
-            ToolsModifierControl.SetTool<DefaultTool>();
+        protected override void OnDisable() {
+            try {
+                base.OnDisable();
+                Reset();
+                //LaneManagerPanel.Instance?.Close();
+                ToolsModifierControl.SetTool<DefaultTool>();
+            } catch (Exception ex) { ex.Log(); }
         }
 
         public void Reset() {
