@@ -9,6 +9,7 @@ using UnityEngine;
 using KianCommons;
 using PathController.UI.Data;
 using PathController.CustomData;
+using PathController.Manager;
 
 namespace PathController.UI.Editors
 {
@@ -18,6 +19,26 @@ namespace PathController.UI.Editors
         public override string SelectionMessage => "SelectSegment a lane to edit it.";
 
         private FloatPropertyPanel ShiftField , HeightField/*, StartField , EndField*/;
+
+
+
+        public IEnumerable<CustomLane> IterateOtherSelectedLanes() {
+            foreach(ushort segmentId in ToolInstance.SelectedSegmentIds) {
+                int laneIndex = EditObject.Index;
+                if (segmentId != EditObject.LaneIdAndIndex.SegmentId) {
+                    uint laneId = NetUtil.GetLaneId(segmentId, laneIndex);
+                    yield return PathControllerManager.Instance.GetOrCreateLane(new(laneId, laneIndex));
+                }
+            }
+        }
+
+        public IEnumerable<CustomLane> IterateSelectedLanes() {
+            foreach (ushort segmentId in ToolInstance.SelectedSegmentIds) {
+                int laneIndex = EditObject.Index;
+                uint laneId = NetUtil.GetLaneId(segmentId, laneIndex);
+                yield return PathControllerManager.Instance.GetOrCreateLane(new(laneId, laneIndex));
+            }
+        }
 
         protected override void FillItems() {
             Log.Debug("LaneEditor.FillItems() called");
@@ -87,14 +108,18 @@ namespace PathController.UI.Editors
 
         private void PositionField_OnValueChanged(float value) {
             Log.Called();
-            EditObject.Shift = value;
-            EditObject.QueueUpdate();
+            foreach (var customLane in IterateOtherSelectedLanes()) {
+                customLane.Shift = value;
+                customLane.QueueUpdate();
+            }
         }
 
         private void HeightField_OnValueChanged(float value) {
             Log.Called();
-            EditObject.VShift = value;
-            EditObject.QueueUpdate();
+            foreach (var customLane in IterateOtherSelectedLanes()) {
+                customLane.VShift = value;
+                customLane.QueueUpdate();
+            }
         }
 
         private void PositionField_OnResetValue() {

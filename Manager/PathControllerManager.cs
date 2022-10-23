@@ -80,12 +80,19 @@ public class PathControllerManager {
         }
     }
 
-    public void Trim(uint laneId) {
+    public void TrimLane(uint laneId) {
         if (Lanes.TryGetValue(laneId, out var lane)
             && lane.IsDefault()) {
             Lanes.Remove(laneId);
         }
     }
+
+    public void TrimSegment(ushort segmentId) {
+        foreach(var laneIdAndIndex in new LaneIterator(segmentId)) {
+            TrimLane(laneIdAndIndex.LaneId);
+        }
+    }
+
 
     public void UpateLanes(ushort segmentId) {
         float len = 0;

@@ -1,5 +1,7 @@
-- highlight/modify all selected lanes.
+- tool info
+- MoveIT integration
+- header:
+    - reset
+    - copy/paste
 - shift lanes based on their direction + handle toggle segment.
 - TMPE: cars to wait at conflict points
-- Multi-select
-- drop redundant customLanes.

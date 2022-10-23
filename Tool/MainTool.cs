@@ -78,6 +78,11 @@ namespace PathController.Tool {
             get => SegmentInstance.SegmentId;
             set {
                 Log.Called(value);
+                foreach(ushort segmentId in selectedSegmentIds_) {
+                    if (segmentId != value) {
+                        PathControllerManager.Instance.TrimSegment(segmentId);
+                    }
+                }
                 selectedSegmentIds_.Clear();
                 if (value != 0) selectedSegmentIds_.Add(value);
                 SetSegment(value); // also allocates custom lanes
@@ -114,6 +119,7 @@ namespace PathController.Tool {
                 SetSegment(newActiveSegmentId);
             }
             selectedSegmentIds_.Remove(segmentId);
+            PathControllerManager.Instance.TrimSegment(segmentId);
         }
 
         /// <summary>
@@ -230,9 +236,10 @@ namespace PathController.Tool {
             Panel.Hide();
             SetDefaultMode();
             LaneInstance = null;
-            SegmentInstance = null;
             selectedSegmentIds_.Clear();
+            SegmentInstance = null;
         }
+
         public void SetDefaultMode() => SetMode(ToolType.Initial);
         public void SetMode(ToolType mode) => SetMode(Tools[mode]);
         public void SetMode(BaseTool subtool) {
