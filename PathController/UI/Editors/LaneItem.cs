@@ -1,7 +1,7 @@
-namespace PathController.UI.Editors;
-using PathController.CustomData;
-using PathController.LifeCycle;
-using PathController.Util;
+namespace LaneConroller.UI.Editors;
+using LaneConroller.CustomData;
+using LaneConroller.LifeCycle;
+using LaneConroller.Util;
 using System;
 
 public class LaneItem : DynamicButton<CustomLane, LaneIcons> {

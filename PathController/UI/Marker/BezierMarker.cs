@@ -1,9 +1,9 @@
-namespace PathController.UI.Marker;
+namespace LaneConroller.UI.Marker;
 
 using KianCommons;
-using PathController.CustomData;
-using PathController.Manager;
-using PathController.Util;
+using LaneConroller.CustomData;
+using LaneConroller.Manager;
+using LaneConroller.Util;
 using UnityEngine;
 
 public class BezierMarker {
@@ -16,7 +16,7 @@ public class BezierMarker {
         C.Hovered || C.Selected ||
         D.Hovered || D.Selected;
 
-    public CustomLane CustomLane => PathControllerManager.Instance.GetOrCreateLane(LaneIdAndIndex);
+    public CustomLane CustomLane => LaneConrollerManager.Instance.GetOrCreateLane(LaneIdAndIndex);
     public ControlPointMarker A => controlMarkers[0];
     public ControlPointMarker B => controlMarkers[1];
     public ControlPointMarker C => controlMarkers[2];

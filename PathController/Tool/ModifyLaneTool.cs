@@ -1,8 +1,8 @@
-namespace PathController.Tool;
+namespace LaneConroller.Tool;
 
 using KianCommons;
 using UnityEngine;
-using static PathControllerTool;
+using static LaneConrollerTool;
 using static ToolBase;
 
 public class ModifyLaneTool : BaseTool {

@@ -7,7 +7,7 @@ using System.Xml.Linq;
 using UnityEngine;
 using KianCommons.UI;
 
-namespace PathController.UI {
+namespace LaneConroller.UI {
     public static class UIUtils {
         private static UIView uiRoot { get; set; } = null;
         private static void FindUIRoot() {

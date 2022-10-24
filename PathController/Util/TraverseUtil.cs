@@ -1,4 +1,4 @@
-namespace PathController.Util;
+namespace LaneConroller.Util;
 
 using KianCommons;
 using System.Collections.Generic;

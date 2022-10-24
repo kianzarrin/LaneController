@@ -1,7 +1,7 @@
-namespace PathController.UI.Marker;
+namespace LaneConroller.UI.Marker;
 using ColossalFramework.Math;
-using PathController.Tool;
-using PathController.Util;
+using LaneConroller.Tool;
+using LaneConroller.Util;
 using UnityEngine;
 
 
@@ -26,8 +26,8 @@ public class LaneMarker {
     public void Update(Bezier3 bezier) {
         if (!bezier_.EqualsTo(bezier)) {
             bezier_ = bezier;
-            isUnderground_ = PathControllerTool.CheckIsUnderground(bezier.a) ||
-                            PathControllerTool.CheckIsUnderground(bezier.d);
+            isUnderground_ = LaneConrollerTool.CheckIsUnderground(bezier.a) ||
+                            LaneConrollerTool.CheckIsUnderground(bezier.d);
             CalculateBounds();
         }
     }
@@ -35,7 +35,7 @@ public class LaneMarker {
     /// <summary>Intersects mouse ray with lane bounds.</summary>
     internal bool IntersectRay() {
         foreach (Bounds eachBound in bounds_) {
-            if (eachBound.IntersectRay(PathControllerTool.MouseRay)) {
+            if (eachBound.IntersectRay(LaneConrollerTool.MouseRay)) {
                 return true;
             }
         }

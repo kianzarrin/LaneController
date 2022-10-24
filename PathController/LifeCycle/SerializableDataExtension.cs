@@ -1,23 +1,23 @@
-namespace PathController.LifeCycle;
+namespace LaneConroller.LifeCycle;
 using ICities;
 using KianCommons;
-using PathController.Manager;
+using LaneConroller.Manager;
 using System;
 
 public class SerializableDataExtension : SerializableDataExtensionBase {
-    const string DATA_ID = "PathController";
+    const string DATA_ID = "LaneConroller";
     public override void OnLoadData() {
         try {
             Log.Called();
             byte[] data = serializableDataManager.LoadData(DATA_ID);
-            PathControllerManager.Deserialize(data);
+            LaneConrollerManager.Deserialize(data);
             Log.Succeeded();
         } catch (Exception ex) { ex.Log(); }
     }
     public override void OnSaveData() {
         try {
             Log.Called();
-            var data = PathControllerManager.Instance.Serialize();
+            var data = LaneConrollerManager.Instance.Serialize();
             if (data != null) {
                 serializableDataManager.SaveData(DATA_ID, data);
             }

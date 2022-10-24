@@ -1,8 +1,8 @@
-namespace PathController.Tool;
+namespace LaneConroller.Tool;
 using System;
 using System.Linq;
 using KianCommons;
-using PathController.Util;
+using LaneConroller.Util;
 using UnityEngine;
 
 public class SelectLaneTool : SelectSegmentTool {
@@ -23,7 +23,7 @@ public class SelectLaneTool : SelectSegmentTool {
         base.OnUpdate();
         if (Tool.IsSegmentSelected(HoveredSegmentId) &&
             HoveredSegmentId.ToSegment().GetClosestLanePosition(
-                PathControllerTool.MouseWorldPosition, NetInfo.LaneType.All, VehicleInfo.VehicleType.All, VehicleInfo.VehicleCategory.All,
+                LaneConrollerTool.MouseWorldPosition, NetInfo.LaneType.All, VehicleInfo.VehicleType.All, VehicleInfo.VehicleCategory.All,
                 out var hitPos, out uint laneId, out var laneIndex, out _)) {
             HoveredLaneIdAndIndex = new(laneId, laneIndex);
         } else {

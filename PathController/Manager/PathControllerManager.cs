@@ -1,21 +1,21 @@
-namespace PathController.Manager;
+namespace LaneConroller.Manager;
 
 using ColossalFramework;
 using KianCommons;
-using PathController.CustomData;
+using LaneConroller.CustomData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using KianCommons.Serialization;
 using System.Xml.Serialization;
 
-public class PathControllerManager {
+public class LaneConrollerManager {
     #region lifecycle
-    public static PathControllerManager Instance { get; private set; }
+    public static LaneConrollerManager Instance { get; private set; }
     public static bool Exists() => Instance != null;
-    public static PathControllerManager Create() => Instance = new PathControllerManager();
-    public static PathControllerManager Ensure() => Instance ??= Create();
-    public static PathControllerManager Release() => Instance = null;
+    public static LaneConrollerManager Create() => Instance = new LaneConrollerManager();
+    public static LaneConrollerManager Ensure() => Instance ??= Create();
+    public static LaneConrollerManager Release() => Instance = null;
     #endregion
 
     #region serialization
@@ -50,12 +50,12 @@ public class PathControllerManager {
 
     }
 
-    public static PathControllerManager Deserialize(byte[] data) {
+    public static LaneConrollerManager Deserialize(byte[] data) {
         if (data == null)
             return Create();
 
         string xmlData = Convert.ToBase64String(data);
-        return Instance = XMLSerializerUtil.Deserialize<PathControllerManager>(xmlData);
+        return Instance = XMLSerializerUtil.Deserialize<LaneConrollerManager>(xmlData);
     }
 
     #endregion

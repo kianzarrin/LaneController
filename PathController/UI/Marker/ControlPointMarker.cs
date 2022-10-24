@@ -1,6 +1,6 @@
-namespace PathController.UI.Marker;
+namespace LaneConroller.UI.Marker;
 using ColossalFramework;
-using PathController.Tool;
+using LaneConroller.Tool;
 using UnityEngine;
 
 public class ControlPointMarker {
@@ -43,7 +43,7 @@ public class ControlPointMarker {
     private bool IntersectRay() {
         Vector3 pos = UnderGround ? TerrainPosition : Position;
         Bounds bounds = new Bounds(center: pos, size: Vector3.one * Radius);
-        return bounds.IntersectRay(PathControllerTool.MouseRay);
+        return bounds.IntersectRay(LaneConrollerTool.MouseRay);
     }
 
     /// <param name="focus">number field contains mouses</param>

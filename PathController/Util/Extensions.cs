@@ -1,4 +1,4 @@
-namespace PathController.Util {
+namespace LaneConroller.Util {
     using ColossalFramework.Math;
     using System;
     using System.Collections.Generic;

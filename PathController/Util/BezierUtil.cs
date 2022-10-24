@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace PathController.Util
+namespace LaneConroller.Util
 {
     public static class BezierUtil
     {

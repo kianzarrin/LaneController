@@ -1,12 +1,12 @@
 using ColossalFramework;
 using ColossalFramework.Math;
 using KianCommons;
-using PathController.UI;
-using PathController.UI.Editors;
+using LaneConroller.UI;
+using LaneConroller.UI.Editors;
 using System;
 using UnityEngine;
 
-namespace PathController.Util
+namespace LaneConroller.Util
 {
     public static class RenderUtil
     {

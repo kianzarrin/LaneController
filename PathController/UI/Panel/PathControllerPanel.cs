@@ -1,15 +1,15 @@
-namespace PathController.UI;
+namespace LaneConroller.UI;
 using ColossalFramework.UI;
-using PathController.UI.Editors;
+using LaneConroller.UI.Editors;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using KianCommons;
 using KianCommons.UI;
 
-public class PathControllerPanel : UIPanel
+public class LaneConrollerPanel : UIPanel
 {
-    public static PathControllerPanel Instance { get; private set; }
+    public static LaneConrollerPanel Instance { get; private set; }
     private PanelHeader Header { get; set; }
     private CustomUITabstrip TabStrip { get; set; }
     private UIPanel SizeChanger { get; set; }
@@ -29,10 +29,10 @@ public class PathControllerPanel : UIPanel
             TextureUtil.CreateTextureAtlas("resize.png", nameof(ResizeAtlas), 9, 9, new string[] { "resize" }, space: 2);
     }
 
-    public static PathControllerPanel CreatePanel()
+    public static LaneConrollerPanel CreatePanel()
     {
         var uiView = UIView.GetAView();
-        Instance = uiView.AddUIComponent(typeof(PathControllerPanel)) as PathControllerPanel;
+        Instance = uiView.AddUIComponent(typeof(LaneConrollerPanel)) as LaneConrollerPanel;
         Instance.Init();
         return Instance;
     }

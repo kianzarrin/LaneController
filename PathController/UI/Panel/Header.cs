@@ -1,7 +1,7 @@
-namespace PathController.UI;
+namespace LaneConroller.UI;
 using ModsCommon.UI;
 using ModsCommon.Utilities;
-using PathController.Tool;
+using LaneConroller.Tool;
 
 public class PanelHeader : HeaderMoveablePanel<PanelHeaderContent> {
     public bool Available { set => Content.SetAvailable(value); }
@@ -11,20 +11,20 @@ public class PanelHeader : HeaderMoveablePanel<PanelHeaderContent> {
     private HeaderButtonInfo<HeaderButton> WholeStreetButton { get; }
 
     public PanelHeader() {
-        Content.AddButton(new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Main, PathControllerTextures.Atlas, PathControllerTextures.CopyHeaderButton, "Copy", PathControllerTool.Copy));
+        Content.AddButton(new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Main, LaneConrollerTextures.Atlas, LaneConrollerTextures.CopyHeaderButton, "Copy", LaneConrollerTool.Copy));
 
-        PasteButton = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Main, PathControllerTextures.Atlas, PathControllerTextures.PasteHeaderButton, "Paste", PathControllerTool.Paste);
+        PasteButton = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Main, LaneConrollerTextures.Atlas, LaneConrollerTextures.PasteHeaderButton, "Paste", LaneConrollerTool.Paste);
         Content.AddButton(PasteButton);
 
-        Content.AddButton(new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Main, PathControllerTextures.Atlas, PathControllerTextures.ResetHeaderButton, "Reset", PathControllerTool.DeleteAll));
+        Content.AddButton(new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Main, LaneConrollerTextures.Atlas, LaneConrollerTextures.ResetHeaderButton, "Reset", LaneConrollerTool.DeleteAll));
 
-        Content.AddButton(new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Additional, PathControllerTextures.Atlas, PathControllerTextures.ResetControlPointsHeaderButton, "Reset control points", PathControllerTool.ResetControlPoints));
+        Content.AddButton(new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Additional, LaneConrollerTextures.Atlas, LaneConrollerTextures.ResetControlPointsHeaderButton, "Reset control points", LaneConrollerTool.ResetControlPoints));
 
 
-        BeetwenIntersectionsButton = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Additional, PathControllerTextures.Atlas, PathControllerTextures.BeetwenIntersectionsHeaderButton, "Apply between intersections", PathControllerTool.ApplyBetweenIntersections);
+        BeetwenIntersectionsButton = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Additional, LaneConrollerTextures.Atlas, LaneConrollerTextures.BeetwenIntersectionsHeaderButton, "Apply between intersections", LaneConrollerTool.ApplyBetweenIntersections);
         Content.AddButton(BeetwenIntersectionsButton);
 
-        WholeStreetButton = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Additional, PathControllerTextures.Atlas, PathControllerTextures.WholeStreetHeaderButton, "Apply to whole street", PathControllerTool.ApplyWholeStreet);
+        WholeStreetButton = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Additional, LaneConrollerTextures.Atlas, LaneConrollerTextures.WholeStreetHeaderButton, "Apply to whole street", LaneConrollerTool.ApplyWholeStreet);
         Content.AddButton(WholeStreetButton);
     }
 

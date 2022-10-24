@@ -1,12 +1,12 @@
-namespace PathController.Tool;
+namespace LaneConroller.Tool;
 using System;
 using System.Drawing;
 using System.Linq;
 using ColossalFramework;
 using KianCommons;
-using PathController.Util;
+using LaneConroller.Util;
 using UnityEngine;
-using static PathControllerTool;
+using static LaneConrollerTool;
 using static ToolBase;
 
 public class SelectSegmentTool : BaseTool {
@@ -41,12 +41,12 @@ public class SelectSegmentTool : BaseTool {
 
     protected virtual void OnPageDown() {
         Log.Called();
-        if (PathControllerTool.MouseRayValid)
+        if (LaneConrollerTool.MouseRayValid)
             SetUnderGroundView();
     }
 
     protected virtual void OnPageUp() {
-        if (PathControllerTool.MouseRayValid)
+        if (LaneConrollerTool.MouseRayValid)
             SetOverGroundView();
     }
 
@@ -124,7 +124,7 @@ public class SelectSegmentTool : BaseTool {
             HoveredSegmentId = 0;
             HoveredNodeId = 0;
             HitPos = Vector3.zero;
-            if (!PathControllerTool.MouseRayValid)
+            if (!LaneConrollerTool.MouseRayValid)
                 return false;
 
             // find currently hovered node

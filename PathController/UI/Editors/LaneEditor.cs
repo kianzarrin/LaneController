@@ -2,16 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PathController.Tool;
-using PathController.Util;
+using LaneConroller.Tool;
+using LaneConroller.Util;
 using ColossalFramework.Math;
 using UnityEngine;
 using KianCommons;
-using PathController.UI.Data;
-using PathController.CustomData;
-using PathController.Manager;
+using LaneConroller.CustomData;
+using LaneConroller.Manager;
 
-namespace PathController.UI.Editors
+namespace LaneConroller.UI.Editors
 {
     public class LaneEditor : BaseEditor<LaneItem, CustomLane, LaneIcons>
     {
@@ -27,7 +26,7 @@ namespace PathController.UI.Editors
                 int laneIndex = EditObject.Index;
                 if (segmentId != EditObject.LaneIdAndIndex.SegmentId) {
                     uint laneId = NetUtil.GetLaneId(segmentId, laneIndex);
-                    yield return PathControllerManager.Instance.GetOrCreateLane(new(laneId, laneIndex));
+                    yield return LaneConrollerManager.Instance.GetOrCreateLane(new(laneId, laneIndex));
                 }
             }
         }
@@ -36,7 +35,7 @@ namespace PathController.UI.Editors
             foreach (ushort segmentId in ToolInstance.SelectedSegmentIds) {
                 int laneIndex = EditObject.Index;
                 uint laneId = NetUtil.GetLaneId(segmentId, laneIndex);
-                yield return PathControllerManager.Instance.GetOrCreateLane(new(laneId, laneIndex));
+                yield return LaneConrollerManager.Instance.GetOrCreateLane(new(laneId, laneIndex));
             }
         }
 

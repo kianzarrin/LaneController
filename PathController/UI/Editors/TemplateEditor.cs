@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using KianCommons;
-using PathController.CustomData;
-using PathController.UI.Data;
-using PathController.Util;
+using LaneConroller.CustomData;
+using LaneConroller.Util;
 
-namespace PathController.UI.Editors
+namespace LaneConroller.UI.Editors
 {
-    public class TemplateEditor : BaseEditor<LaneItem, CustomData.CustomLane, LaneIcons>
+    public class TemplateEditor : BaseEditor<LaneItem, CustomLane, LaneIcons>
     {
         public override string Name => "Template Editor";
         public override string SelectionMessage => "No Templates";

@@ -5,25 +5,25 @@ using UnityEngine;
 using System;
 using ColossalFramework;
 using ColossalFramework.Math;
-using PathController.Util;
-using PathController.UI;
+using LaneConroller.Util;
+using LaneConroller.UI;
 using System.Collections.Generic;
 using System.Linq;
 using KianCommons;
 using UnifedUILib::UnifiedUI.Helpers;
 using UnityEngine.UI;
-using PathController.CustomData;
-using PathController.UI.Marker;
-using PathController.LifeCycle;
-using PathController.Manager;
+using LaneConroller.CustomData;
+using LaneConroller.UI.Marker;
+using LaneConroller.LifeCycle;
+using LaneConroller.Manager;
 using static RenderManager;
-using PathController.UI.Editors;
+using LaneConroller.UI.Editors;
 using static NetInfo;
 
-namespace PathController.Tool {
-    public class PathControllerTool : ToolBase
+namespace LaneConroller.Tool {
+    public class LaneConrollerTool : ToolBase
     {
-        public static readonly SavedInputKey ActivationShortcut = new SavedInputKey("ActivationShortcut", nameof(PathControllerMod), SavedInputKey.Encode(KeyCode.P, true, false, false), true);
+        public static readonly SavedInputKey ActivationShortcut = new SavedInputKey("ActivationShortcut", nameof(LaneConrollerMod), SavedInputKey.Encode(KeyCode.P, true, false, false), true);
 
         public static bool CtrlIsPressed => Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
         public static bool ShiftIsPressed => Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
@@ -80,7 +80,7 @@ namespace PathController.Tool {
                 Log.Called(value);
                 foreach(ushort segmentId in selectedSegmentIds_) {
                     if (segmentId != value) {
-                        PathControllerManager.Instance.TrimSegment(segmentId);
+                        LaneConrollerManager.Instance.TrimSegment(segmentId);
                     }
                 }
                 selectedSegmentIds_.Clear();
@@ -98,7 +98,7 @@ namespace PathController.Tool {
                 ActiveSegmentId = segmnetId;
             } else {
                 selectedSegmentIds_.Add(segmnetId);
-                PathControllerManager.Instance.GetOrCreateLanes(segmnetId); // allocate custom lanes
+                LaneConrollerManager.Instance.GetOrCreateLanes(segmnetId); // allocate custom lanes
             }
         }
 
@@ -119,7 +119,7 @@ namespace PathController.Tool {
                 SetSegment(newActiveSegmentId);
             }
             selectedSegmentIds_.Remove(segmentId);
-            PathControllerManager.Instance.TrimSegment(segmentId);
+            LaneConrollerManager.Instance.TrimSegment(segmentId);
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace PathController.Tool {
         public static void DeleteAll() {
             foreach(ushort segmentId in Instance.SelectedSegmentIds) {
                 foreach(var lane in new LaneIterator(segmentId) ){
-                    PathControllerManager.Instance.GetLane(lane.LaneId)?.Reset();
+                    LaneConrollerManager.Instance.GetLane(lane.LaneId)?.Reset();
                 }
             }
         }
@@ -184,7 +184,7 @@ namespace PathController.Tool {
         public static void ApplyBetweenIntersections() {
             var sourceLanes = Instance.SegmentInstance.Lanes;
             foreach (ushort segmentId in TraverseUtil.GetSimilarSegmentsBetweenJunctions(Instance.ActiveSegmentId)) {
-                var targetLanes = PathControllerManager.Instance.GetOrCreateLanes(segmentId);
+                var targetLanes = LaneConrollerManager.Instance.GetOrCreateLanes(segmentId);
                 for (int laneIndex = 0; laneIndex < sourceLanes.Length; ++laneIndex) {
                     targetLanes[laneIndex].CopyFrom(sourceLanes[laneIndex]);
                 }
@@ -196,9 +196,9 @@ namespace PathController.Tool {
 
         private UIComponent UUIButton;
 
-        PathControllerPanel Panel => PathControllerPanel.Instance;
+        LaneConrollerPanel Panel => LaneConrollerPanel.Instance;
 
-        public static PathControllerTool Instance { get; set; }
+        public static LaneConrollerTool Instance { get; set; }
 
         #region Base Functions
         protected override void Awake()
@@ -214,12 +214,12 @@ namespace PathController.Tool {
                 { ToolType.ModifyLane, new ModifyLaneTool() },
             };
 
-            PathControllerPanel.CreatePanel();
-            string iconPath = UUIHelpers.GetFullPath<PathControllerMod>("uui_movelanes.png");
+            LaneConrollerPanel.CreatePanel();
+            string iconPath = UUIHelpers.GetFullPath<LaneConrollerMod>("uui_movelanes.png");
             UUIButton = UUIHelpers.RegisterToolButton(
-                name: "PathController",
+                name: "LaneConroller",
                 groupName: null, // default group
-                tooltip: "Path Controller",
+                tooltip: "Lane Controller",
                 tool: this,
                 icon: UUIHelpers.LoadTexture(iconPath),
                 hotkeys: new UUIHotKeys { ActivationKey = ActivationShortcut });
@@ -227,11 +227,11 @@ namespace PathController.Tool {
             enabled = false;
         }
 
-        public static PathControllerTool Create()
+        public static LaneConrollerTool Create()
         {
             Log.Called();
             GameObject toolModControl = ToolsModifierControl.toolController.gameObject;
-            Instance = toolModControl.AddComponent<PathControllerTool>();
+            Instance = toolModControl.AddComponent<LaneConrollerTool>();
             Log.Info($"Tool created");
             ToolsModifierControl.SetTool<DefaultTool>();
             return Instance;
@@ -253,7 +253,7 @@ namespace PathController.Tool {
             Log.Called();
             base.OnDestroy();
 
-            PathControllerPanel.RemovePanel();
+            LaneConrollerPanel.RemovePanel();
             UUIButton?.Destroy();
             enabled = false;
         }

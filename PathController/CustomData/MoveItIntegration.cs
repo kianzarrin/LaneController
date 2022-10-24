@@ -1,8 +1,8 @@
-namespace PathController.CustomData; 
+namespace LaneConroller.CustomData; 
 using System;
 using System.Collections.Generic;
 using MoveItIntegration;
-using PathController.Manager;
+using LaneConroller.Manager;
 using KianCommons.Serialization;
 using KianCommons;
 using System.Xml.Linq;
@@ -13,7 +13,7 @@ public class LCMoveItIntegrationFactory: IMoveItIntegrationFactory {
 
 public class LCMoveItIntegration : MoveItIntegrationBase {
     public static LCMoveItIntegration Instance = new();
-    static PathControllerManager Man => PathControllerManager.Instance;
+    static LaneConrollerManager Man => LaneConrollerManager.Instance;
     public override string ID { get; } = "LaneController";
     public override Version DataVersion { get; } = typeof(LCMoveItIntegration).VersionOf();
 

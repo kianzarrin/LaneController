@@ -1,8 +1,8 @@
-namespace PathController.UI;
+namespace LaneConroller.UI;
 using ColossalFramework.UI;
 using KianCommons;
-using PathController.Tool;
-using PathController.UI.Editors;
+using LaneConroller.Tool;
+using LaneConroller.UI.Editors;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -102,9 +102,9 @@ public abstract class FieldPropertyPanel<ValueType> : FieldPropertyPanel {
     {
         if (CanUseWheel && UseWheel)
         {
-            var mode = PathControllerTool.ShiftIsPressed
+            var mode = LaneConrollerTool.ShiftIsPressed
                 ? WheelMode.High
-                : PathControllerTool.CtrlIsPressed
+                : LaneConrollerTool.CtrlIsPressed
                 ? WheelMode.Low
                 : WheelMode.Normal;
             if (eventParam.wheelDelta < 0)

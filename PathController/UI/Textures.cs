@@ -3,9 +3,9 @@ using ModsCommon.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace PathController.UI
+namespace LaneConroller.UI
 {
-    public static class PathControllerTextures
+    public static class LaneConrollerTextures
     {
         public static UITextureAtlas Atlas;
         public static Texture2D Texture => Atlas.texture;
@@ -18,7 +18,7 @@ namespace PathController.UI
         public static string WholeStreetHeaderButton => nameof(WholeStreetHeaderButton);
 
 
-        static PathControllerTextures()
+        static LaneConrollerTextures()
         {
             var spriteParams = new Dictionary<string, RectOffset>();
 

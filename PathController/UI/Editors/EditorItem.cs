@@ -1,13 +1,13 @@
 using ColossalFramework.UI;
 using KianCommons.UI;
-using PathController.Util;
+using LaneConroller.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace PathController.UI.Editors {
+namespace LaneConroller.UI.Editors {
     public abstract class EditorItem : UIPanel {
         protected const float defaultHeight = 30f;
 

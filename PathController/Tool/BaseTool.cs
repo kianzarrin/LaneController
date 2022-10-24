@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using KianCommons;
-using PathController.UI;
+using LaneConroller.UI;
 using UnityEngine;
 using static ToolBase;
 
-namespace PathController.Tool
+namespace LaneConroller.Tool
 {
     public abstract class BaseTool
     {
         public abstract ToolType Type { get; }
         public virtual bool ShowPanel => true;
-        protected PathControllerTool Tool => PathControllerTool.Instance;
-        protected PathControllerPanel Panel => PathControllerPanel.Instance;
+        protected LaneConrollerTool Tool => LaneConrollerTool.Instance;
+        protected LaneConrollerPanel Panel => LaneConrollerPanel.Instance;
 
         public virtual void Init() => Reset();
         public virtual void DeInit() { }

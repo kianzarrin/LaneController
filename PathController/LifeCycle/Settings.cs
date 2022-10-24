@@ -1,14 +1,14 @@
 using ColossalFramework;
 using ColossalFramework.UI;
 using ICities;
-using PathController.UI;
+using LaneConroller.UI;
 using System.Collections.Generic;
 using UnityEngine;
-using UIUtils = PathController.UI.UIUtils;
+using UIUtils = LaneConroller.UI.UIUtils;
 
-namespace PathController.LifeCycle {
+namespace LaneConroller.LifeCycle {
     public static class Settings {
-        public static string SettingsFile => $"{nameof(PathControllerMod)}";
+        public static string SettingsFile => $"{nameof(LaneConrollerMod)}";
 
         private static CustomUITabstrip TabStrip { get; set; }
         private static List<UIPanel> TabPanels { get; set; }
@@ -25,7 +25,7 @@ namespace PathController.LifeCycle {
             CreateTabStrip(mainPanel);
 
             var generalTab = CreateTab(mainPanel, "General");
-            generalTab.AddGroup(PathControllerMod.Instance.ModName);
+            generalTab.AddGroup(LaneConrollerMod.Instance.ModName);
             //AddLanguage(generalTab);
             AddGeneral(generalTab);
             //AddGrouping(generalTab);

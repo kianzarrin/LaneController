@@ -1,6 +1,6 @@
-namespace PathController.UI; 
+namespace LaneConroller.UI; 
 using ColossalFramework.UI;
-using PathController.UI.Editors;
+using LaneConroller.UI.Editors;
 using System.Drawing;
 using UnityEngine;
 

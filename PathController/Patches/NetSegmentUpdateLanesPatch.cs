@@ -1,11 +1,11 @@
-namespace PathController.Patches;
+namespace LaneConroller.Patches;
 using HarmonyLib;
-using PathController.Manager;
+using LaneConroller.Manager;
 
 [HarmonyPatch(typeof(NetSegment), nameof(NetSegment.UpdateLanes))]
 public static class NetSegmentUpdateLanesPatch {
     public static void Postfix(ushort segmentID) {
-        PathControllerManager.Instance?.UpateLanes(segmentID);
+        LaneConrollerManager.Instance?.UpateLanes(segmentID);
     }
 }
 

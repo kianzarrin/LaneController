@@ -1,12 +1,12 @@
 using CitiesHarmony.API;
 using KianCommons;
-using PathController.Manager;
+using LaneConroller.Manager;
 
-namespace PathController.LifeCycle {
-    public class PathControllerMod : LifeCycleBase {
-        public const string HARMONY_ID = "cs.pathcontroller";
+namespace LaneConroller.LifeCycle {
+    public class LaneConrollerMod : LifeCycleBase {
+        public const string HARMONY_ID = "cs.lanecontroller";
 
-        public override string ModName => "Path Controller";
+        public override string ModName => "Lane Controller";
         public override string Description => "Adjust lane paths.";
 
         public override void Start() {
@@ -17,13 +17,13 @@ namespace PathController.LifeCycle {
         public override void OnSettingsUI(UIHelper helper) => Settings.OnSettingsUI(helper);
 
         public override void Load() {
-            PathControllerManager.Ensure();
-            Tool.PathControllerTool.Create();
+            LaneConrollerManager.Ensure();
+            Tool.LaneConrollerTool.Create();
         }
 
         public override void UnLoad() {
-            Tool.PathControllerTool.Remove();
-            PathControllerManager.Release();
+            Tool.LaneConrollerTool.Remove();
+            LaneConrollerManager.Release();
         }
 
         public override void End() {

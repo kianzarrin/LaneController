@@ -1,10 +1,10 @@
 using ColossalFramework.UI;
-using PathController.Util;
-using PathController.UI.Editors;
+using LaneConroller.Util;
+using LaneConroller.UI.Editors;
 using UnityEngine;
 using KianCommons.UI;
 
-namespace PathController.UI
+namespace LaneConroller.UI
 {
     public class CustomUITabstrip : UITabstrip
     {
