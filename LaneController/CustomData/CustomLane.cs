@@ -1,5 +1,6 @@
 namespace LaneConroller.CustomData;
 using ColossalFramework.Math;
+using JetBrains.Annotations;
 using KianCommons;
 using KianCommons.Serialization;
 using LaneConroller.Util;
@@ -14,6 +15,9 @@ public interface ICustomInstanceID {
 }
 
 public class CustomLane : ICustomInstanceID {
+    [UsedImplicitly, Obsolete("XML only", error: true)]
+    public CustomLane() { }
+
     public CustomLane(LaneIdAndIndex laneIdAndIndex) {
         LaneIdAndIndex = laneIdAndIndex;
         Beizer0 = FinalBezier;
@@ -23,9 +27,9 @@ public class CustomLane : ICustomInstanceID {
     public LaneIdAndIndex LaneIdAndIndex;
 
     public float Shift, VShift;
-    [XmlElement("Displacement",typeof(Bezier3XML))]
+    [XmlElement("Displacement"/*,typeof(Bezier3XML)*/)]
     public Bezier3 DeltaControlPoints;
-    [XmlElement("Bezier0", typeof(Bezier3XML))]
+    [XmlElement("Bezier0"/*, typeof(Bezier3XML)*/)]
     private Bezier3 Beizer0;
 
     public float Position {

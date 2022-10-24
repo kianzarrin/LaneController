@@ -1,10 +1,16 @@
 namespace LaneConroller.CustomData {
     using KianCommons;
     using LaneConroller.Manager;
+    using System;
     using System.Linq;
+    using JetBrains.Annotations;
     public class SegmentDTO {
         public ushort SegmentId;
         public CustomLane[] Lanes;
+
+        [UsedImplicitly, Obsolete("XML only", error:true)]
+        public SegmentDTO() { }
+
         public SegmentDTO(ushort segmentId) {
             SegmentId = segmentId;
             Lanes = LaneConrollerManager.Instance.GetOrCreateLanes(segmentId);
