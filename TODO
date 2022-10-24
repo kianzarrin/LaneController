@@ -1,6 +1,7 @@
-
-----
 - control + space to step over
-- TMPE: cars to wait at conflict points
-- template editor
 - Vector3 fields for control points.
+- template editor
+- NS integration
+
+- TMPE: cars to wait at conflict points
+- AN integration
