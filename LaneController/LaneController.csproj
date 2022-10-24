@@ -50,8 +50,8 @@
   <ItemGroup>
     <!--<EmbeddedResource Include="Resources\*.png" />-->
     <EmbeddedResource Include="Resources\**\*.png" />
-    <EmbeddedResource Remove="Resources\uui_movelanes.png" />
-    <None Update="Resources\uui_movelanes.png">
+    <EmbeddedResource Remove="Resources\uui_lane_controller.png" />
+    <None Update="Resources\uui_lane_controller.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -105,7 +105,7 @@
     </ItemGroup>
 
     <Copy SourceFiles="$(TargetDir)CitiesHarmony.API.dll;$(TargetDir)UnifiedUILib.dll" DestinationFolder="$(DeployDir)" />
-    <Copy SourceFiles="$(TargetDir)Resources\uui_movelanes.png" DestinationFolder="$(DeployDir)" />
+    <Copy SourceFiles="$(TargetDir)Resources\uui_lane_controller.png" DestinationFolder="$(DeployDir)" />
 
     <Exec Command="&quot;$(pdb2mdb)&quot; &quot;$(TargetPath)&quot;" />
     <Copy SourceFiles="$(TargetPath).mdb" DestinationFolder="$(DeployDir)" />
