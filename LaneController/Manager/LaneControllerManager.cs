@@ -61,11 +61,21 @@ public class LaneConrollerManager {
             string xmlData = Encoding.ASCII.GetString(data);
             Log.Debug(xmlData);
             Instance = XMLSerializerUtil.Deserialize<LaneConrollerManager>(xmlData);
-
+            Instance.UpdateAllLanes();
             return Instance;
         }catch(Exception ex) {
             ex.Log();
             return Create();
+        }
+    }
+
+    public void UpdateAllLanes() {
+        var segmentIds = Lanes.Values.
+            Select(lane => lane.LaneIdAndIndex.SegmentId)
+            .Distinct();
+        Log.Called("segments:"+segmentIds);
+        foreach (ushort segmentId in segmentIds) {
+            segmentId.ToSegment().UpdateLanes(segmentId, true);
         }
     }
 
