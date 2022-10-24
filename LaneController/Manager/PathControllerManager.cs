@@ -64,6 +64,18 @@ public class LaneConrollerManager {
 
     public CustomLane GetLane(uint laneId) => Lanes.GetorDefault(laneId);
 
+    /// <summary>
+    /// only return custom lanes if they exists, otherwise returns empty array.
+    /// </summary>
+    public CustomLane[] GetLanes(ushort segmentId) {
+        if (segmentId == 0) return new CustomLane[0];
+        return new LaneIterator(segmentId).
+            Select(laneIdAndIndex => GetLane(laneIdAndIndex.LaneId)).
+            Where(lane => lane != null).
+            ToArray();
+    }
+
+
     public CustomLane[] GetOrCreateLanes(ushort segmentId) {
         if(segmentId == 0) return new CustomLane[0];
         return new LaneIterator(segmentId).

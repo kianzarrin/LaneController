@@ -15,13 +15,14 @@ namespace LaneConroller.UI.Editors
     public class LaneEditor : BaseEditor<LaneItem, CustomLane, LaneIcons>
     {
         public override string Name => "Lane Editor";
-        public override string SelectionMessage => "SelectSegment a lane to edit it.";
+        public override string SelectionMessage => "Select lane to edit it.";
 
         private FloatPropertyPanel ShiftField , HeightField/*, StartField , EndField*/;
 
 
 
         public IEnumerable<CustomLane> IterateOtherSelectedLanes() {
+            if(EditObject == null)yield break;
             foreach(ushort segmentId in ToolInstance.SelectedSegmentIds) {
                 int laneIndex = EditObject.Index;
                 if (segmentId != EditObject.LaneIdAndIndex.SegmentId) {
@@ -32,6 +33,7 @@ namespace LaneConroller.UI.Editors
         }
 
         public IEnumerable<CustomLane> IterateSelectedLanes() {
+            if (EditObject == null) yield break;
             foreach (ushort segmentId in ToolInstance.SelectedSegmentIds) {
                 int laneIndex = EditObject.Index;
                 uint laneId = NetUtil.GetLaneId(segmentId, laneIndex);
@@ -107,7 +109,7 @@ namespace LaneConroller.UI.Editors
 
         private void PositionField_OnValueChanged(float value) {
             Log.Called();
-            foreach (var customLane in IterateOtherSelectedLanes()) {
+            foreach (var customLane in IterateSelectedLanes()) {
                 customLane.Shift = value;
                 customLane.QueueUpdate();
             }
@@ -115,7 +117,7 @@ namespace LaneConroller.UI.Editors
 
         private void HeightField_OnValueChanged(float value) {
             Log.Called();
-            foreach (var customLane in IterateOtherSelectedLanes()) {
+            foreach (var customLane in IterateSelectedLanes()) {
                 customLane.VShift = value;
                 customLane.QueueUpdate();
             }

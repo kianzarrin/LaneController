@@ -35,6 +35,7 @@ namespace LaneConroller.Tool {
         public static Vector3 MouseWorldPosition { get; private set; }
 
         public static Camera Camera;
+        public static LaneConrollerManager Man => LaneConrollerManager.Instance;
 
         public BaseTool CurrentTool { get; private set; }
         private Dictionary<ToolType, BaseTool> Tools { get; set; } = new Dictionary<ToolType, BaseTool>();
@@ -162,36 +163,61 @@ namespace LaneConroller.Tool {
         #region Action Shortcut
         public SegmentDTO Cache;
 
-        public static void Copy() => Instance.Cache = Instance.SegmentInstance.Clone();
+        public static void Copy() {
+            Log.Called("Active segment: " + Instance.ActiveSegmentId);
+            Instance.Cache = Instance.SegmentInstance.Clone();
+        }
 
-        public static void Paste() {
-            foreach (ushort segmentId in Instance.SelectedSegmentIds)
+            public static void Paste() {
+            Log.Called("Active segment: " + Instance.ActiveSegmentId);
+            foreach (ushort segmentId in Instance.SelectedSegmentIds) {
                 Instance.Cache.CopyTo(segmentId);
+                NetManager.instance.UpdateSegment(segmentId);
+            }
         }
 
         public static void DeleteAll() {
-            foreach(ushort segmentId in Instance.SelectedSegmentIds) {
-                foreach(var lane in new LaneIterator(segmentId) ){
-                    LaneConrollerManager.Instance.GetLane(lane.LaneId)?.Reset();
+            Log.Called("Active segment: " + Instance.ActiveSegmentId);
+            foreach (ushort segmentId in Instance.SelectedSegmentIds) {
+                foreach (var lane in Man.GetLanes(segmentId)) {
+                    lane.Reset();
                 }
+                NetManager.instance.UpdateSegment(segmentId);
             }
         }
         public static void ResetControlPoints() {
+            Log.Called("Active segment: " + Instance.ActiveSegmentId);
             foreach (ushort segmentId in Instance.SelectedSegmentIds) {
-                Instance.SegmentInstance.CopyTo(segmentId);
-            }
-        }
-        public static void ApplyBetweenIntersections() {
-            var sourceLanes = Instance.SegmentInstance.Lanes;
-            foreach (ushort segmentId in TraverseUtil.GetSimilarSegmentsBetweenJunctions(Instance.ActiveSegmentId)) {
-                var targetLanes = LaneConrollerManager.Instance.GetOrCreateLanes(segmentId);
-                for (int laneIndex = 0; laneIndex < sourceLanes.Length; ++laneIndex) {
-                    targetLanes[laneIndex].CopyFrom(sourceLanes[laneIndex]);
+                foreach (var lane in Man.GetLanes(segmentId)) {
+                    lane.DeltaControlPoints = default;
                 }
+                NetManager.instance.UpdateSegment(segmentId);
             }
         }
 
-        public static void ApplyWholeStreet() => throw new NotImplementedException();
+        public static void ApplyBetweenIntersections() {
+            Log.Called("Active segment: " + Instance.ActiveSegmentId);
+            var sourceLanes = Instance.SegmentInstance.Lanes;
+            foreach (ushort segmentId in TraverseUtil.GetSimilarSegmentsBetweenJunctions(Instance.ActiveSegmentId)) {
+                var targetLanes = Man.GetOrCreateLanes(segmentId);
+                for (int laneIndex = 0; laneIndex < sourceLanes.Length; ++laneIndex) {
+                    targetLanes[laneIndex].CopyFrom(sourceLanes[laneIndex]);
+                }
+                NetManager.instance.UpdateSegment(segmentId);
+            }
+        }
+
+        public static void ApplyWholeStreet() {
+            Log.Called("Active segment: " + Instance.ActiveSegmentId);
+            var sourceLanes = Instance.SegmentInstance.Lanes;
+            foreach (ushort segmentId in TraverseUtil.GetSimilarSegmentsInRoad(Instance.ActiveSegmentId)) {
+                var targetLanes = Man.GetOrCreateLanes(segmentId);
+                for (int laneIndex = 0; laneIndex < sourceLanes.Length; ++laneIndex) {
+                    targetLanes[laneIndex].CopyFrom(sourceLanes[laneIndex]);
+                }
+                NetManager.instance.UpdateSegment(segmentId);
+            }
+        }
         #endregion
 
         private UIComponent UUIButton;
