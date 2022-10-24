@@ -185,11 +185,12 @@ namespace PathController.Tool {
             var sourceLanes = Instance.SegmentInstance.Lanes;
             foreach (ushort segmentId in TraverseUtil.GetSimilarSegmentsBetweenJunctions(Instance.ActiveSegmentId)) {
                 var targetLanes = PathControllerManager.Instance.GetOrCreateLanes(segmentId);
-                for(int laneIndex=0;laneIndex< sourceLanes.Length; ++laneIndex) {
+                for (int laneIndex = 0; laneIndex < sourceLanes.Length; ++laneIndex) {
                     targetLanes[laneIndex].CopyFrom(sourceLanes[laneIndex]);
                 }
             }
         }
+
         public static void ApplyWholeStreet() => throw new NotImplementedException();
         #endregion
 

@@ -10,7 +10,7 @@ namespace PathController.CustomData {
             Lanes = PathControllerManager.Instance.GetOrCreateLanes(segmentId);
         }
         public SegmentDTO Clone() {
-            var ret = this;
+            var ret = new SegmentDTO(SegmentId);
             ret.Lanes = ret.Lanes.Select(lane => lane.Clone()).ToArray();
             return ret;
         }
