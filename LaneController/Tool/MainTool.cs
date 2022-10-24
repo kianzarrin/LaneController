@@ -244,7 +244,7 @@ namespace LaneConroller.Tool {
             };
 
             LaneConrollerPanel.CreatePanel();
-            string iconPath = UUIHelpers.GetFullPath<LaneConrollerMod>("uui_movelanes.png");
+            string iconPath = UUIHelpers.GetFullPath<LaneConrollerMod>("uui_lane_controller.png");
             UUIButton = UUIHelpers.RegisterToolButton(
                 name: "LaneConroller",
                 groupName: null, // default group
