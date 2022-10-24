@@ -18,7 +18,7 @@ namespace LaneConroller.LifeCycle {
         public static readonly SavedInputKey ActivationShortcut = new SavedInputKey(
             name: "ActivationShortcut",
             fileName: SettingsFile,
-            def: SavedInputKey.Encode(KeyCode.P, control: true, shift: false, alt: false),
+            def: SavedInputKey.Encode(KeyCode.L, control: false, shift: false, alt: false),
             autoUpdate: true);
 
 

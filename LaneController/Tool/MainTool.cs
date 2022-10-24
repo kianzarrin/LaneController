@@ -19,9 +19,6 @@ using LaneConroller.UI.Editors;
 namespace LaneConroller.Tool {
     public class LaneConrollerTool : ToolBase
     {
-        public static readonly SavedInputKey ActivationShortcut =
-            new SavedInputKey("ActivationShortcut", nameof(LaneConrollerMod), SavedInputKey.Encode(KeyCode.L, false, false, false), true);
-
         public static bool CtrlIsPressed => Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
         public static bool ShiftIsPressed => Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
 
@@ -247,7 +244,7 @@ namespace LaneConroller.Tool {
                 tooltip: "Lane Controller",
                 tool: this,
                 icon: UUIHelpers.LoadTexture(iconPath),
-                hotkeys: new UUIHotKeys { ActivationKey = ActivationShortcut });
+                hotkeys: new UUIHotKeys { ActivationKey = LaneControllerSettings.ActivationShortcut });
 
             enabled = false;
         }
