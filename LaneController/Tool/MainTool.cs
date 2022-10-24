@@ -343,8 +343,17 @@ namespace LaneConroller.Tool {
         #endregion
 
         #region Tool Update
+        UIComponent PauseMenu { get; } = UIView.library.Get("PauseMenu");
+
         protected override void OnToolUpdate()
         {
+            if (PauseMenu?.isVisible == true) {
+                Log.Debug("Hiding Pause menu!");
+                UIView.library.Hide("PauseMenu");
+                enabled = false;
+                return;
+            }
+
             MousePosition = Input.mousePosition;
             MouseRay = Camera.main.ScreenPointToRay(MousePosition);
             MouseRayLength = Camera.main.farClipPlane;
@@ -360,7 +369,6 @@ namespace LaneConroller.Tool {
             } else {
                 ShowToolInfo(false, null, default);
             }
-
             base.OnToolUpdate();
         }
 
@@ -497,8 +505,15 @@ namespace LaneConroller.Tool {
                 case EventType.KeyUp:
                     CurrentTool.OnKeyUp(e);
                     break;
+                case EventType.KeyDown:
+                    if (e.keyCode == KeyCode.Escape) {
+                        e.Use();
+                        enabled = false;
+                    }
+                    break;
             }
         }
+
         #endregion
     }
 }
