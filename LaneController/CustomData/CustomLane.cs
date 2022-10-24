@@ -8,12 +8,12 @@ using System.Security.AccessControl;
 using System.Xml.Serialization;
 using UnityEngine;
 
-public interface ICustomPath {
+public interface ICustomInstanceID {
     bool IsDefault();
     void Reset();
 }
 
-public class CustomLane : ICustomPath {
+public class CustomLane : ICustomInstanceID {
     public CustomLane(LaneIdAndIndex laneIdAndIndex) {
         LaneIdAndIndex = laneIdAndIndex;
         Beizer0 = FinalBezier;
