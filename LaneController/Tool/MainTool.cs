@@ -137,8 +137,10 @@ namespace LaneConroller.Tool {
             } else {
                 int laneIndex0 = LaneInstance?.Index ?? -1;
                 SegmentInstance = new SegmentDTO(segmentId);
+
                 SetLane(laneIndex: laneIndex0);
             }
+            NetManager.instance.UpdateSegment(segmentId);
         }
 
         public void SetLane(int laneIndex) {
@@ -304,7 +306,6 @@ namespace LaneConroller.Tool {
         }
 
         public void Reset() {
-            Panel.Hide();
             SetDefaultMode();
             LaneInstance = null;
             selectedSegmentIds_.Clear();

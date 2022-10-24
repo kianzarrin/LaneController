@@ -21,6 +21,11 @@ namespace LaneConroller.LifeCycle {
             Tool.LaneConrollerTool.Create();
         }
 
+        public override void HotReload() {
+            SerializableDataExtension.Load();
+            Load();
+        }
+
         public override void UnLoad() {
             Tool.LaneConrollerTool.Remove();
             LaneConrollerManager.Release();

@@ -4,6 +4,7 @@ using ColossalFramework;
 using KianCommons;
 using LaneConroller.CustomData;
 using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using KianCommons.Serialization;
@@ -26,14 +27,15 @@ public class LaneConrollerManager {
         set => LoadingVersion = new Version(value);
     }
 
-    public List<CustomLane> SavedLanes {
+    [XmlArray("Lanes"), XmlArrayItem("Lane")]
+    public CustomLane[] SavedLanes {
         get {
             return Lanes.Values.
                 Where(customLane => !customLane.IsDefault()).
-                ToList();
-                
+                ToArray().LogRet();
         }
         set {
+            Log.Called(value);
             Lanes.Clear();
             foreach(var customLane in value)
                 Lanes[customLane.LaneId] = customLane;
@@ -41,24 +43,35 @@ public class LaneConrollerManager {
     }
 
     public byte[] Serialize() {
-        if(Lanes.Values.Any(customLane => !customLane.IsDefault())) {
+        Log.Called();
+        if (SavedLanes.Any()) {
             var xmlData = XMLSerializerUtil.Serialize(this);
-            return Convert.FromBase64String(xmlData);
+            Log.Debug(xmlData);
+            return Encoding.ASCII.GetBytes(xmlData);
         } else {
             return null;
         }
     }
 
     public static LaneConrollerManager Deserialize(byte[] data) {
-        if (data == null)
-            return Create();
+        try {
+            Log.Called();
+            if (data == null)
+                return Create();
+            string xmlData = Encoding.ASCII.GetString(data);
+            Log.Debug(xmlData);
+            Instance = XMLSerializerUtil.Deserialize<LaneConrollerManager>(xmlData);
 
-        string xmlData = Convert.ToBase64String(data);
-        return Instance = XMLSerializerUtil.Deserialize<LaneConrollerManager>(xmlData);
+            return Instance;
+        }catch(Exception ex) {
+            ex.Log();
+            return Create();
+        }
     }
 
     #endregion
 
+    [XmlIgnore]
     internal Dictionary<uint, CustomLane> Lanes = new(1000);
 
     public CustomLane GetLane(uint laneId) => Lanes.GetorDefault(laneId);

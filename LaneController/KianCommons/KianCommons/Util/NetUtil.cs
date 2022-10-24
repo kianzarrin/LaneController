@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Serialization;
 using UnityEngine;
 namespace KianCommons {
     internal class NetServiceException : Exception {
@@ -615,6 +616,8 @@ namespace KianCommons {
         public ushort SegmentId => Lane.m_segment;
         public ref NetSegment Segment => ref SegmentId.ToSegment();
         public ref NetLane Lane => ref LaneId.ToLane();
+
+        [XmlIgnore]
         public NetLane.Flags Flags {
             get => (NetLane.Flags)Lane.m_flags;
             set => LaneId.ToLane().m_flags = (ushort)value;
