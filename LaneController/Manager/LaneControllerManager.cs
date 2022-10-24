@@ -47,7 +47,6 @@ public class LaneConrollerManager {
         } else {
             return null;
         }
-
     }
 
     public static LaneConrollerManager Deserialize(byte[] data) {
