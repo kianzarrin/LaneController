@@ -25,7 +25,10 @@ namespace LaneConroller.Tool {
         public static Ray MouseRay { get; private set; }
         public static float MouseRayLength { get; private set; }
         public static bool MouseRayValid { get; private set; }
+        public static Vector3 PrevMousePosition { get; private set; }
         public static Vector3 MousePosition { get; private set; }
+        public static bool MouseMoved => MousePosition != PrevMousePosition;
+
         public static Vector3 MouseWorldPosition { get; private set; }
 
         public static Camera Camera;
