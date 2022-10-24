@@ -31,6 +31,36 @@ public class SelectLaneTool : SelectSegmentTool {
         }
     }
 
+    public override string OnToolInfo() {
+        State state = CalculateState();
+        switch (state) {
+            case State.SelectLane:
+                return $"Click => edit lane[{HoveredLaneIdAndIndex.LaneIndex}]\n" +
+                    $"Ctrl+Click => Deselect segment #{HoveredSegmentId}";
+            case State.Deselect:
+                return $"Deselect Segment #{HoveredSegmentId}";
+
+            case State.SetActiveSegment:
+                return $"Segment #{HoveredSegmentId}\n" +
+                "Click => Select this segment\n" +
+                "Shift+Click => Select until intersection\n"+
+                "Ctrl+Click => Add to selection\n" +
+                "Shift+Click => Add to selection until intersection";
+            case State.SetActiveSegmentMulti:
+                return "Select until intersection.\n";
+            case State.Illigal:
+                return "Cannot add mismatching segment to selection.\n" + "Segment must match selection.";
+            case State.SelectSegment:
+                return $"Add Segment #{HoveredSegmentId} to selection";
+            case State.SelectSegmentMutli:
+                return "Add to selection until intersection";
+
+            case State.None:
+            default:
+                return "Select a lane to edit\n" + "Or select more segments";
+        }
+    }
+
     public override void RenderOverlay(RenderManager.CameraInfo cameraInfo) {
         State state = CalculateState();
         if (state == State.None)
@@ -41,19 +71,18 @@ public class SelectLaneTool : SelectSegmentTool {
             return;
         }
 
-        bool select = state is State.SelectSegment or State.SelectSegmentMutli;
-        bool multi = state is State.SelectSegmentMutli or State.SetActiveSegmentMulti;
-
+        
         Color? color = state switch {
             State.SetActiveSegment => Colors.GameBlue,
             State.SetActiveSegmentMulti => Colors.GameBlue,
-            State.SelectSegment => Color.white,
-            State.SelectSegmentMutli => Color.white,
-            State.Deselect => Color.red,
-            State.Illigal => Colors.OrangeWeb,
+            State.SelectSegment => Color.green,
+            State.SelectSegmentMutli => Color.green,
+            State.Deselect => Colors.OrangeWeb,
+            State.Illigal => Color.red,
             _ => null,
         };
 
+        bool multi = state is State.SelectSegmentMutli or State.SetActiveSegmentMulti;
         if (color.HasValue) {
             RenderUtil.RenderSegmentOverlay(cameraInfo, HoveredSegmentId, color.Value);
             if (multi) {
@@ -63,9 +92,11 @@ public class SelectLaneTool : SelectSegmentTool {
             }
         }
 
-        if (select) {
+        if (state is State.SelectSegment or State.SelectSegmentMutli or State.Deselect or State.Illigal) {
             foreach (ushort segmentId in Tool.SelectedSegmentIds) {
-                RenderUtil.RenderSegmentOverlay(cameraInfo, segmentId, Colors.GameBlue);
+                if (segmentId != HoveredSegmentId) {
+                    RenderUtil.RenderSegmentOverlay(cameraInfo, segmentId, Colors.GameBlue);
+                }
             }
         }
     }

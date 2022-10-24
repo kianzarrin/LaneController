@@ -104,7 +104,7 @@ public class LaneConrollerPanel : UIPanel
     {
         Log.Called(segmentId);
         Show();
-        Header.Text = "Segment " + segmentId.ToString();
+        Header.Text = $"Segment #{segmentId}";
         TabStrip.selectedIndex = -1;
         SelectEditor<LaneEditor>();
     }

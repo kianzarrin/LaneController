@@ -114,6 +114,16 @@ public class SelectSegmentTool : BaseTool {
         }
     }
 
+    public override string OnToolInfo() {
+        if (HoveredSegmentId != 0) {
+            return $"Segment #{HoveredSegmentId}\n" +
+                "Click => select to edit lanes\n" +
+                "Shift+Click => select until intersection";
+        } else {
+            return "Select a segment to edit lanes";
+        }
+    }
+
     public override void OnUpdate() {
         base.OnUpdate();
         DetermineHoveredElements();

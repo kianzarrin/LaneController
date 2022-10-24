@@ -42,6 +42,8 @@ namespace LaneConroller.Tool
         public virtual void OnMouseUp(Event e) => OnPrimaryMouseClicked(e);
         public virtual void OnPrimaryMouseClicked(Event e) { }
 
+        public virtual string OnToolInfo() => null;
+
         public virtual void OnSecondaryMouseClicked() {
             if (Type >= (ToolType)1) {
                 Tool.SetMode(Type - 1);

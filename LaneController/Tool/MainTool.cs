@@ -76,7 +76,7 @@ namespace LaneConroller.Tool {
         public IEnumerable<ushort> SelectedSegmentIds => selectedSegmentIds_;
         public int ActiveLaneIndex => LaneInstance?.Index ?? -1;
         public ushort ActiveSegmentId {
-            get => SegmentInstance.SegmentId;
+            get => SegmentInstance?.SegmentId ?? 0;
             set {
                 Log.Called(value);
                 foreach(ushort segmentId in selectedSegmentIds_) {
@@ -288,7 +288,6 @@ namespace LaneConroller.Tool {
 
         protected override void OnEnable() {
             try {
-
                 base.OnEnable();
                 Reset();
 
@@ -354,6 +353,12 @@ namespace LaneConroller.Tool {
             MouseWorldPosition = output.m_hitPos;
 
             CurrentTool.OnUpdate();
+
+            if (MouseRayValid) {
+                ShowToolInfo2(CurrentTool.OnToolInfo());
+            } else {
+                ShowToolInfo(false, null, default);
+            }
 
             base.OnToolUpdate();
         }
