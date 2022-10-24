@@ -20,7 +20,7 @@ namespace LaneConroller.Tool {
     public class LaneConrollerTool : ToolBase
     {
         public static readonly SavedInputKey ActivationShortcut =
-            new SavedInputKey("ActivationShortcut", nameof(LaneConrollerMod), SavedInputKey.Encode(KeyCode.P, true, false, false), true);
+            new SavedInputKey("ActivationShortcut", nameof(LaneConrollerMod), SavedInputKey.Encode(KeyCode.L, false, false, false), true);
 
         public static bool CtrlIsPressed => Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
         public static bool ShiftIsPressed => Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
