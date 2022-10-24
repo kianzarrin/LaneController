@@ -73,7 +73,7 @@ public abstract class FieldPropertyPanel<ValueType> : FieldPropertyPanel {
         Field.selectOnFocus = true;
 
         List<string> hint = new();
-        if (LifeCycle.Settings.ShowToolTip) {
+        if (LifeCycle.LaneControllerSettings.ShowToolTips) {
             hint.Add("Press delete to reset value");
             if (CanUseWheel) {
                 hint.Add("Scroll the wheel to change\n" + "shift X10, Ctrl X0.1");

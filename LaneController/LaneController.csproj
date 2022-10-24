@@ -70,6 +70,8 @@
     <Compile Include="KianCommons\KianCommons\UI\TextureExtensions.cs" />
     <Compile Include="KianCommons\KianCommons\UI\TextureUtil.cs" />
     <Compile Include="KianCommons\KianCommons\UI\UIExtensions.cs" />
+    <Compile Include="KianCommons\KianCommons\UI\SettingsUIHelperExtension.cs" />
+    <Compile Include="KianCommons\KianCommons\UI\UIKeymappingsPanel.cs" />
     <Compile Include="KianCommons\KianCommons\Util\Assertion.cs" />
     <Compile Include="KianCommons\KianCommons\Util\DelegateUtil.cs" />
     <Compile Include="KianCommons\KianCommons\Util\EnumExtensions.cs" />

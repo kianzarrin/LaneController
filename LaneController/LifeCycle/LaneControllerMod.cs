@@ -14,7 +14,7 @@ namespace LaneConroller.LifeCycle {
                 HarmonyUtil.InstallHarmony(HARMONY_ID));
         }
 
-        public override void OnSettingsUI(UIHelper helper) => Settings.OnSettingsUI(helper);
+        public override void OnSettingsUI(UIHelper helper) => LaneControllerSettings.OnSettingsUI(helper);
 
         public override void Load() {
             LaneConrollerManager.Ensure();

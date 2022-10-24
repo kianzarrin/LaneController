@@ -70,8 +70,8 @@ public class LaneItem : DynamicButton<CustomLane, LaneIcons> {
         }
 
         Icon.DirectionType = Object.LaneInfo.m_finalDirection;
-        Icon.SetDirectionToolTip(Settings.ShowToolTip ? Object.LaneInfo.m_finalDirection.ToString() : string.Empty);
-        Icon.SetLaneToolTip(Settings.ShowToolTip ? Object.LaneInfo.m_vehicleType.ToString() : string.Empty);
+        Icon.SetDirectionToolTip(LaneControllerSettings.ShowToolTips ? Object.LaneInfo.m_finalDirection.ToString() : string.Empty);
+        Icon.SetLaneToolTip(LaneControllerSettings.ShowToolTips ? Object.LaneInfo.m_vehicleType.ToString() : string.Empty);
     }
 }
 

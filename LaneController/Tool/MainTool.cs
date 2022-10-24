@@ -23,7 +23,8 @@ using static NetInfo;
 namespace LaneConroller.Tool {
     public class LaneConrollerTool : ToolBase
     {
-        public static readonly SavedInputKey ActivationShortcut = new SavedInputKey("ActivationShortcut", nameof(LaneConrollerMod), SavedInputKey.Encode(KeyCode.P, true, false, false), true);
+        public static readonly SavedInputKey ActivationShortcut =
+            new SavedInputKey("ActivationShortcut", nameof(LaneConrollerMod), SavedInputKey.Encode(KeyCode.P, true, false, false), true);
 
         public static bool CtrlIsPressed => Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
         public static bool ShiftIsPressed => Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
@@ -354,7 +355,7 @@ namespace LaneConroller.Tool {
 
             CurrentTool.OnUpdate();
 
-            if (MouseRayValid) {
+            if (MouseRayValid && LaneControllerSettings.ShowToolTips) {
                 ShowToolInfo2(CurrentTool.OnToolInfo());
             } else {
                 ShowToolInfo(false, null, default);
