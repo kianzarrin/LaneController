@@ -32,11 +32,13 @@ public class CustomLane : ICustomInstanceID {
     [XmlElement("Bezier0"/*, typeof(Bezier3XML)*/)]
     private Bezier3 Beizer0;
 
+    [XmlIgnore]
     public float Position {
         get => LaneInfo.m_position + Shift;
         set => Shift = value - LaneInfo.m_position;
     }
 
+    [XmlIgnore]
     public float Height {
         get => LaneInfo.m_verticalOffset + VShift;
         set => VShift = value - LaneInfo.m_verticalOffset;
@@ -85,7 +87,6 @@ public class CustomLane : ICustomInstanceID {
         ref NetLane lane = ref LaneIdAndIndex.Lane;
         ushort segmentId = lane.m_segment;
         ref NetSegment segment = ref segmentId.ToSegment();
-        NetInfo.Lane laneInfo = LaneInfo;
 
         segment.CalculateCorner(segmentId, true, true, true, out Vector3 cornerStartLeft, out Vector3 dirStartLeft, out bool smoothStart);
         segment.CalculateCorner(segmentId, true, false, true, out Vector3 cornerEndLeft, out Vector3 dirEndLeft, out bool smoothEnd);
