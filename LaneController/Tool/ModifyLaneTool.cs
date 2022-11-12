@@ -1,6 +1,9 @@
 namespace LaneConroller.Tool;
 
 using KianCommons;
+using LaneConroller.CustomData;
+using LaneConroller.UI.Editors;
+using System.Linq;
 using UnityEngine;
 using static LaneConrollerTool;
 using static ToolBase;
@@ -14,7 +17,11 @@ public class ModifyLaneTool : BaseTool {
         if (Tool.BezierMarker != null) {
             RaycastInput input = new(MouseRay, MouseRayLength) { m_ignoreTerrain = false };
             RayCast(input, out RaycastOutput output);
-            Tool.BezierMarker.Drag(output.m_hitPos);
+            if (Tool.BezierMarker.Drag(output.m_hitPos)) {
+                if(Panel?.CurrentEditor is LaneEditor laneEditor) {
+                    laneEditor.PullValues();
+                }
+            }
         }
     }
 

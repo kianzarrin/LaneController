@@ -192,6 +192,10 @@ namespace LaneConroller.Tool {
                 }
                 NetManager.instance.UpdateSegment(segmentId);
             }
+            if(Instance.Panel?.CurrentEditor is LaneEditor laneEditor) {
+                laneEditor.PullValues();
+            }
+
         }
 
         public static void ApplyBetweenIntersections() {

@@ -62,6 +62,7 @@ public class LaneConrollerPanel : UIPanel
     }
 
     public void UpdatePanel() => CurrentEditor?.UpdateEditor();
+
     public void Render(RenderManager.CameraInfo cameraInfo) => CurrentEditor?.Render(cameraInfo);
     private void CreateHeader()
     {

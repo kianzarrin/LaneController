@@ -26,19 +26,7 @@ namespace LaneConroller.Tool
 
         public virtual void OnMouseDown(Event e) { }
         public virtual void OnMouseDrag(Event e) { }
-
-        public virtual void OnKeyUp(Event e) {
-            Log.Called(e);
-            var del = e.keyCode == KeyCode.Delete || e.keyCode == KeyCode.Backspace;
-            if (del) {
-                var control = Panel?.
-                    GetComponentsInChildren<FieldPropertyPanel>()?.
-                    FirstOrDefault(control => control.containsMouse);
-                if (control != null) {
-                    control.ResetValue();
-                }
-            }
-        }
+        public virtual void OnKeyUp(Event e) { }
         public virtual void OnMouseUp(Event e) => OnPrimaryMouseClicked(e);
         public virtual void OnPrimaryMouseClicked(Event e) { }
 

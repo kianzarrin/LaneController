@@ -1,7 +1,16 @@
-- control + space to step over
-- Vector3 fields for control points.
+more controls:
+    - Vector3 fields for control points.
+    - CS like shift (resulting in S shape)
+    - start/end direction
+    - start/end dir length
+    - single double control point mode.
+    - control points on bezier mode.
+
+note: checkout egi link for bezier https://discord.com/channels/436608207788703753/436608208220586005/1038779930697285673
+
+- path VS lane
+
+
 - template editor
 - NS integration
-
-- TMPE: cars to wait at conflict points
-- AN integration
+- control + space to step over

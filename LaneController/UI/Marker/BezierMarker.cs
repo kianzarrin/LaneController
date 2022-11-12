@@ -37,6 +37,7 @@ public class BezierMarker {
             c.RenderOverlay(cameraInfo, color, fieldHovered);
     }
 
+    /// <returns>true if position changed</returns>
     public bool Drag(Vector3 hitPos) {
         for (int i = 0; i < 4; ++i) {
             controlMarkers[i].UpdatePosition(CustomLane.GetControlPoint(i));
