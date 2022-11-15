@@ -4,6 +4,7 @@ using KianCommons;
 using LaneConroller.CustomData;
 using LaneConroller.Manager;
 using LaneConroller.Util;
+using LaneController.UI.Gizmos;
 using UnityEngine;
 
 public class BezierMarker {
@@ -30,8 +31,18 @@ public class BezierMarker {
             controlMarkers[i] = new ControlPointMarker(bezier.ControlPoint(i), i);
     }
 
+    public void Destroy() {
+        foreach (var c in controlMarkers)
+            c?.Destroy();
+    }
 
-    /// <param name="focus">number field contains mouses</param>
+    public void OnUpdate() {
+        foreach(var c in controlMarkers) {
+            c?.OnUpdate();
+        }
+    }
+
+    /// <param name="fieldHovered">number field contains mouses</param>
     public void RenderOverlay(RenderManager.CameraInfo cameraInfo, Color color, bool fieldHovered = false) {
         foreach (ControlPointMarker c in controlMarkers) 
             c.RenderOverlay(cameraInfo, color, fieldHovered);
@@ -40,13 +51,14 @@ public class BezierMarker {
     /// <returns>true if position changed</returns>
     public bool Drag(Vector3 hitPos) {
         for (int i = 0; i < 4; ++i) {
-            controlMarkers[i].UpdatePosition(CustomLane.GetControlPoint(i));
+            var controlMarker = controlMarkers[i];
+            controlMarker.UpdatePosition(CustomLane.GetControlPoint(i));
         }
 
         for (int i = 0; i < 4; ++i) {
             var controlMarker = controlMarkers[i];
             if (controlMarker.Drag(hitPos)) {
-                CustomLane.UpdateControlPoint(i,controlMarker.Position);
+                CustomLane.UpdateControlPoint(i, controlMarker.Position);
                 return true;
             }
         }

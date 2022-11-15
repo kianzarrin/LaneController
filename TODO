@@ -1,5 +1,5 @@
 more controls:
-    - Vector3 fields for control points.
+    - XYZ Gizmo
     - CS like shift (resulting in S shape)
     - start/end direction
     - start/end dir length
@@ -9,7 +9,6 @@ more controls:
 note: checkout egi link for bezier https://discord.com/channels/436608207788703753/436608208220586005/1038779930697285673
 
 - path VS lane
-
 
 - template editor
 - NS integration

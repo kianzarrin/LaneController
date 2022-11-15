@@ -88,13 +88,13 @@ namespace LaneConroller.UI.Editors
                 HeightField.Init("Vertical Shift");
 
                 A = SettingsPanel.AddUIComponent<Vector3PropertyPanel>();
-                A.Init("Start Position");
+                A.Init("Start Origin");
                 B = SettingsPanel.AddUIComponent<Vector3PropertyPanel>();
                 B.Init("Control Point 1");
                 C = SettingsPanel.AddUIComponent<Vector3PropertyPanel>();
                 C.Init("Control Point 2");
                 D = SettingsPanel.AddUIComponent<Vector3PropertyPanel>();
-                D.Init("End Position");
+                D.Init("End Origin");
 
                 PullValues();
                 AddEvents();

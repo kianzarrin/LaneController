@@ -39,7 +39,14 @@ namespace LaneConroller.Tool {
 
         public bool ToolEnabled => enabled;
 
-        public BezierMarker BezierMarker { get; private set; }
+        private BezierMarker bezierMarker_;
+        public BezierMarker BezierMarker {
+            get => bezierMarker_;
+            private set {
+                bezierMarker_?.Destroy();
+                bezierMarker_ = value;
+            }
+        }
 
         #region selected segments
         private SegmentDTO segmentInstance_;
