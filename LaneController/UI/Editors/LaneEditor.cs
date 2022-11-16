@@ -33,7 +33,9 @@ namespace LaneConroller.UI.Editors
             };
         }
 
-        private Vector3PropertyPanel[] DeltaControlPoints(int i) => new Vector3PropertyPanel[] { A, B, C, D };
+        private Vector3PropertyPanel[] DeltaControlPoints => new Vector3PropertyPanel[] { A, B, C, D };
+
+        public int HoveredControlPointIndex => DeltaControlPoints.FindIndex(c => c?.containsMouse == true);
 
         public IEnumerable<CustomLane> IterateOtherSelectedLanes() {
             if(EditObject == null)yield break;
@@ -88,13 +90,13 @@ namespace LaneConroller.UI.Editors
                 HeightField.Init("Vertical Shift");
 
                 A = SettingsPanel.AddUIComponent<Vector3PropertyPanel>();
-                A.Init("Start Origin");
+                A.Init("Start Point");
                 B = SettingsPanel.AddUIComponent<Vector3PropertyPanel>();
                 B.Init("Control Point 1");
                 C = SettingsPanel.AddUIComponent<Vector3PropertyPanel>();
                 C.Init("Control Point 2");
                 D = SettingsPanel.AddUIComponent<Vector3PropertyPanel>();
-                D.Init("End Origin");
+                D.Init("End Point");
 
                 PullValues();
                 AddEvents();

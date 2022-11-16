@@ -29,7 +29,8 @@ public class ModifyLaneTool : BaseTool {
 
     public override void RenderOverlay(RenderManager.CameraInfo cameraInfo) {
         base.RenderOverlay(cameraInfo);
-        Tool.BezierMarker?.RenderOverlay(cameraInfo, Color.green);
+        int hoveredIndex = (Panel.CurrentEditor as LaneEditor)?.HoveredControlPointIndex ??  -1;
+        Tool.BezierMarker?.RenderOverlay(cameraInfo, Color.green, hoverIndex: hoveredIndex);
     }
 
     public override void OnUpdate() {

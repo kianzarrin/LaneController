@@ -42,10 +42,11 @@ public class BezierMarker {
         }
     }
 
-    /// <param name="fieldHovered">number field contains mouses</param>
-    public void RenderOverlay(RenderManager.CameraInfo cameraInfo, Color color, bool fieldHovered = false) {
-        foreach (ControlPointMarker c in controlMarkers) 
-            c.RenderOverlay(cameraInfo, color, fieldHovered);
+    /// <param name="hoverIndex">index of the control point that contains mouse in Panel</param>
+    public void RenderOverlay(RenderManager.CameraInfo cameraInfo, Color color, int hoverIndex = -1) {
+        for(int i = 0; i < 4; ++i) {
+            controlMarkers[i].RenderOverlay(cameraInfo, color, hoverIndex == i);
+        }
     }
 
     /// <returns>true if position changed</returns>
