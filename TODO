@@ -1,5 +1,9 @@
 more controls:
-    - XYZ Gizmo
+    - vertical movement
+        - Control point marker is hard to click on when lane is elevated.
+            - maintain elevation difference when dragging control point up the slope.
+        - XYZ Gizmo
+
     - CS like shift (resulting in S shape)
     - start/end direction
     - start/end dir length
