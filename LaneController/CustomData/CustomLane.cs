@@ -80,7 +80,7 @@ public class CustomLane : ICustomInstanceID {
         DeltaControlPoints = default;
     }
 
-    public void QueueUpdate() => NetManager.instance.UpdateSegment(LaneIdAndIndex.SegmentId);
+    public void QueueUpdate() => NetUtil.SafeUpdateSegment(LaneIdAndIndex.SegmentId);
 
     public void RecalculateLaneBezier() {
         Log.Called(LaneIdAndIndex);

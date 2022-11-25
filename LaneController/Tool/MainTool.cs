@@ -144,7 +144,7 @@ namespace LaneConroller.Tool {
 
                 SetLane(laneIndex: laneIndex0);
             }
-            NetManager.instance.UpdateSegment(segmentId);
+            NetUtil.SafeUpdateSegment(segmentId);
         }
 
         public void SetLane(int laneIndex) {
@@ -178,7 +178,7 @@ namespace LaneConroller.Tool {
             Log.Called("Active segment: " + Instance.ActiveSegmentId);
             foreach (ushort segmentId in Instance.SelectedSegmentIds) {
                 Instance.Cache.CopyTo(segmentId);
-                NetManager.instance.UpdateSegment(segmentId);
+                NetUtil.SafeUpdateSegment(segmentId);
             }
         }
 
@@ -188,7 +188,7 @@ namespace LaneConroller.Tool {
                 foreach (var lane in Man.GetLanes(segmentId)) {
                     lane.Reset();
                 }
-                NetManager.instance.UpdateSegment(segmentId);
+                NetUtil.SafeUpdateSegment(segmentId);
             }
         }
         public static void ResetControlPoints() {
@@ -197,7 +197,7 @@ namespace LaneConroller.Tool {
                 foreach (var lane in Man.GetLanes(segmentId)) {
                     lane.DeltaControlPoints = default;
                 }
-                NetManager.instance.UpdateSegment(segmentId);
+                NetUtil.SafeUpdateSegment(segmentId);
             }
             if(Instance.Panel?.CurrentEditor is LaneEditor laneEditor) {
                 laneEditor.PullValues();
@@ -213,7 +213,7 @@ namespace LaneConroller.Tool {
                 for (int laneIndex = 0; laneIndex < sourceLanes.Length; ++laneIndex) {
                     targetLanes[laneIndex].CopyFrom(sourceLanes[laneIndex]);
                 }
-                NetManager.instance.UpdateSegment(segmentId);
+                NetUtil.SafeUpdateSegment(segmentId);
             }
         }
 
@@ -225,7 +225,7 @@ namespace LaneConroller.Tool {
                 for (int laneIndex = 0; laneIndex < sourceLanes.Length; ++laneIndex) {
                     targetLanes[laneIndex].CopyFrom(sourceLanes[laneIndex]);
                 }
-                NetManager.instance.UpdateSegment(segmentId);
+                NetUtil.SafeUpdateSegment(segmentId);
             }
         }
         #endregion
