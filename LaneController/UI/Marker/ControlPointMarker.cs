@@ -39,6 +39,14 @@ public class ControlPointMarker {
     }
 
     public void UpdatePosition(Vector3 pos) {
+        if (!Selected && (Gizmo == null || !Gizmo.AxisClicked)) {
+            // don't update in the middle of dragging.
+            // the position is already updated and simulation thread might be behind.
+            UpdatePositionImpl(pos);
+        }
+    }
+
+    private void UpdatePositionImpl(Vector3 pos) {
         Position = pos;
         UnderGround = false;
         TerrainPosition = pos;
@@ -104,14 +112,14 @@ public class ControlPointMarker {
     public bool Drag(Vector3 hitPos) {
         if (GizmoMode) {
             if (Gizmo != null && Gizmo.Drag()) {
-                Position = Gizmo.Origin;
+                UpdatePositionImpl(Gizmo.Origin);
                 return true;
             }
         } else if (Selected) {
             hitPos.y = Position.y;
             var delta = hitPos - Position;
             if (delta.sqrMagnitude > 1e-04) {
-                Position = hitPos;
+                UpdatePositionImpl(hitPos);
                 return true;
             }
         }

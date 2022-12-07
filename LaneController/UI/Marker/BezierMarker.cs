@@ -51,6 +51,8 @@ public class BezierMarker {
 
     /// <returns>true if position changed</returns>
     public bool Drag(Vector3 hitPos) {
+        // prevent conflict between simulation/render thread.
+        // if primary mouse button is pressed we maybe dragging control points.
         for (int i = 0; i < 4; ++i) {
             var controlMarker = controlMarkers[i];
             controlMarker.UpdatePosition(CustomLane.GetControlPoint(i));

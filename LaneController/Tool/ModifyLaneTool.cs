@@ -14,17 +14,15 @@ public class ModifyLaneTool : BaseTool {
     public override ToolType Type => ToolType.ModifyLane;
     public override bool ShowPanel => true;
 
-    public override void SimulationStep() {
-        base.SimulationStep();
+    public void Drag() {
+        Assertion.InMainThread();
         if (Tool.BezierMarker != null) {
             RaycastInput input = new(MouseRay, MouseRayLength) { m_ignoreTerrain = false };
             RayCast(input, out RaycastOutput output);
             if (Tool.BezierMarker.Drag(output.m_hitPos)) {
-                SimulationManager.instance.m_ThreadingWrapper.QueueMainThread(delegate () {
-                    if (Panel?.CurrentEditor is LaneEditor laneEditor) {
-                        laneEditor.PullValues();
-                    }
-                });
+                if (Panel?.CurrentEditor is LaneEditor laneEditor) {
+                    laneEditor.PullValues();
+                }
             }
         }
     }
@@ -38,6 +36,7 @@ public class ModifyLaneTool : BaseTool {
     public override void OnUpdate() {
         base.OnUpdate();
         Tool.BezierMarker?.OnUpdate();
+        Drag();
     }
 
     public override string OnToolInfo() {

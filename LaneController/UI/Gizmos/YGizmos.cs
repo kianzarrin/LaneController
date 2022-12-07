@@ -90,7 +90,17 @@ public class YGizmo {
     }
 
     public void UpdatePosition(Vector3 position) {
+        if (AxisClicked) {
+            // while dragging, position is already updated
+            // besides simulation thread might be behind.
+            return;
+        }
+        UpdatePositionImpl(position);
+    }
+
+    private void UpdatePositionImpl(Vector3 position) {
         try {
+            Assertion.InMainThread();
             float distance = (Cam.transform.position - position).magnitude;
             float factor = (0.0070455f * distance + 0.0386363f) * GizmoSize;
             float factor20 = 20f * factor;
@@ -116,10 +126,11 @@ public class YGizmo {
 
             if (GizmoAxis.Renderer is LineRenderer renderer && renderer) {
                 renderer.widthMultiplier = factor;
-                renderer.SetPositions(new[] {position, postion2} );
+                renderer.SetPositions(new[] { position, postion2 });
             }
         } catch (Exception ex) { ex.Log(); }
     }
+
 
     #region Movement
     public bool AxisClicked = false;
@@ -158,6 +169,7 @@ public class YGizmo {
     }
 
     public void OnUpdate() {
+        Assertion.InMainThread();
         KeyTyping?.Register();
     }
 
@@ -197,6 +209,7 @@ public class YGizmo {
 
     public bool Drag() {
         try {
+            Assertion.InMainThread();
             if (UIView.HasModalInput() || UIView.HasInputFocus()) return false;
 
             if (Input.GetMouseButtonDown(0)) {
@@ -208,7 +221,7 @@ public class YGizmo {
             } else if (AxisClicked) {
                 if (Input.GetMouseButton(0)) { // movement
                     if (Movement(out Vector3 newPosion)) {
-                        UpdatePosition(newPosion);
+                        UpdatePositionImpl(newPosion);
                         return true; // position updated.
                     }
                 } else { // released
