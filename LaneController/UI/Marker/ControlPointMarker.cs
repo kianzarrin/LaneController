@@ -23,7 +23,7 @@ public class ControlPointMarker {
         Gizmo = YGizmo.CreatePositionGizmo(pos);
     }
 
-    public bool GizmoMod {
+    public bool GizmoMode {
         get {
             if (Gizmo == null) return false;
             if(Gizmo.AxisClicked) return true;
@@ -73,7 +73,7 @@ public class ControlPointMarker {
         float magnification = Hovered || fieldHovered ? 2f : 1f;
         if (Selected) magnification = 2.5f;
 
-        if (!GizmoMod) {
+        if (!GizmoMode) {
             const float OVERDRAW = 100;// through all the geometry -100..100
             RenderManager.instance.OverlayEffect.DrawCircle(
                 cameraInfo,
@@ -97,12 +97,12 @@ public class ControlPointMarker {
         }
 
         if (Event.current.type == EventType.Repaint && Gizmo != null) {
-            Gizmo.IsVisible = GizmoMod;
+            Gizmo.IsVisible = GizmoMode;
         }
     }
 
     public bool Drag(Vector3 hitPos) {
-        if (GizmoMod) {
+        if (GizmoMode) {
             if (Gizmo != null && Gizmo.Drag()) {
                 Position = Gizmo.Origin;
                 return true;
