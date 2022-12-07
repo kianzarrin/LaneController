@@ -381,6 +381,7 @@ namespace LaneConroller.UI.Editors
         }
         public virtual void UpdateEditor(DynamicObject selectObject = null)
         {
+            Assertion.InMainThread();
             Log.Debug("BaseEditor<>.UpdateEditor() called.");
             var editObject = EditObject;
 

@@ -20,9 +20,11 @@ public class ModifyLaneTool : BaseTool {
             RaycastInput input = new(MouseRay, MouseRayLength) { m_ignoreTerrain = false };
             RayCast(input, out RaycastOutput output);
             if (Tool.BezierMarker.Drag(output.m_hitPos)) {
-                if(Panel?.CurrentEditor is LaneEditor laneEditor) {
-                    laneEditor.PullValues();
-                }
+                SimulationManager.instance.m_ThreadingWrapper.QueueMainThread(delegate () {
+                    if (Panel?.CurrentEditor is LaneEditor laneEditor) {
+                        laneEditor.PullValues();
+                    }
+                });
             }
         }
     }

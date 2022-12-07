@@ -334,6 +334,7 @@ namespace LaneConroller.Tool {
         }
 
         public void UpdateMode() {
+            Assertion.InMainThread();
             ToolType type;
             if (selectedSegmentIds_.Count == 0)
                 type = ToolType.SelectSegment;

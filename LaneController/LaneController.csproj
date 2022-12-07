@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net35</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <AssemblyVersion>1.1.1.*</AssemblyVersion> <!-- whildcard(*) changes version every build which is good for in game hot reload -->
+    <AssemblyVersion>1.1.2.*</AssemblyVersion> <!-- whildcard(*) changes version every build which is good for in game hot reload -->
     <Deterministic>false</Deterministic>
     <PathMap>$(MSBuildProjectDirectory)/=$(ProjectName)/</PathMap>
     <DebugType>full</DebugType>

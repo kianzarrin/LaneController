@@ -107,6 +107,7 @@ namespace LaneConroller.UI.Editors
 
         protected override void OnObjectUpdate()
         {
+            Assertion.InMainThread();
             Log.Debug("LaneEditor.OnObjectUpdate()");
             RemoveEvents();
             PullValues();
@@ -147,6 +148,7 @@ namespace LaneConroller.UI.Editors
         }
 
         public void PullValues() {
+            Assertion.InMainThread();
             ShiftField.Value = EditObject.Shift;
             HeightField.Value = EditObject.VShift;
 
